@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { Pressable, SafeAreaView, ScrollView, Text, View } from "react-native";
 import { useRouter } from "expo-router";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import TechniqueCard from "../../components/TechniqueCard";
 import { useRollTrackStore } from "../../lib/store";
 import type { BeltLevel } from "../../lib/types";
@@ -21,12 +22,22 @@ export default function LearnScreen() {
   }, [selectedBelt, techniques]);
 
   return (
-    <SafeAreaView className="flex-1 bg-black">
+    <SafeAreaView className="flex-1 bg-zinc-950">
       <ScrollView contentContainerStyle={{ paddingHorizontal: 20, paddingTop: 24, paddingBottom: 24 }}>
         <Text className="text-white text-3xl font-bold">Learn</Text>
         <Text className="text-zinc-400 mt-2">
           Browse by belt guideline. These are recommendations, not restrictions.
         </Text>
+
+        <View className="mt-4 rounded-2xl border border-violet-500/30 bg-zinc-900 p-4">
+          <View className="flex-row items-center">
+            <Ionicons name="school-outline" size={16} color="#a78bfa" />
+            <Text className="text-zinc-300 text-xs uppercase ml-2">Learning Path</Text>
+          </View>
+          <Text className="text-zinc-100 mt-2">
+            Filter by belt to focus your progression, then open any card for deeper details.
+          </Text>
+        </View>
 
         <View className="flex-row flex-wrap mt-4">
           {beltFilters.map((belt) => {
@@ -35,9 +46,9 @@ export default function LearnScreen() {
               <Pressable
                 key={belt}
                 onPress={() => setSelectedBelt(belt)}
-                className={`rounded-full px-4 py-2 mr-2 mb-2 border ${active ? "bg-white border-white" : "bg-zinc-900 border-zinc-700"}`}
+                className={`rounded-full px-4 py-2 mr-2 mb-2 border ${active ? "bg-violet-500 border-violet-400" : "bg-zinc-900 border-zinc-700"}`}
               >
-                <Text className={active ? "text-black font-medium" : "text-zinc-200"}>{belt}</Text>
+                <Text className={active ? "text-white font-medium" : "text-zinc-200"}>{belt}</Text>
               </Pressable>
             );
           })}

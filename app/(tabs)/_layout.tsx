@@ -7,19 +7,37 @@ export default function TabsLayout() {
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          backgroundColor: "#0a0a0a",
-          borderTopColor: "#18181b",
+          backgroundColor: "#020617",
+          borderTopColor: "transparent",
+          borderTopWidth: 0,
+          height: 66,
+          paddingTop: 7,
+          paddingBottom: 10,
+          marginHorizontal: 24,
+          marginBottom: 18,
+          borderRadius: 33,
+          position: "absolute",
         },
-        tabBarActiveTintColor: "#ffffff",
-        tabBarInactiveTintColor: "#71717a",
+        tabBarLabelStyle: {
+          fontSize: 11,
+          fontWeight: "500",
+        },
+        tabBarActiveTintColor: "#0f172a",
+        tabBarInactiveTintColor: "#ffffff",
+        tabBarItemStyle: {
+          borderRadius: 22,
+          marginHorizontal: 4,
+          marginVertical: 8,
+        },
+        tabBarActiveBackgroundColor: "#ffffff",
       }}
     >
       <Tabs.Screen
         name="index"
         options={{
           title: "Home",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="home-outline" size={size} color={color} />
+          tabBarIcon: ({ color, size, focused }) => (
+            <Ionicons name={focused ? "home" : "home-outline"} size={size} color={color} />
           ),
         }}
       />
@@ -28,8 +46,8 @@ export default function TabsLayout() {
         name="learn"
         options={{
           title: "Learn",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="school-outline" size={size} color={color} />
+          tabBarIcon: ({ color, size, focused }) => (
+            <Ionicons name={focused ? "school" : "school-outline"} size={size} color={color} />
           ),
         }}
       />
@@ -38,8 +56,8 @@ export default function TabsLayout() {
         name="log"
         options={{
           title: "Log",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="create-outline" size={size} color={color} />
+          tabBarIcon: ({ color, size, focused }) => (
+            <Ionicons name={focused ? "create" : "create-outline"} size={size} color={color} />
           ),
         }}
       />
@@ -48,8 +66,8 @@ export default function TabsLayout() {
         name="library"
         options={{
           title: "Library",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="albums-outline" size={size} color={color} />
+          tabBarIcon: ({ color, size, focused }) => (
+            <Ionicons name={focused ? "albums" : "albums-outline"} size={size} color={color} />
           ),
         }}
       />

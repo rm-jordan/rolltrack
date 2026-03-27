@@ -83,12 +83,19 @@ export default function LogScreen() {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-black">
+    <SafeAreaView className="flex-1 bg-zinc-950">
       <ScrollView contentContainerStyle={{ paddingHorizontal: 20, paddingTop: 24, paddingBottom: 36 }}>
         <Text className="text-white text-3xl font-bold">Log Session</Text>
         <Text className="text-zinc-400 mt-2">Track class details and key takeaways.</Text>
 
-        <View className="mt-6">
+        <View className="mt-4 rounded-2xl border border-emerald-500/30 bg-zinc-900 p-4">
+          <Text className="text-zinc-300 text-xs uppercase">Session Quality</Text>
+          <Text className="text-zinc-100 mt-2">
+            Capture details right after class for better review later.
+          </Text>
+        </View>
+
+        <View className="mt-6 rounded-2xl border border-zinc-800 bg-zinc-900 p-4">
           <Text className="text-zinc-300 mb-2">Date</Text>
           <Controller
             control={control}
@@ -105,7 +112,7 @@ export default function LogScreen() {
           />
         </View>
 
-        <View className="mt-5">
+        <View className="mt-4 rounded-2xl border border-zinc-800 bg-zinc-900 p-4">
           <Text className="text-zinc-300 mb-2">Gi Type</Text>
           <View className="flex-row flex-wrap">
             {giOptions.map((option) => {
@@ -114,16 +121,16 @@ export default function LogScreen() {
                 <Pressable
                   key={option}
                   onPress={() => setValue("giType", option)}
-                  className={`rounded-full px-4 py-2 mr-2 mb-2 border ${active ? "bg-white border-white" : "bg-zinc-900 border-zinc-700"}`}
+                  className={`rounded-full px-4 py-2 mr-2 mb-2 border ${active ? "bg-emerald-500 border-emerald-400" : "bg-zinc-900 border-zinc-700"}`}
                 >
-                  <Text className={active ? "text-black font-medium" : "text-zinc-200"}>{option}</Text>
+                  <Text className={active ? "text-white font-medium" : "text-zinc-200"}>{option}</Text>
                 </Pressable>
               );
             })}
           </View>
         </View>
 
-        <View className="mt-3">
+        <View className="mt-4 rounded-2xl border border-zinc-800 bg-zinc-900 p-4">
           <Text className="text-zinc-300 mb-2">Session Type</Text>
           <View className="flex-row flex-wrap">
             {sessionOptions.map((option) => {
@@ -132,16 +139,16 @@ export default function LogScreen() {
                 <Pressable
                   key={option}
                   onPress={() => setValue("sessionType", option)}
-                  className={`rounded-full px-4 py-2 mr-2 mb-2 border ${active ? "bg-white border-white" : "bg-zinc-900 border-zinc-700"}`}
+                  className={`rounded-full px-4 py-2 mr-2 mb-2 border ${active ? "bg-emerald-500 border-emerald-400" : "bg-zinc-900 border-zinc-700"}`}
                 >
-                  <Text className={active ? "text-black font-medium" : "text-zinc-200"}>{option}</Text>
+                  <Text className={active ? "text-white font-medium" : "text-zinc-200"}>{option}</Text>
                 </Pressable>
               );
             })}
           </View>
         </View>
 
-        <View className="mt-3">
+        <View className="mt-4 rounded-2xl border border-zinc-800 bg-zinc-900 p-4">
           <Text className="text-zinc-300 mb-2">Techniques Practiced</Text>
           <View className="flex-row flex-wrap">
             {techniques.map((technique) => {
@@ -150,9 +157,9 @@ export default function LogScreen() {
                 <Pressable
                   key={technique.id}
                   onPress={() => toggleTechnique(technique.id)}
-                  className={`rounded-full px-3 py-2 mr-2 mb-2 border ${active ? "bg-zinc-100 border-zinc-100" : "bg-zinc-900 border-zinc-700"}`}
+                  className={`rounded-full px-3 py-2 mr-2 mb-2 border ${active ? "bg-emerald-500 border-emerald-400" : "bg-zinc-900 border-zinc-700"}`}
                 >
-                  <Text className={active ? "text-black text-xs font-medium" : "text-zinc-200 text-xs"}>
+                  <Text className={active ? "text-white text-xs font-medium" : "text-zinc-200 text-xs"}>
                     {technique.name}
                   </Text>
                 </Pressable>
@@ -161,7 +168,7 @@ export default function LogScreen() {
           </View>
         </View>
 
-        <View className="mt-3">
+        <View className="mt-4 rounded-2xl border border-zinc-800 bg-zinc-900 p-4">
           <Text className="text-zinc-300 mb-2">Session Notes</Text>
           <Controller
             control={control}
@@ -180,7 +187,7 @@ export default function LogScreen() {
           />
         </View>
 
-        <View className="mt-3">
+        <View className="mt-4 rounded-2xl border border-zinc-800 bg-zinc-900 p-4">
           <Text className="text-zinc-300 mb-2">Optional Roll Notes</Text>
           <Controller
             control={control}
@@ -202,8 +209,11 @@ export default function LogScreen() {
         {formError ? <Text className="text-red-400 mt-4">{formError}</Text> : null}
         {submitMessage ? <Text className="text-emerald-400 mt-4">{submitMessage}</Text> : null}
 
-        <Pressable onPress={handleSubmit(onSubmit)} className="bg-white rounded-xl py-3 mt-5">
-          <Text className="text-black text-center font-semibold">Save Session</Text>
+        <Pressable
+          onPress={handleSubmit(onSubmit)}
+          className="bg-emerald-500 rounded-xl py-3 mt-5 border border-emerald-300"
+        >
+          <Text className="text-white text-center font-semibold">Save Session</Text>
         </Pressable>
       </ScrollView>
     </SafeAreaView>

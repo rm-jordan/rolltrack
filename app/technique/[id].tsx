@@ -31,6 +31,13 @@ export default function TechniqueDetailScreen() {
           <Text className="text-zinc-300 ml-1">Back</Text>
         </Pressable>
 
+        <View className="rounded-2xl border border-zinc-800 bg-zinc-900 p-4 mb-4">
+          <View className="h-28 rounded-xl bg-zinc-800 items-center justify-center">
+            <Ionicons name="fitness-outline" size={34} color="#e4e4e7" />
+            <Text className="text-zinc-300 text-xs mt-2">Technique Preview</Text>
+          </View>
+        </View>
+
         <View className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5">
           <View className="flex-row items-center justify-between">
             <Text className="text-white text-2xl font-bold flex-1 pr-3">{technique.name}</Text>

@@ -30,7 +30,7 @@ export default function TechniqueCard({ technique, onPress }: TechniqueCardProps
             <Ionicons
               name={categoryIconMap[technique.category]}
               size={16}
-              color="#a1a1aa"
+              color="#a78bfa"
               style={{ marginRight: 6 }}
             />
             <Text className="text-white text-lg font-semibold">{technique.name}</Text>
@@ -41,7 +41,7 @@ export default function TechniqueCard({ technique, onPress }: TechniqueCardProps
           </Text>
         </View>
 
-        <View className="bg-zinc-800 px-3 py-1 rounded-full">
+        <View className="bg-violet-500/20 border border-violet-400/40 px-3 py-1 rounded-full">
           <Text className="text-zinc-200 text-xs">{technique.beltGuideline}</Text>
         </View>
       </View>
@@ -54,9 +54,10 @@ export default function TechniqueCard({ technique, onPress }: TechniqueCardProps
         ))}
       </View>
 
-      <Text className="text-zinc-500 text-xs mt-2">
-        Practiced {technique.timesPracticed}x
-      </Text>
+      <View className="flex-row items-center justify-between mt-2">
+        <Text className="text-zinc-500 text-xs">Practiced {technique.timesPracticed}x</Text>
+        {onPress ? <Ionicons name="chevron-forward" size={14} color="#71717a" /> : null}
+      </View>
     </Container>
   );
 }
