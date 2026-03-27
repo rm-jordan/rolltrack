@@ -1,0 +1,32 @@
+export const techniques = [
+    {
+      id: "1",
+      name: "Triangle from Guard",
+      position: "Guard",
+      category: "Submission",
+      belt: "White",
+      tags: ["choke", "fundamental"],
+      timesUsed: 5,
+      lastPracticed: "2026-03-25",
+    },
+    {
+      id: "2",
+      name: "Knee Cut Pass",
+      position: "Passing",
+      category: "Pass",
+      belt: "White",
+      tags: ["pressure", "guard pass"],
+      timesUsed: 8,
+      lastPracticed: "2026-03-24",
+    },
+    {
+      id: "3",
+      name: "Scissor Sweep",
+      position: "Guard",
+      category: "Sweep",
+      belt: "White",
+      tags: ["fundamental", "off-balance"],
+      timesUsed: 4,
+      lastPracticed: "2026-03-22",
+    },
+  ];
