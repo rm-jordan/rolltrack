@@ -1,18 +1,40 @@
-import { Text, View } from "react-native";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { Pressable, Text, View } from "react-native";
 import type { Technique } from "../lib/types";
 
 type TechniqueCardProps = {
   technique: Technique;
+  onPress?: () => void;
 };
 
-export default function TechniqueCard({ technique }: TechniqueCardProps) {
+const categoryIconMap: Record<Technique["category"], keyof typeof Ionicons.glyphMap> = {
+  Submission: "flash-outline",
+  Pass: "git-network-outline",
+  Sweep: "swap-horizontal-outline",
+  Escape: "shield-checkmark-outline",
+  Takedown: "trending-down-outline",
+  Control: "lock-closed-outline",
+};
+
+export default function TechniqueCard({ technique, onPress }: TechniqueCardProps) {
+  const Container = onPress ? Pressable : View;
+
   return (
-    <View className="bg-zinc-900 rounded-2xl p-4 mb-3 border border-zinc-800">
+    <Container
+      className="bg-zinc-900 rounded-2xl p-4 mb-3 border border-zinc-800"
+      {...(onPress ? { onPress } : {})}
+    >
       <View className="flex-row items-start justify-between">
         <View className="flex-1 pr-3">
-          <Text className="text-white text-lg font-semibold">
-            {technique.name}
-          </Text>
+          <View className="flex-row items-center">
+            <Ionicons
+              name={categoryIconMap[technique.category]}
+              size={16}
+              color="#a1a1aa"
+              style={{ marginRight: 6 }}
+            />
+            <Text className="text-white text-lg font-semibold">{technique.name}</Text>
+          </View>
 
           <Text className="text-zinc-400 mt-1">
             {technique.position} • {technique.category}
@@ -35,6 +57,6 @@ export default function TechniqueCard({ technique }: TechniqueCardProps) {
       <Text className="text-zinc-500 text-xs mt-2">
         Practiced {technique.timesPracticed}x
       </Text>
-    </View>
+    </Container>
   );
 }
