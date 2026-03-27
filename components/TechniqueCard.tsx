@@ -1,15 +1,5 @@
 import { Text, View } from "react-native";
-
-type Technique = {
-  id: string;
-  name: string;
-  position: string;
-  category: string;
-  belt: string;
-  tags: string[];
-  timesUsed: number;
-  lastPracticed: string;
-};
+import type { Technique } from "../lib/types";
 
 type TechniqueCardProps = {
   technique: Technique;
@@ -30,7 +20,7 @@ export default function TechniqueCard({ technique }: TechniqueCardProps) {
         </View>
 
         <View className="bg-zinc-800 px-3 py-1 rounded-full">
-          <Text className="text-zinc-200 text-xs">{technique.belt}</Text>
+          <Text className="text-zinc-200 text-xs">{technique.beltGuideline}</Text>
         </View>
       </View>
 
@@ -43,7 +33,7 @@ export default function TechniqueCard({ technique }: TechniqueCardProps) {
       </View>
 
       <Text className="text-zinc-500 text-xs mt-2">
-        Practiced {technique.timesUsed}x
+        Practiced {technique.timesPracticed}x
       </Text>
     </View>
   );

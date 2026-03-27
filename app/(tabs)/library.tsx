@@ -1,8 +1,10 @@
 import { FlatList, SafeAreaView, Text, View } from "react-native";
 import TechniqueCard from "../../components/TechniqueCard";
-import { techniques } from "../../lib/mockData";
+import { useRollTrackStore } from "../../lib/store";
 
 export default function LibraryScreen() {
+  const techniques = useRollTrackStore((state) => state.techniques);
+
   return (
     <SafeAreaView className="flex-1 bg-black">
       <View className="px-5 pt-6 pb-3">
