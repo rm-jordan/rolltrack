@@ -3,13 +3,13 @@ import { Pressable, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import TechniqueCard from "../../components/TechniqueCard";
-import { useRollTrackStore } from "../../lib/store";
-import type { BeltLevel } from "../../lib/types";
+import TechniqueCard from "../../../components/TechniqueCard";
+import { useRollTrackStore } from "../../../lib/store";
+import type { BeltLevel } from "../../../lib/types";
 
 const beltFilters: ("All" | BeltLevel)[] = ["All", "White", "Blue", "Purple", "Brown", "Black"];
 
-export default function LearnScreen() {
+export default function LearnIndexScreen() {
   const router = useRouter();
   const techniques = useRollTrackStore((state) => state.techniques);
   const [selectedBelt, setSelectedBelt] = useState<"All" | BeltLevel>("All");
@@ -18,7 +18,6 @@ export default function LearnScreen() {
     if (selectedBelt === "All") {
       return techniques;
     }
-
     return techniques.filter((technique) => technique.beltGuideline === selectedBelt);
   }, [selectedBelt, techniques]);
 
@@ -27,7 +26,7 @@ export default function LearnScreen() {
       <ScrollView contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 16, paddingBottom: 120 }}>
         <Text className="text-zinc-900 text-3xl font-bold">Learn</Text>
         <Text className="text-zinc-500 mt-2">
-          Belt levels are guidelines for learning, not rules.
+          Belt levels are guidelines for learning, not rules. Open a belt from Home for a focused list.
         </Text>
 
         <View className="mt-4 rounded-3xl border border-violet-200 bg-white p-4">
@@ -36,7 +35,7 @@ export default function LearnScreen() {
             <Text className="text-zinc-500 text-xs uppercase ml-2 tracking-wide">Learning path</Text>
           </View>
           <Text className="text-zinc-700 mt-2 text-sm">
-            Pick a belt filter, then open any technique for details.
+            Filter here, or use the Home tab to jump straight into a belt.
           </Text>
         </View>
 

@@ -1,144 +1,89 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useRouter } from "expo-router";
-import { useMemo } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { formatMonthDay, formatTodayGreeting, getWeekStripSundayStart } from "../../lib/date";
-import { useRollTrackStore } from "../../lib/store";
+import type { BeltLevel } from "../../lib/types";
+
+const beltButtons: { level: BeltLevel; subtitle: string; accent: string; cardBg: string }[] = [
+  { level: "White", subtitle: "Fundamentals & basics", accent: "#71717a", cardBg: "#fafafa" },
+  { level: "Blue", subtitle: "Build your game", accent: "#2563eb", cardBg: "#eff6ff" },
+  { level: "Purple", subtitle: "Advanced chains", accent: "#7c3aed", cardBg: "#f5f3ff" },
+  { level: "Brown", subtitle: "Refinement & pressure", accent: "#92400e", cardBg: "#fffbeb" },
+  { level: "Black", subtitle: "Mastery & depth", accent: "#18181b", cardBg: "#f4f4f5" },
+];
 
 export default function HomeScreen() {
   const router = useRouter();
-  const getStats = useRollTrackStore((state) => state.getStats);
-  const stats = getStats();
-  const upcomingDays = useMemo(() => getWeekStripSundayStart(), []);
-  const planDateLabel = useMemo(() => formatMonthDay(), []);
-  const greetingLine = useMemo(() => formatTodayGreeting(), []);
+
+  const openBeltTechniques = (level: BeltLevel) => {
+    router.push(`/(tabs)/learn/${level}`);
+  };
 
   return (
     <SafeAreaView className="flex-1 bg-[#efedf8]" edges={["top", "left", "right"]}>
-      <ScrollView contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 12, paddingBottom: 120 }}>
-        <View className="rounded-3xl bg-white px-4 py-3 border border-zinc-100">
-          <View className="flex-row items-center justify-between">
-            <View className="flex-row items-center">
-              <View className="h-11 w-11 rounded-full bg-zinc-200 items-center justify-center">
-                <Ionicons name="person" size={18} color="#111827" />
-              </View>
-              <View className="ml-3">
-                <Text className="text-zinc-900 font-semibold text-xl">Hello, Ryan</Text>
-                <Text className="text-zinc-500 text-xs mt-0.5">Today · {greetingLine}</Text>
-              </View>
-            </View>
-            <Pressable className="h-10 w-10 rounded-full bg-zinc-100 items-center justify-center">
-              <Ionicons name="search-outline" size={18} color="#111827" />
-            </Pressable>
+      <ScrollView
+        contentContainerStyle={{ paddingHorizontal: 20, paddingTop: 12, paddingBottom: 120 }}
+        showsVerticalScrollIndicator={false}
+      >
+        <View className="items-center mt-2">
+          <View className="h-16 w-16 rounded-3xl bg-violet-500 items-center justify-center">
+            <Ionicons name="fitness" size={32} color="#ffffff" />
           </View>
+          <Text className="text-zinc-900 text-3xl font-bold mt-4">RollTrack</Text>
+          <Text className="text-zinc-500 text-center mt-2 px-2">
+            Choose a belt guideline to see techniques. You can change anytime — belts organize learning, they do not
+            lock you in.
+          </Text>
+        </View>
+
+        <Text className="text-zinc-900 text-xl font-bold mt-8 mb-3">Belt tactics</Text>
+
+        {beltButtons.map(({ level, subtitle, accent, cardBg }) => (
+          <Pressable
+            key={level}
+            onPress={() => openBeltTechniques(level)}
+            className="rounded-3xl border border-zinc-200 p-4 mb-3 flex-row items-center active:opacity-90"
+            style={{ backgroundColor: cardBg }}
+          >
+            <View
+              className="h-12 w-12 rounded-2xl items-center justify-center mr-4"
+              style={{ backgroundColor: `${accent}22` }}
+            >
+              <View className="h-3 w-3 rounded-full" style={{ backgroundColor: accent }} />
+            </View>
+            <View className="flex-1">
+              <Text className="text-zinc-900 text-lg font-semibold">{level} belt</Text>
+              <Text className="text-zinc-500 text-sm mt-0.5">{subtitle}</Text>
+            </View>
+            <Ionicons name="chevron-forward" size={20} color="#a1a1aa" />
+          </Pressable>
+        ))}
+
+        <View className="mt-6 flex-row">
+          <Pressable
+            onPress={() => router.push("/(tabs)/library")}
+            className="flex-1 mr-2 rounded-2xl bg-white border border-zinc-200 py-4 px-3"
+          >
+            <Ionicons name="albums-outline" size={22} color="#0891b2" />
+            <Text className="text-zinc-900 font-semibold mt-2">Library</Text>
+            <Text className="text-zinc-500 text-xs mt-1">Search all techniques</Text>
+          </Pressable>
+          <Pressable
+            onPress={() => router.push("/(tabs)/log")}
+            className="flex-1 ml-2 rounded-2xl bg-white border border-zinc-200 py-4 px-3"
+          >
+            <Ionicons name="create-outline" size={22} color="#059669" />
+            <Text className="text-zinc-900 font-semibold mt-2">Log</Text>
+            <Text className="text-zinc-500 text-xs mt-1">Session notes</Text>
+          </Pressable>
         </View>
 
         <Pressable
-          onPress={() => router.push("/(tabs)/log")}
-          className="mt-5 rounded-3xl bg-[#9d8ef5] p-5 overflow-hidden"
+          onPress={() => router.push("/(tabs)/learn")}
+          className="mt-4 py-4 rounded-2xl bg-white border border-zinc-200"
         >
-          <View className="absolute right-4 top-4 h-20 w-20 rounded-full bg-[#ffb84d]" />
-          <View className="absolute right-16 top-10 h-16 w-16 rounded-full bg-[#3b3b4f]/90" />
-          <View className="absolute right-2 top-16 h-14 w-14 rounded-full bg-[#e2d64f]/90" />
-          <Text className="text-zinc-950 text-4xl font-bold">Daily</Text>
-          <Text className="text-zinc-950 text-4xl font-bold -mt-1">challenge</Text>
-          <Text className="text-zinc-900/70 mt-2 text-xs">Do your plan before 09:00 PM.</Text>
-          <View className="mt-4 flex-row items-center">
-            <View className="h-6 w-6 rounded-full bg-white/90 mr-1.5" />
-            <View className="h-6 w-6 rounded-full bg-white/75 -ml-2 mr-1.5" />
-            <View className="h-6 w-6 rounded-full bg-white/60 -ml-2 mr-2" />
-            <Text className="text-zinc-900 text-xs font-medium">+4</Text>
-          </View>
+          <Text className="text-zinc-700 text-center font-semibold">Browse Learn (all filters)</Text>
         </Pressable>
-
-        <View className="mt-4 bg-white rounded-full px-2 py-2 flex-row justify-between border border-zinc-200">
-          {upcomingDays.map((item) => (
-            <View
-              key={item.iso}
-              className={`w-10 h-12 rounded-full items-center justify-center ${
-                item.active ? "bg-zinc-900" : "bg-transparent"
-              }`}
-            >
-              <Text className={item.active ? "text-zinc-300 text-[10px]" : "text-zinc-400 text-[10px]"}>
-                {item.day}
-              </Text>
-              <Text className={item.active ? "text-white font-semibold mt-0.5" : "text-zinc-900 font-medium mt-0.5"}>
-                {item.date}
-              </Text>
-            </View>
-          ))}
-        </View>
-
-        <View className="mt-5 flex-row items-center justify-between">
-          <Text className="text-zinc-900 text-3xl font-bold">Your plan</Text>
-          <Text className="text-zinc-500 text-xs">2 planned</Text>
-        </View>
-
-        <View className="mt-3 flex-row">
-          <Pressable
-            onPress={() => router.push("/(tabs)/learn")}
-            className="flex-1 bg-[#f7c66b] rounded-3xl p-4 mr-2 min-h-[174]"
-          >
-            <View className="self-start rounded-full bg-white/50 px-3 py-1">
-              <Text className="text-zinc-800 text-[10px]">Medium</Text>
-            </View>
-            <Text className="text-zinc-900 text-3xl font-semibold mt-4">Roll Class</Text>
-            <Text className="text-zinc-800/80 text-xs mt-2">{planDateLabel}</Text>
-            <Text className="text-zinc-800/80 text-xs">19:00-20:00</Text>
-            <Text className="text-zinc-800/80 text-xs">Mat room</Text>
-
-            <View className="mt-auto flex-row items-center">
-              <View className="h-6 w-6 rounded-full bg-white/80 mr-2" />
-              <Text className="text-zinc-800 text-xs">Trainer Alex</Text>
-            </View>
-          </Pressable>
-
-          <View className="flex-1 ml-2">
-            <Pressable
-              onPress={() => router.push("/(tabs)/library")}
-              className="bg-[#9dc2f2] rounded-3xl p-4 min-h-[120]"
-            >
-              <View className="self-start rounded-full bg-white/55 px-3 py-1">
-                <Text className="text-zinc-800 text-[10px]">Light</Text>
-              </View>
-              <Text className="text-zinc-900 text-3xl font-semibold mt-2">Balance</Text>
-              <Text className="text-zinc-800/80 text-xs mt-1">{planDateLabel}</Text>
-              <Text className="text-zinc-800/80 text-xs">20:00-20:30</Text>
-            </Pressable>
-
-            <Pressable
-              onPress={() => router.push("/(tabs)/learn")}
-              className="bg-[#ea96e8] rounded-3xl p-4 mt-3 min-h-[50] justify-center"
-            >
-              <Text className="text-zinc-900 font-semibold">+ Add plan</Text>
-            </Pressable>
-          </View>
-        </View>
-
-        <View className="mt-6 flex-row items-center justify-between">
-          <Text className="text-zinc-900 text-2xl font-bold">Notes</Text>
-          <Pressable onPress={() => router.push("/(tabs)/log")}>
-            <Text className="text-zinc-600 text-xs font-medium">New note</Text>
-          </Pressable>
-        </View>
-
-        <View className="mt-3 bg-white rounded-3xl p-4 border border-zinc-100">
-          <Text className="text-zinc-500 text-xs">Current focus note</Text>
-          <Text className="text-zinc-900 text-lg font-semibold mt-1">
-            {stats.mostPracticedTechniqueName ?? "Start by logging one session"}
-          </Text>
-          <Text className="text-zinc-500 text-xs mt-1">
-            {stats.sessionsThisWeek} session(s) this week • {stats.totalTechniques} tracked techniques
-          </Text>
-        </View>
-
-        <View className="mt-3 bg-white rounded-3xl p-4 border border-zinc-100">
-          <Text className="text-zinc-500 text-xs">Last session reflection</Text>
-          <Text className="text-zinc-900 mt-1">
-            Better posture breaks today. Keep knee cut entries tighter and finish with chest pressure.
-          </Text>
-        </View>
       </ScrollView>
     </SafeAreaView>
   );
