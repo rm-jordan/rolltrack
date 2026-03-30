@@ -21,6 +21,9 @@ const formSchema = z.object({
 
 type LogFormValues = z.infer<typeof formSchema>;
 
+const cardClass = "mt-4 rounded-3xl border border-zinc-200 bg-white p-4";
+const inputClass = "bg-zinc-50 text-zinc-900 border border-zinc-200 rounded-2xl px-4 py-3";
+
 export default function LogScreen() {
   const addSessionLog = useRollTrackStore((state) => state.addSessionLog);
   const techniques = useRollTrackStore((state) => state.techniques);
@@ -65,7 +68,7 @@ export default function LogScreen() {
         : undefined,
     });
 
-    setSubmitMessage("Session saved.");
+    setSubmitMessage("Session saved. Practice counts updated.");
     reset({
       date: todayDate(),
       giType: parsed.data.giType,
@@ -82,21 +85,24 @@ export default function LogScreen() {
     setValue("techniquesPracticed", next, { shouldValidate: true });
   };
 
-  return (
-    <SafeAreaView className="flex-1 bg-zinc-950">
-      <ScrollView contentContainerStyle={{ paddingHorizontal: 20, paddingTop: 24, paddingBottom: 36 }}>
-        <Text className="text-white text-3xl font-bold">Log Session</Text>
-        <Text className="text-zinc-400 mt-2">Track class details and key takeaways.</Text>
+  const chipInactive = "bg-white border-zinc-200";
+  const chipActive = "bg-emerald-500 border-emerald-400";
 
-        <View className="mt-4 rounded-2xl border border-emerald-500/30 bg-zinc-900 p-4">
-          <Text className="text-zinc-300 text-xs uppercase">Session Quality</Text>
-          <Text className="text-zinc-100 mt-2">
-            Capture details right after class for better review later.
+  return (
+    <SafeAreaView className="flex-1 bg-[#efedf8]">
+      <ScrollView contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 16, paddingBottom: 120 }}>
+        <Text className="text-zinc-900 text-3xl font-bold">Log session</Text>
+        <Text className="text-zinc-500 mt-2">Saved sessions update your technique stats.</Text>
+
+        <View className="mt-4 rounded-3xl border border-emerald-200 bg-white p-4">
+          <Text className="text-zinc-500 text-xs uppercase tracking-wide">After class</Text>
+          <Text className="text-zinc-700 mt-2 text-sm">
+            Log soon so practice counts and “last practiced” stay accurate.
           </Text>
         </View>
 
-        <View className="mt-6 rounded-2xl border border-zinc-800 bg-zinc-900 p-4">
-          <Text className="text-zinc-300 mb-2">Date</Text>
+        <View className={cardClass}>
+          <Text className="text-zinc-700 mb-2 font-medium">Date</Text>
           <Controller
             control={control}
             name="date"
@@ -105,15 +111,15 @@ export default function LogScreen() {
                 value={value}
                 onChangeText={onChange}
                 placeholder="YYYY-MM-DD"
-                placeholderTextColor="#71717a"
-                className="bg-zinc-900 text-white border border-zinc-800 rounded-xl px-4 py-3"
+                placeholderTextColor="#a1a1aa"
+                className={inputClass}
               />
             )}
           />
         </View>
 
-        <View className="mt-4 rounded-2xl border border-zinc-800 bg-zinc-900 p-4">
-          <Text className="text-zinc-300 mb-2">Gi Type</Text>
+        <View className={cardClass}>
+          <Text className="text-zinc-700 mb-2 font-medium">Gi type</Text>
           <View className="flex-row flex-wrap">
             {giOptions.map((option) => {
               const active = watch("giType") === option;
@@ -121,17 +127,17 @@ export default function LogScreen() {
                 <Pressable
                   key={option}
                   onPress={() => setValue("giType", option)}
-                  className={`rounded-full px-4 py-2 mr-2 mb-2 border ${active ? "bg-emerald-500 border-emerald-400" : "bg-zinc-900 border-zinc-700"}`}
+                  className={`rounded-full px-4 py-2 mr-2 mb-2 border ${active ? chipActive : chipInactive}`}
                 >
-                  <Text className={active ? "text-white font-medium" : "text-zinc-200"}>{option}</Text>
+                  <Text className={active ? "text-white font-medium" : "text-zinc-700"}>{option}</Text>
                 </Pressable>
               );
             })}
           </View>
         </View>
 
-        <View className="mt-4 rounded-2xl border border-zinc-800 bg-zinc-900 p-4">
-          <Text className="text-zinc-300 mb-2">Session Type</Text>
+        <View className={cardClass}>
+          <Text className="text-zinc-700 mb-2 font-medium">Session type</Text>
           <View className="flex-row flex-wrap">
             {sessionOptions.map((option) => {
               const active = watch("sessionType") === option;
@@ -139,17 +145,17 @@ export default function LogScreen() {
                 <Pressable
                   key={option}
                   onPress={() => setValue("sessionType", option)}
-                  className={`rounded-full px-4 py-2 mr-2 mb-2 border ${active ? "bg-emerald-500 border-emerald-400" : "bg-zinc-900 border-zinc-700"}`}
+                  className={`rounded-full px-4 py-2 mr-2 mb-2 border ${active ? chipActive : chipInactive}`}
                 >
-                  <Text className={active ? "text-white font-medium" : "text-zinc-200"}>{option}</Text>
+                  <Text className={active ? "text-white font-medium" : "text-zinc-700"}>{option}</Text>
                 </Pressable>
               );
             })}
           </View>
         </View>
 
-        <View className="mt-4 rounded-2xl border border-zinc-800 bg-zinc-900 p-4">
-          <Text className="text-zinc-300 mb-2">Techniques Practiced</Text>
+        <View className={cardClass}>
+          <Text className="text-zinc-700 mb-2 font-medium">Techniques practiced</Text>
           <View className="flex-row flex-wrap">
             {techniques.map((technique) => {
               const active = selectedTechniqueIds.includes(technique.id);
@@ -157,9 +163,9 @@ export default function LogScreen() {
                 <Pressable
                   key={technique.id}
                   onPress={() => toggleTechnique(technique.id)}
-                  className={`rounded-full px-3 py-2 mr-2 mb-2 border ${active ? "bg-emerald-500 border-emerald-400" : "bg-zinc-900 border-zinc-700"}`}
+                  className={`rounded-full px-3 py-2 mr-2 mb-2 border ${active ? chipActive : chipInactive}`}
                 >
-                  <Text className={active ? "text-white text-xs font-medium" : "text-zinc-200 text-xs"}>
+                  <Text className={active ? "text-white text-xs font-medium" : "text-zinc-700 text-xs"}>
                     {technique.name}
                   </Text>
                 </Pressable>
@@ -168,8 +174,8 @@ export default function LogScreen() {
           </View>
         </View>
 
-        <View className="mt-4 rounded-2xl border border-zinc-800 bg-zinc-900 p-4">
-          <Text className="text-zinc-300 mb-2">Session Notes</Text>
+        <View className={cardClass}>
+          <Text className="text-zinc-700 mb-2 font-medium">Session notes</Text>
           <Controller
             control={control}
             name="notes"
@@ -178,17 +184,17 @@ export default function LogScreen() {
                 value={value}
                 onChangeText={onChange}
                 placeholder={notePlaceholder}
-                placeholderTextColor="#71717a"
+                placeholderTextColor="#a1a1aa"
                 multiline
                 textAlignVertical="top"
-                className="bg-zinc-900 text-white border border-zinc-800 rounded-xl px-4 py-3 min-h-[100]"
+                className={`${inputClass} min-h-[100]`}
               />
             )}
           />
         </View>
 
-        <View className="mt-4 rounded-2xl border border-zinc-800 bg-zinc-900 p-4">
-          <Text className="text-zinc-300 mb-2">Optional Roll Notes</Text>
+        <View className={cardClass}>
+          <Text className="text-zinc-700 mb-2 font-medium">Optional roll notes</Text>
           <Controller
             control={control}
             name="rollNotesText"
@@ -196,24 +202,24 @@ export default function LogScreen() {
               <TextInput
                 value={value}
                 onChangeText={onChange}
-                placeholder="Short note on rolls, partners, or outcomes."
-                placeholderTextColor="#71717a"
+                placeholder="Rolls, partners, outcomes…"
+                placeholderTextColor="#a1a1aa"
                 multiline
                 textAlignVertical="top"
-                className="bg-zinc-900 text-white border border-zinc-800 rounded-xl px-4 py-3 min-h-[90]"
+                className={`${inputClass} min-h-[90]`}
               />
             )}
           />
         </View>
 
-        {formError ? <Text className="text-red-400 mt-4">{formError}</Text> : null}
-        {submitMessage ? <Text className="text-emerald-400 mt-4">{submitMessage}</Text> : null}
+        {formError ? <Text className="text-red-600 mt-4">{formError}</Text> : null}
+        {submitMessage ? <Text className="text-emerald-700 mt-4 font-medium">{submitMessage}</Text> : null}
 
         <Pressable
           onPress={handleSubmit(onSubmit)}
-          className="bg-emerald-500 rounded-xl py-3 mt-5 border border-emerald-300"
+          className="bg-emerald-500 rounded-2xl py-4 mt-5 border border-emerald-400"
         >
-          <Text className="text-white text-center font-semibold">Save Session</Text>
+          <Text className="text-white text-center font-semibold text-base">Save session</Text>
         </Pressable>
       </ScrollView>
     </SafeAreaView>

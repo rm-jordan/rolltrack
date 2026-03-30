@@ -21,7 +21,7 @@ export default function TechniqueCard({ technique, onPress }: TechniqueCardProps
 
   return (
     <Container
-      className="bg-zinc-900 rounded-2xl p-4 mb-3 border border-zinc-800"
+      className="bg-white rounded-2xl p-4 mb-3 border border-zinc-200 shadow-sm"
       {...(onPress ? { onPress } : {})}
     >
       <View className="flex-row items-start justify-between">
@@ -30,33 +30,33 @@ export default function TechniqueCard({ technique, onPress }: TechniqueCardProps
             <Ionicons
               name={categoryIconMap[technique.category]}
               size={16}
-              color="#a78bfa"
+              color="#7c3aed"
               style={{ marginRight: 6 }}
             />
-            <Text className="text-white text-lg font-semibold">{technique.name}</Text>
+            <Text className="text-zinc-900 text-lg font-semibold">{technique.name}</Text>
           </View>
 
-          <Text className="text-zinc-400 mt-1">
+          <Text className="text-zinc-500 mt-1">
             {technique.position} • {technique.category}
           </Text>
         </View>
 
-        <View className="bg-violet-500/20 border border-violet-400/40 px-3 py-1 rounded-full">
-          <Text className="text-zinc-200 text-xs">{technique.beltGuideline}</Text>
+        <View className="bg-violet-100 border border-violet-200 px-3 py-1 rounded-full">
+          <Text className="text-violet-800 text-xs">{technique.beltGuideline}</Text>
         </View>
       </View>
 
       <View className="flex-row flex-wrap mt-3">
         {technique.tags.map((tag) => (
-          <View key={tag} className="bg-black/30 px-2 py-1 rounded-full mr-2 mb-2">
-            <Text className="text-zinc-300 text-xs">{tag}</Text>
+          <View key={tag} className="bg-zinc-100 px-2 py-1 rounded-full mr-2 mb-2">
+            <Text className="text-zinc-600 text-xs">{tag}</Text>
           </View>
         ))}
       </View>
 
       <View className="flex-row items-center justify-between mt-2">
-        <Text className="text-zinc-500 text-xs">Practiced {technique.timesPracticed}x</Text>
-        {onPress ? <Ionicons name="chevron-forward" size={14} color="#71717a" /> : null}
+        <Text className="text-zinc-400 text-xs">Practiced {technique.timesPracticed}x</Text>
+        {onPress ? <Ionicons name="chevron-forward" size={14} color="#a1a1aa" /> : null}
       </View>
     </Container>
   );

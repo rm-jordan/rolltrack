@@ -35,9 +35,28 @@ export const useRollTrackStore = create<RollTrackState>((set, get) => ({
       ...logInput,
     };
 
-    set((state) => ({
-      sessionLogs: [createdLog, ...state.sessionLogs],
-    }));
+    const sessionDate = logInput.date;
+    const practicedIds = new Set(logInput.techniquesPracticed);
+
+    set((state) => {
+      const nextTechniques = state.techniques.map((tech) => {
+        if (!practicedIds.has(tech.id)) {
+          return tech;
+        }
+        const lastPracticed =
+          tech.lastPracticed && tech.lastPracticed >= sessionDate ? tech.lastPracticed : sessionDate;
+        return {
+          ...tech,
+          timesPracticed: tech.timesPracticed + 1,
+          lastPracticed,
+        };
+      });
+
+      return {
+        sessionLogs: [createdLog, ...state.sessionLogs],
+        techniques: nextTechniques,
+      };
+    });
   },
   getStats: () => {
     const { techniques, sessionLogs } = get();

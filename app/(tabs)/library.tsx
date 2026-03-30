@@ -6,17 +6,26 @@ import TechniqueCard from "../../components/TechniqueCard";
 import { useRollTrackStore } from "../../lib/store";
 import type { BeltLevel } from "../../lib/types";
 
+type SortKey = "recent" | "practice" | "name";
+
 export default function LibraryScreen() {
   const router = useRouter();
   const techniques = useRollTrackStore((state) => state.techniques);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedBelt, setSelectedBelt] = useState<"All" | BeltLevel>("All");
+  const [sortBy, setSortBy] = useState<SortKey>("recent");
 
   const beltFilters: ("All" | BeltLevel)[] = ["All", "White", "Blue", "Purple", "Brown", "Black"];
 
+  const sortOptions: { key: SortKey; label: string }[] = [
+    { key: "recent", label: "Recent" },
+    { key: "practice", label: "Most practiced" },
+    { key: "name", label: "A–Z" },
+  ];
+
   const filteredTechniques = useMemo(() => {
     const normalizedQuery = searchQuery.trim().toLowerCase();
-    return techniques.filter((technique) => {
+    const filtered = techniques.filter((technique) => {
       const matchesBelt = selectedBelt === "All" || technique.beltGuideline === selectedBelt;
       const matchesSearch =
         normalizedQuery.length === 0 ||
@@ -27,53 +36,90 @@ export default function LibraryScreen() {
 
       return matchesBelt && matchesSearch;
     });
-  }, [searchQuery, selectedBelt, techniques]);
+
+    const sorted = [...filtered];
+    if (sortBy === "name") {
+      sorted.sort((a, b) => a.name.localeCompare(b.name));
+    } else if (sortBy === "practice") {
+      sorted.sort((a, b) => b.timesPracticed - a.timesPracticed);
+    } else {
+      sorted.sort((a, b) => {
+        const da = a.lastPracticed ?? "";
+        const db = b.lastPracticed ?? "";
+        return db.localeCompare(da);
+      });
+    }
+    return sorted;
+  }, [searchQuery, selectedBelt, sortBy, techniques]);
 
   return (
-    <SafeAreaView className="flex-1 bg-zinc-950">
-      <ScrollView contentContainerStyle={{ paddingHorizontal: 20, paddingTop: 24, paddingBottom: 24 }}>
-        <Text className="text-white text-3xl font-bold">Technique Library</Text>
-        <Text className="text-zinc-400 mt-2">Search your techniques and drill focus areas.</Text>
+    <SafeAreaView className="flex-1 bg-[#efedf8]">
+      <ScrollView contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 16, paddingBottom: 120 }}>
+        <Text className="text-zinc-900 text-3xl font-bold">Library</Text>
+        <Text className="text-zinc-500 mt-2">Search and filter your techniques.</Text>
 
-        <View className="mt-4 rounded-2xl border border-cyan-500/30 bg-zinc-900 p-4">
+        <View className="mt-4 rounded-3xl border border-cyan-200 bg-white p-4">
           <View className="flex-row items-center">
-            <Ionicons name="search-outline" size={16} color="#22d3ee" />
-            <Text className="text-zinc-300 text-xs uppercase ml-2">Smart Search</Text>
+            <Ionicons name="search-outline" size={18} color="#0891b2" />
+            <Text className="text-zinc-500 text-xs uppercase ml-2 tracking-wide">Search</Text>
           </View>
-          <Text className="text-zinc-100 mt-2">
-            Search by name, position, category, or tags. Tap any card to open full details.
+          <Text className="text-zinc-700 mt-2 text-sm">
+            By name, position, category, or tag. Tap a card for details.
           </Text>
         </View>
 
         <TextInput
           value={searchQuery}
           onChangeText={setSearchQuery}
-          placeholder="Search by technique, position, category, or tag"
-          placeholderTextColor="#71717a"
-          className="bg-zinc-900 text-white border border-zinc-700 rounded-xl px-4 py-3 mt-4"
+          placeholder="Search techniques…"
+          placeholderTextColor="#a1a1aa"
+          className="bg-white text-zinc-900 border border-zinc-200 rounded-2xl px-4 py-3 mt-4"
         />
 
-        <View className="flex-row flex-wrap mt-3">
+        <Text className="text-zinc-600 text-xs font-medium mt-4 mb-2">Sort</Text>
+        <View className="flex-row flex-wrap">
+          {sortOptions.map(({ key, label }) => {
+            const active = sortBy === key;
+            return (
+              <Pressable
+                key={key}
+                onPress={() => setSortBy(key)}
+                className={`rounded-full px-4 py-2 mr-2 mb-2 border ${
+                  active ? "bg-cyan-500 border-cyan-400" : "bg-white border-zinc-200"
+                }`}
+              >
+                <Text className={active ? "text-white font-medium text-sm" : "text-zinc-700 text-sm"}>
+                  {label}
+                </Text>
+              </Pressable>
+            );
+          })}
+        </View>
+
+        <Text className="text-zinc-600 text-xs font-medium mt-2 mb-2">Belt guideline</Text>
+        <View className="flex-row flex-wrap">
           {beltFilters.map((belt) => {
             const active = selectedBelt === belt;
             return (
               <Pressable
                 key={belt}
                 onPress={() => setSelectedBelt(belt)}
-                className={`rounded-full px-4 py-2 mr-2 mb-2 border ${active ? "bg-cyan-400 border-cyan-300" : "bg-zinc-900 border-zinc-700"}`}
+                className={`rounded-full px-4 py-2 mr-2 mb-2 border ${
+                  active ? "bg-cyan-500 border-cyan-400" : "bg-white border-zinc-200"
+                }`}
               >
-                <Text className={active ? "text-black font-medium" : "text-zinc-200"}>{belt}</Text>
+                <Text className={active ? "text-white font-medium" : "text-zinc-700"}>{belt}</Text>
               </Pressable>
             );
           })}
         </View>
 
-        <Text className="text-zinc-500 text-xs mb-2">
-          Showing {filteredTechniques.length} of {techniques.length}
+        <Text className="text-zinc-400 text-xs mb-3 mt-1">
+          {filteredTechniques.length} of {techniques.length} techniques
         </Text>
 
         {filteredTechniques.length === 0 ? (
-          <Text className="text-zinc-500 mt-3">No techniques match your filters.</Text>
+          <Text className="text-zinc-500 mt-2">No techniques match your filters.</Text>
         ) : (
           filteredTechniques.map((technique) => (
             <TechniqueCard

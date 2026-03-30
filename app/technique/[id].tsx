@@ -12,73 +12,74 @@ export default function TechniqueDetailScreen() {
 
   if (!technique) {
     return (
-      <SafeAreaView className="flex-1 bg-black">
+      <SafeAreaView className="flex-1 bg-[#efedf8]">
         <View className="px-5 pt-6">
-          <Pressable onPress={() => router.back()} className="mb-5">
-            <Text className="text-zinc-300">Back</Text>
+          <Pressable onPress={() => router.back()} className="mb-5 flex-row items-center">
+            <Ionicons name="chevron-back" size={20} color="#3f3f46" />
+            <Text className="text-zinc-700 ml-1">Back</Text>
           </Pressable>
-          <Text className="text-white text-2xl font-bold">Technique not found</Text>
+          <Text className="text-zinc-900 text-2xl font-bold">Technique not found</Text>
         </View>
       </SafeAreaView>
     );
   }
 
   return (
-    <SafeAreaView className="flex-1 bg-black">
-      <ScrollView contentContainerStyle={{ paddingHorizontal: 20, paddingTop: 24, paddingBottom: 24 }}>
-        <Pressable onPress={() => router.back()} className="flex-row items-center mb-5">
-          <Ionicons name="chevron-back-outline" size={18} color="#d4d4d8" />
-          <Text className="text-zinc-300 ml-1">Back</Text>
+    <SafeAreaView className="flex-1 bg-[#efedf8]">
+      <ScrollView contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 12, paddingBottom: 32 }}>
+        <Pressable onPress={() => router.back()} className="flex-row items-center mb-4">
+          <Ionicons name="chevron-back" size={20} color="#3f3f46" />
+          <Text className="text-zinc-700 ml-1 font-medium">Back</Text>
         </Pressable>
 
-        <View className="rounded-2xl border border-zinc-800 bg-zinc-900 p-4 mb-4">
-          <View className="h-28 rounded-xl bg-zinc-800 items-center justify-center">
-            <Ionicons name="fitness-outline" size={34} color="#e4e4e7" />
-            <Text className="text-zinc-300 text-xs mt-2">Technique Preview</Text>
+        <View className="rounded-3xl border border-zinc-200 bg-white p-4 mb-4">
+          <View className="h-32 rounded-2xl bg-violet-100 items-center justify-center border border-violet-100">
+            <Ionicons name="fitness-outline" size={36} color="#7c3aed" />
+            <Text className="text-zinc-500 text-xs mt-2">Technique</Text>
           </View>
         </View>
 
-        <View className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5">
+        <View className="bg-white border border-zinc-200 rounded-3xl p-5">
           <View className="flex-row items-center justify-between">
-            <Text className="text-white text-2xl font-bold flex-1 pr-3">{technique.name}</Text>
-            <View className="bg-zinc-800 rounded-full px-3 py-1">
-              <Text className="text-zinc-200 text-xs">{technique.beltGuideline}</Text>
+            <Text className="text-zinc-900 text-2xl font-bold flex-1 pr-3">{technique.name}</Text>
+            <View className="bg-violet-100 border border-violet-200 rounded-full px-3 py-1">
+              <Text className="text-violet-800 text-xs">{technique.beltGuideline}</Text>
             </View>
           </View>
 
-          <Text className="text-zinc-400 mt-2">
+          <Text className="text-zinc-500 mt-2">
             {technique.position} • {technique.category}
           </Text>
 
-          <View className="bg-black/20 rounded-xl p-4 mt-4">
-            <Text className="text-zinc-400 text-xs">Belt Guideline</Text>
-            <Text className="text-zinc-200 mt-1">
+          <View className="bg-zinc-50 rounded-2xl p-4 mt-4 border border-zinc-100">
+            <Text className="text-zinc-500 text-xs">Belt guideline</Text>
+            <Text className="text-zinc-700 mt-1 text-sm">
               This belt level is a recommendation for organizing learning, not a strict rule.
             </Text>
           </View>
 
           <View className="mt-4">
-            <Text className="text-zinc-400 text-xs">Tags</Text>
+            <Text className="text-zinc-500 text-xs">Tags</Text>
             <View className="flex-row flex-wrap mt-2">
               {technique.tags.map((tag) => (
-                <View key={tag} className="bg-black/30 px-2 py-1 rounded-full mr-2 mb-2">
-                  <Text className="text-zinc-300 text-xs">{tag}</Text>
+                <View key={tag} className="bg-zinc-100 px-2 py-1 rounded-full mr-2 mb-2">
+                  <Text className="text-zinc-600 text-xs">{tag}</Text>
                 </View>
               ))}
             </View>
           </View>
 
           <View className="mt-2">
-            <Text className="text-zinc-400 text-xs">Practice History</Text>
-            <Text className="text-white mt-1">Practiced {technique.timesPracticed} times</Text>
-            <Text className="text-zinc-400 mt-1">
-              Last practiced: {technique.lastPracticed ?? "No sessions yet"}
+            <Text className="text-zinc-500 text-xs">Practice history</Text>
+            <Text className="text-zinc-900 mt-1 font-medium">Practiced {technique.timesPracticed} times</Text>
+            <Text className="text-zinc-500 mt-1 text-sm">
+              Last practiced: {technique.lastPracticed ?? "—"}
             </Text>
           </View>
 
           <View className="mt-4">
-            <Text className="text-zinc-400 text-xs">Personal Notes</Text>
-            <Text className="text-zinc-200 mt-1">{technique.notes ?? "No note yet."}</Text>
+            <Text className="text-zinc-500 text-xs">Personal notes</Text>
+            <Text className="text-zinc-700 mt-1">{technique.notes ?? "No note yet."}</Text>
           </View>
         </View>
       </ScrollView>

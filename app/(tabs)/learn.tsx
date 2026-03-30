@@ -22,33 +22,36 @@ export default function LearnScreen() {
   }, [selectedBelt, techniques]);
 
   return (
-    <SafeAreaView className="flex-1 bg-zinc-950">
-      <ScrollView contentContainerStyle={{ paddingHorizontal: 20, paddingTop: 24, paddingBottom: 24 }}>
-        <Text className="text-white text-3xl font-bold">Learn</Text>
-        <Text className="text-zinc-400 mt-2">
-          Browse by belt guideline. These are recommendations, not restrictions.
+    <SafeAreaView className="flex-1 bg-[#efedf8]">
+      <ScrollView contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 16, paddingBottom: 120 }}>
+        <Text className="text-zinc-900 text-3xl font-bold">Learn</Text>
+        <Text className="text-zinc-500 mt-2">
+          Belt levels are guidelines for learning, not rules.
         </Text>
 
-        <View className="mt-4 rounded-2xl border border-violet-500/30 bg-zinc-900 p-4">
+        <View className="mt-4 rounded-3xl border border-violet-200 bg-white p-4">
           <View className="flex-row items-center">
-            <Ionicons name="school-outline" size={16} color="#a78bfa" />
-            <Text className="text-zinc-300 text-xs uppercase ml-2">Learning Path</Text>
+            <Ionicons name="school-outline" size={18} color="#7c3aed" />
+            <Text className="text-zinc-500 text-xs uppercase ml-2 tracking-wide">Learning path</Text>
           </View>
-          <Text className="text-zinc-100 mt-2">
-            Filter by belt to focus your progression, then open any card for deeper details.
+          <Text className="text-zinc-700 mt-2 text-sm">
+            Pick a belt filter, then open any technique for details.
           </Text>
         </View>
 
-        <View className="flex-row flex-wrap mt-4">
+        <Text className="text-zinc-600 text-xs font-medium mt-4 mb-2">Belt guideline</Text>
+        <View className="flex-row flex-wrap">
           {beltFilters.map((belt) => {
             const active = selectedBelt === belt;
             return (
               <Pressable
                 key={belt}
                 onPress={() => setSelectedBelt(belt)}
-                className={`rounded-full px-4 py-2 mr-2 mb-2 border ${active ? "bg-violet-500 border-violet-400" : "bg-zinc-900 border-zinc-700"}`}
+                className={`rounded-full px-4 py-2 mr-2 mb-2 border ${
+                  active ? "bg-violet-600 border-violet-500" : "bg-white border-zinc-200"
+                }`}
               >
-                <Text className={active ? "text-white font-medium" : "text-zinc-200"}>{belt}</Text>
+                <Text className={active ? "text-white font-medium" : "text-zinc-700"}>{belt}</Text>
               </Pressable>
             );
           })}
@@ -56,7 +59,7 @@ export default function LearnScreen() {
 
         <View className="mt-2">
           {filteredTechniques.length === 0 ? (
-            <Text className="text-zinc-500 mt-2">No techniques for this belt filter yet.</Text>
+            <Text className="text-zinc-500 mt-2">No techniques for this filter.</Text>
           ) : (
             filteredTechniques.map((technique) => (
               <TechniqueCard
