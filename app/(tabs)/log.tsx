@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Pressable, SafeAreaView, ScrollView, Text, TextInput, View } from "react-native";
+import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { z } from "zod";
 import { localTodayIso } from "../../lib/date";
 import { useRollTrackStore } from "../../lib/store";
@@ -88,7 +89,7 @@ export default function LogScreen() {
   const chipActive = "bg-emerald-500 border-emerald-400";
 
   return (
-    <SafeAreaView className="flex-1 bg-[#efedf8]">
+    <SafeAreaView className="flex-1 bg-[#efedf8]" edges={["top", "left", "right"]}>
       <ScrollView contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 16, paddingBottom: 120 }}>
         <Text className="text-zinc-900 text-3xl font-bold">Log session</Text>
         <Text className="text-zinc-500 mt-2">Saved sessions update your technique stats.</Text>

@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
-import { Pressable, SafeAreaView, ScrollView, Text, View } from "react-native";
+import { Pressable, ScrollView, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import TechniqueCard from "../../components/TechniqueCard";
@@ -22,7 +23,7 @@ export default function LearnScreen() {
   }, [selectedBelt, techniques]);
 
   return (
-    <SafeAreaView className="flex-1 bg-[#efedf8]">
+    <SafeAreaView className="flex-1 bg-[#efedf8]" edges={["top", "left", "right"]}>
       <ScrollView contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 16, paddingBottom: 120 }}>
         <Text className="text-zinc-900 text-3xl font-bold">Learn</Text>
         <Text className="text-zinc-500 mt-2">

@@ -15,7 +15,7 @@ export default function HomeScreen() {
   const greetingLine = useMemo(() => formatTodayGreeting(), []);
 
   return (
-    <SafeAreaView className="flex-1 bg-[#efedf8]">
+    <SafeAreaView className="flex-1 bg-[#efedf8]" edges={["top", "left", "right"]}>
       <ScrollView contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 12, paddingBottom: 120 }}>
         <View className="rounded-3xl bg-white px-4 py-3 border border-zinc-100">
           <View className="flex-row items-center justify-between">

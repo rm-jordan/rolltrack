@@ -12,7 +12,7 @@ export default function TechniqueDetailScreen() {
 
   if (!technique) {
     return (
-      <SafeAreaView className="flex-1 bg-[#efedf8]">
+      <SafeAreaView className="flex-1 bg-[#efedf8]" edges={["top", "left", "right", "bottom"]}>
         <View className="px-5 pt-6">
           <Pressable onPress={() => router.back()} className="mb-5 flex-row items-center">
             <Ionicons name="chevron-back" size={20} color="#3f3f46" />
@@ -25,7 +25,7 @@ export default function TechniqueDetailScreen() {
   }
 
   return (
-    <SafeAreaView className="flex-1 bg-[#efedf8]">
+    <SafeAreaView className="flex-1 bg-[#efedf8]" edges={["top", "left", "right", "bottom"]}>
       <ScrollView contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 12, paddingBottom: 32 }}>
         <Pressable onPress={() => router.back()} className="flex-row items-center mb-4">
           <Ionicons name="chevron-back" size={20} color="#3f3f46" />
