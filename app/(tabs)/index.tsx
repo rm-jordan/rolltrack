@@ -1,22 +1,18 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useRouter } from "expo-router";
+import { useMemo } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { formatMonthDay, formatTodayGreeting, getWeekStripSundayStart } from "../../lib/date";
 import { useRollTrackStore } from "../../lib/store";
 
 export default function HomeScreen() {
   const router = useRouter();
   const getStats = useRollTrackStore((state) => state.getStats);
   const stats = getStats();
-  const upcomingDays = [
-    { day: "Sun", date: 22 },
-    { day: "Mon", date: 23 },
-    { day: "Tue", date: 24 },
-    { day: "Wed", date: 25, active: true },
-    { day: "Thu", date: 26 },
-    { day: "Fri", date: 27 },
-    { day: "Sat", date: 28 },
-  ];
+  const upcomingDays = useMemo(() => getWeekStripSundayStart(), []);
+  const planDateLabel = useMemo(() => formatMonthDay(), []);
+  const greetingLine = useMemo(() => formatTodayGreeting(), []);
 
   return (
     <SafeAreaView className="flex-1 bg-[#efedf8]">
@@ -29,7 +25,7 @@ export default function HomeScreen() {
               </View>
               <View className="ml-3">
                 <Text className="text-zinc-900 font-semibold text-xl">Hello, Ryan</Text>
-                <Text className="text-zinc-500 text-xs mt-0.5">Today 27 Mar.</Text>
+                <Text className="text-zinc-500 text-xs mt-0.5">Today · {greetingLine}</Text>
               </View>
             </View>
             <Pressable className="h-10 w-10 rounded-full bg-zinc-100 items-center justify-center">
@@ -59,7 +55,7 @@ export default function HomeScreen() {
         <View className="mt-4 bg-white rounded-full px-2 py-2 flex-row justify-between border border-zinc-200">
           {upcomingDays.map((item) => (
             <View
-              key={item.day}
+              key={item.iso}
               className={`w-10 h-12 rounded-full items-center justify-center ${
                 item.active ? "bg-zinc-900" : "bg-transparent"
               }`}
@@ -88,7 +84,7 @@ export default function HomeScreen() {
               <Text className="text-zinc-800 text-[10px]">Medium</Text>
             </View>
             <Text className="text-zinc-900 text-3xl font-semibold mt-4">Roll Class</Text>
-            <Text className="text-zinc-800/80 text-xs mt-2">27 Nov.</Text>
+            <Text className="text-zinc-800/80 text-xs mt-2">{planDateLabel}</Text>
             <Text className="text-zinc-800/80 text-xs">19:00-20:00</Text>
             <Text className="text-zinc-800/80 text-xs">Mat room</Text>
 
@@ -107,7 +103,7 @@ export default function HomeScreen() {
                 <Text className="text-zinc-800 text-[10px]">Light</Text>
               </View>
               <Text className="text-zinc-900 text-3xl font-semibold mt-2">Balance</Text>
-              <Text className="text-zinc-800/80 text-xs mt-1">27 Nov.</Text>
+              <Text className="text-zinc-800/80 text-xs mt-1">{planDateLabel}</Text>
               <Text className="text-zinc-800/80 text-xs">20:00-20:30</Text>
             </Pressable>
 

@@ -2,13 +2,12 @@ import { useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Pressable, SafeAreaView, ScrollView, Text, TextInput, View } from "react-native";
 import { z } from "zod";
+import { localTodayIso } from "../../lib/date";
 import { useRollTrackStore } from "../../lib/store";
 import type { SessionGiType, SessionType } from "../../lib/types";
 
 const giOptions: SessionGiType[] = ["Gi", "No-Gi"];
 const sessionOptions: SessionType[] = ["Class", "Open Mat", "Drilling", "Competition"];
-
-const todayDate = () => new Date().toISOString().slice(0, 10);
 
 const formSchema = z.object({
   date: z.string().min(1, "Date is required"),
@@ -32,7 +31,7 @@ export default function LogScreen() {
 
   const { control, handleSubmit, setValue, watch, reset } = useForm<LogFormValues>({
     defaultValues: {
-      date: todayDate(),
+      date: localTodayIso(),
       giType: "Gi",
       sessionType: "Class",
       techniquesPracticed: [],
@@ -70,7 +69,7 @@ export default function LogScreen() {
 
     setSubmitMessage("Session saved. Practice counts updated.");
     reset({
-      date: todayDate(),
+      date: localTodayIso(),
       giType: parsed.data.giType,
       sessionType: parsed.data.sessionType,
       techniquesPracticed: [],
