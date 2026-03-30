@@ -74,7 +74,7 @@ export default function HomeScreen() {
           >
             <Ionicons name="create-outline" size={22} color="#059669" />
             <Text className="text-zinc-900 font-semibold mt-2">Log</Text>
-            <Text className="text-zinc-500 text-xs mt-1">Session notes</Text>
+            <Text className="text-zinc-500 text-xs mt-1">Date + what you learned</Text>
           </Pressable>
         </View>
 
