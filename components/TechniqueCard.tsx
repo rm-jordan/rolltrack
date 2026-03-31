@@ -1,5 +1,6 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Pressable, Text, View } from "react-native";
+import BeltIcon from "./BeltIcon";
 import type { Technique } from "../lib/types";
 
 type TechniqueCardProps = {
@@ -41,8 +42,9 @@ export default function TechniqueCard({ technique, onPress }: TechniqueCardProps
           </Text>
         </View>
 
-        <View className="bg-violet-100 border border-violet-200 px-3 py-1 rounded-full">
-          <Text className="text-violet-800 text-xs">{technique.beltGuideline}</Text>
+        <View className="flex-row items-center bg-zinc-50 border border-zinc-200 pl-2 pr-2 py-1 rounded-full">
+          <BeltIcon belt={technique.beltGuideline} size="xs" />
+          <Text className="text-zinc-800 text-xs font-medium ml-1.5">{technique.beltGuideline}</Text>
         </View>
       </View>
 

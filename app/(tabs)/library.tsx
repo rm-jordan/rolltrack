@@ -3,6 +3,7 @@ import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import BeltIcon from "../../components/BeltIcon";
 import TechniqueCard from "../../components/TechniqueCard";
 import { useRollTrackStore } from "../../lib/store";
 import type { BeltLevel } from "../../lib/types";
@@ -105,11 +106,18 @@ export default function LibraryScreen() {
               <Pressable
                 key={belt}
                 onPress={() => setSelectedBelt(belt)}
-                className={`rounded-full px-4 py-2 mr-2 mb-2 border ${
+                className={`flex-row items-center rounded-full px-3 py-2 mr-2 mb-2 border ${
                   active ? "bg-cyan-500 border-cyan-400" : "bg-white border-zinc-200"
                 }`}
               >
-                <Text className={active ? "text-white font-medium" : "text-zinc-700"}>{belt}</Text>
+                {belt === "All" ? (
+                  <Ionicons name="layers-outline" size={15} color={active ? "#ffffff" : "#3f3f46"} />
+                ) : (
+                  <BeltIcon belt={belt} size="xs" />
+                )}
+                <Text className={`ml-1.5 ${active ? "text-white font-medium" : "text-zinc-700 font-medium"}`}>
+                  {belt}
+                </Text>
               </Pressable>
             );
           })}

@@ -2,14 +2,15 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { useRouter } from "expo-router";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import BeltIcon from "../../components/BeltIcon";
 import type { BeltLevel } from "../../lib/types";
 
-const beltButtons: { level: BeltLevel; subtitle: string; accent: string; cardBg: string }[] = [
-  { level: "White", subtitle: "Fundamentals & basics", accent: "#71717a", cardBg: "#fafafa" },
-  { level: "Blue", subtitle: "Build your game", accent: "#2563eb", cardBg: "#eff6ff" },
-  { level: "Purple", subtitle: "Advanced chains", accent: "#7c3aed", cardBg: "#f5f3ff" },
-  { level: "Brown", subtitle: "Refinement & pressure", accent: "#92400e", cardBg: "#fffbeb" },
-  { level: "Black", subtitle: "Mastery & depth", accent: "#18181b", cardBg: "#f4f4f5" },
+const beltButtons: { level: BeltLevel; subtitle: string; cardBg: string }[] = [
+  { level: "White", subtitle: "Fundamentals & basics", cardBg: "#fafafa" },
+  { level: "Blue", subtitle: "Build your game", cardBg: "#eff6ff" },
+  { level: "Purple", subtitle: "Advanced chains", cardBg: "#f5f3ff" },
+  { level: "Brown", subtitle: "Refinement & pressure", cardBg: "#fffbeb" },
+  { level: "Black", subtitle: "Mastery & depth", cardBg: "#f4f4f5" },
 ];
 
 export default function HomeScreen() {
@@ -38,18 +39,15 @@ export default function HomeScreen() {
 
         <Text className="text-zinc-900 text-xl font-bold mt-8 mb-3">Belt tactics</Text>
 
-        {beltButtons.map(({ level, subtitle, accent, cardBg }) => (
+        {beltButtons.map(({ level, subtitle, cardBg }) => (
           <Pressable
             key={level}
             onPress={() => openBeltTechniques(level)}
             className="rounded-3xl border border-zinc-200 p-4 mb-3 flex-row items-center active:opacity-90"
             style={{ backgroundColor: cardBg }}
           >
-            <View
-              className="h-12 w-12 rounded-2xl items-center justify-center mr-4"
-              style={{ backgroundColor: `${accent}22` }}
-            >
-              <View className="h-3 w-3 rounded-full" style={{ backgroundColor: accent }} />
+            <View className="h-14 w-16 items-center justify-center mr-3">
+              <BeltIcon belt={level} size="lg" />
             </View>
             <View className="flex-1">
               <Text className="text-zinc-900 text-lg font-semibold">{level} belt</Text>

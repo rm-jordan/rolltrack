@@ -3,6 +3,7 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import { useMemo } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import BeltIcon from "../../../components/BeltIcon";
 import TechniqueCard from "../../../components/TechniqueCard";
 import { useRollTrackStore } from "../../../lib/store";
 import type { BeltLevel } from "../../../lib/types";
@@ -58,7 +59,10 @@ export default function BeltTechniquesScreen() {
           <Text className="text-zinc-800 ml-1 font-semibold">Belt home</Text>
         </Pressable>
 
-        <Text className="text-zinc-900 text-3xl font-bold">{belt} belt</Text>
+        <View className="flex-row items-center">
+          <BeltIcon belt={belt} size="lg" />
+          <Text className="text-zinc-900 text-3xl font-bold ml-3">{belt} belt</Text>
+        </View>
         <Text className="text-zinc-500 mt-1">
           {filtered.length} technique{filtered.length === 1 ? "" : "s"} · guideline, not a rule
         </Text>

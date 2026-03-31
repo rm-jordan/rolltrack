@@ -2,6 +2,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import BeltIcon from "../../components/BeltIcon";
 import { useRollTrackStore } from "../../lib/store";
 
 export default function TechniqueDetailScreen() {
@@ -32,18 +33,17 @@ export default function TechniqueDetailScreen() {
           <Text className="text-zinc-700 ml-1 font-medium">Back</Text>
         </Pressable>
 
-        <View className="rounded-3xl border border-zinc-200 bg-white p-4 mb-4">
-          <View className="h-32 rounded-2xl bg-violet-100 items-center justify-center border border-violet-100">
-            <Ionicons name="fitness-outline" size={36} color="#7c3aed" />
-            <Text className="text-zinc-500 text-xs mt-2">Technique</Text>
-          </View>
+        <View className="rounded-3xl border border-zinc-200 bg-white p-6 mb-4 items-center justify-center">
+          <BeltIcon belt={technique.beltGuideline} size="lg" />
+          <Text className="text-zinc-500 text-xs mt-3">Belt guideline</Text>
         </View>
 
         <View className="bg-white border border-zinc-200 rounded-3xl p-5">
           <View className="flex-row items-center justify-between">
             <Text className="text-zinc-900 text-2xl font-bold flex-1 pr-3">{technique.name}</Text>
-            <View className="bg-violet-100 border border-violet-200 rounded-full px-3 py-1">
-              <Text className="text-violet-800 text-xs">{technique.beltGuideline}</Text>
+            <View className="flex-row items-center bg-zinc-50 border border-zinc-200 rounded-full pl-2 pr-3 py-1.5">
+              <BeltIcon belt={technique.beltGuideline} size="xs" />
+              <Text className="text-zinc-800 text-xs font-medium ml-1.5">{technique.beltGuideline}</Text>
             </View>
           </View>
 
