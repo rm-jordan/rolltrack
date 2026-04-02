@@ -24,6 +24,7 @@ export default function LogScreen() {
   const techniques = useRollTrackStore((state) => state.techniques);
   const [submitMessage, setSubmitMessage] = useState<string | null>(null);
   const [formError, setFormError] = useState<string | null>(null);
+  const [saving, setSaving] = useState(false);
 
   const { control, handleSubmit, setValue, reset, watch } = useForm<LogFormValues>({
     defaultValues: {
@@ -59,7 +60,7 @@ export default function LogScreen() {
     }
   };
 
-  const onSubmit = (values: LogFormValues) => {
+  const onSubmit = async (values: LogFormValues) => {
     setSubmitMessage(null);
     setFormError(null);
 
@@ -69,25 +70,32 @@ export default function LogScreen() {
       return;
     }
 
-    addSessionLog({
-      date: parsed.data.date,
-      giType: defaultGi,
-      sessionType: defaultSessionType,
-      techniquesPracticed: parsed.data.techniquesPracticed,
-      notes: parsed.data.notes.trim(),
-      rollNotes: undefined,
-    });
+    setSaving(true);
+    try {
+      await addSessionLog({
+        date: parsed.data.date,
+        giType: defaultGi,
+        sessionType: defaultSessionType,
+        techniquesPracticed: parsed.data.techniquesPracticed,
+        notes: parsed.data.notes.trim(),
+        rollNotes: undefined,
+      });
 
-    setSubmitMessage(
-      parsed.data.techniquesPracticed.length > 0
-        ? "Saved on this device. Practice counts updated for tagged techniques."
-        : "Saved on this device.",
-    );
-    reset({
-      date: localTodayIso(),
-      notes: "",
-      techniquesPracticed: [],
-    });
+      setSubmitMessage(
+        parsed.data.techniquesPracticed.length > 0
+          ? "Saved locally (SQLite). Practice counts updated for tagged techniques."
+          : "Saved locally (SQLite).",
+      );
+      reset({
+        date: localTodayIso(),
+        notes: "",
+        techniquesPracticed: [],
+      });
+    } catch {
+      setFormError("Could not save. Try again.");
+    } finally {
+      setSaving(false);
+    }
   };
 
   const setToday = () => {
@@ -99,8 +107,8 @@ export default function LogScreen() {
       <ScrollView contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 16, paddingBottom: 120 }}>
         <Text className="text-zinc-900 text-3xl font-bold">Training log</Text>
         <Text className="text-zinc-500 mt-2">
-          Write what you learned. Entries are saved on this device (no server). Optionally tag techniques to
-          update practice stats.
+          Write what you learned. Entries are stored in a local SQLite database on this device (no server).
+          Optionally tag techniques to update practice stats.
         </Text>
 
         <View className="mt-5 rounded-3xl border border-zinc-200 bg-white p-4">
@@ -180,9 +188,14 @@ export default function LogScreen() {
 
         <Pressable
           onPress={handleSubmit(onSubmit)}
-          className="bg-emerald-500 rounded-2xl py-4 mt-5 border border-emerald-400"
+          disabled={saving}
+          className={`rounded-2xl py-4 mt-5 border ${
+            saving ? "bg-emerald-300 border-emerald-200" : "bg-emerald-500 border-emerald-400"
+          }`}
         >
-          <Text className="text-white text-center font-semibold text-base">Save entry</Text>
+          <Text className="text-white text-center font-semibold text-base">
+            {saving ? "Saving…" : "Save entry"}
+          </Text>
         </Pressable>
 
         <Text className="text-zinc-900 text-lg font-bold mt-10 mb-3">Recent entries</Text>

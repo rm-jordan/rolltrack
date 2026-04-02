@@ -1,7 +1,5 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { create } from "zustand";
-import { createJSONStorage, persist } from "zustand/middleware";
-import { sessionLogs as seededSessionLogs, techniques as seededTechniques } from "./mockData";
+import { loadRollTrackData, persistSessionLog } from "./db";
 import type { SessionLog, Technique } from "./types";
 
 type Stats = {
@@ -13,72 +11,34 @@ type Stats = {
 type RollTrackState = {
   techniques: Technique[];
   sessionLogs: SessionLog[];
-  addSessionLog: (log: Omit<SessionLog, "id">) => void;
+  addSessionLog: (log: Omit<SessionLog, "id">) => Promise<void>;
   getStats: () => Stats;
 };
 
-export const useRollTrackStore = create<RollTrackState>()(
-  persist(
-    (set, get) => ({
-      techniques: seededTechniques,
-      sessionLogs: seededSessionLogs,
-      addSessionLog: (logInput) => {
-        const createdLog: SessionLog = {
-          id: `session-${Date.now()}`,
-          ...logInput,
-        };
+export const useRollTrackStore = create<RollTrackState>((set, get) => ({
+  techniques: [],
+  sessionLogs: [],
+  addSessionLog: async (logInput) => {
+    await persistSessionLog(logInput);
+    set(await loadRollTrackData());
+  },
+  getStats: () => {
+    const { techniques, sessionLogs } = get();
 
-        const sessionDate = logInput.date;
-        const practicedIds = new Set(logInput.techniquesPracticed);
+    let mostPracticedTechniqueName: string | null = null;
+    let maxPracticeCount = 0;
 
-        set((state) => {
-          const nextTechniques = state.techniques.map((tech) => {
-            if (!practicedIds.has(tech.id)) {
-              return tech;
-            }
-            const lastPracticed =
-              tech.lastPracticed && tech.lastPracticed >= sessionDate ? tech.lastPracticed : sessionDate;
-            return {
-              ...tech,
-              timesPracticed: tech.timesPracticed + 1,
-              lastPracticed,
-            };
-          });
+    for (const technique of techniques) {
+      if (technique.timesPracticed > maxPracticeCount) {
+        maxPracticeCount = technique.timesPracticed;
+        mostPracticedTechniqueName = technique.name;
+      }
+    }
 
-          return {
-            sessionLogs: [createdLog, ...state.sessionLogs],
-            techniques: nextTechniques,
-          };
-        });
-      },
-      getStats: () => {
-        const { techniques, sessionLogs } = get();
-
-        let mostPracticedTechniqueName: string | null = null;
-        let maxPracticeCount = 0;
-
-        for (const technique of techniques) {
-          if (technique.timesPracticed > maxPracticeCount) {
-            maxPracticeCount = technique.timesPracticed;
-            mostPracticedTechniqueName = technique.name;
-          }
-        }
-
-        return {
-          totalTechniques: techniques.length,
-          totalSessions: sessionLogs.length,
-          mostPracticedTechniqueName,
-        };
-      },
-    }),
-    {
-      name: "rolltrack-storage",
-      storage: createJSONStorage(() => AsyncStorage),
-      partialize: (state) => ({
-        techniques: state.techniques,
-        sessionLogs: state.sessionLogs,
-      }),
-      version: 1,
-    },
-  ),
-);
+    return {
+      totalTechniques: techniques.length,
+      totalSessions: sessionLogs.length,
+      mostPracticedTechniqueName,
+    };
+  },
+}));
