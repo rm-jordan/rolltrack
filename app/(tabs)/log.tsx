@@ -103,8 +103,8 @@ export default function LogScreen() {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-[#efedf8]" edges={["top", "left", "right"]}>
-      <ScrollView contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 16, paddingBottom: 120 }}>
+    <SafeAreaView className="flex-1 bg-[#efedf8]" edges={["top", "left", "right", "bottom"]}>
+      <ScrollView contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 16, paddingBottom: 24 }}>
         <Text className="text-zinc-900 text-3xl font-bold">Training log</Text>
         <Text className="text-zinc-500 mt-2">
           Write what you learned. Entries are stored in a local SQLite database on this device (no server).

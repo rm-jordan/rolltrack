@@ -47,8 +47,8 @@ export default function BeltTechniquesScreen() {
   }
 
   return (
-    <SafeAreaView className="flex-1 bg-[#efedf8]" edges={["top", "left", "right"]}>
-      <ScrollView contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 12, paddingBottom: 120 }}>
+    <SafeAreaView className="flex-1 bg-[#efedf8]" edges={["top", "left", "right", "bottom"]}>
+      <ScrollView contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 12, paddingBottom: 24 }}>
         <Pressable
           onPress={goHome}
           className="flex-row items-center self-start py-2 pr-4 mb-2"

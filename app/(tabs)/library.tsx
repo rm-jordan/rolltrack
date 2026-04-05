@@ -55,8 +55,8 @@ export default function LibraryScreen() {
   }, [searchQuery, selectedBelt, sortBy, techniques]);
 
   return (
-    <SafeAreaView className="flex-1 bg-[#efedf8]" edges={["top", "left", "right"]}>
-      <ScrollView contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 16, paddingBottom: 120 }}>
+    <SafeAreaView className="flex-1 bg-[#efedf8]" edges={["top", "left", "right", "bottom"]}>
+      <ScrollView contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 16, paddingBottom: 24 }}>
         <Text className="text-zinc-900 text-3xl font-bold">Library</Text>
         <Text className="text-zinc-500 mt-2">Search and filter your techniques.</Text>
 
