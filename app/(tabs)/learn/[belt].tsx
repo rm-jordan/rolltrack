@@ -29,7 +29,7 @@ export default function BeltTechniquesScreen() {
   }, [belt, techniques]);
 
   const goHome = () => {
-    router.navigate("/(tabs)/");
+    router.navigate("/(tabs)");
   };
 
   if (!belt) {

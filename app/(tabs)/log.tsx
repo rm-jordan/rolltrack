@@ -1,3 +1,5 @@
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { useRouter } from "expo-router";
 import { useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
@@ -19,6 +21,7 @@ const defaultGi: SessionGiType = "Gi";
 const defaultSessionType: SessionType = "Class";
 
 export default function LogScreen() {
+  const router = useRouter();
   const addSessionLog = useRollTrackStore((state) => state.addSessionLog);
   const sessionLogs = useRollTrackStore((state) => state.sessionLogs);
   const techniques = useRollTrackStore((state) => state.techniques);
@@ -102,9 +105,23 @@ export default function LogScreen() {
     setValue("date", localTodayIso());
   };
 
+  const goHome = () => {
+    router.navigate("/(tabs)");
+  };
+
   return (
     <SafeAreaView className="flex-1 bg-[#efedf8]" edges={["top", "left", "right", "bottom"]}>
       <ScrollView contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 16, paddingBottom: 24 }}>
+        <Pressable
+          onPress={goHome}
+          className="flex-row items-center self-start py-2 pr-4 mb-2"
+          accessibilityRole="button"
+          accessibilityLabel="Back to home"
+        >
+          <Ionicons name="chevron-back" size={22} color="#3f3f46" />
+          <Text className="text-zinc-800 ml-1 font-semibold">Home</Text>
+        </Pressable>
+
         <Text className="text-zinc-900 text-3xl font-bold">Training log</Text>
         <Text className="text-zinc-500 mt-2">
           Write what you learned. Entries are stored in a local SQLite database on this device (no server).

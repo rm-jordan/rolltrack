@@ -54,9 +54,23 @@ export default function LibraryScreen() {
     return sorted;
   }, [searchQuery, selectedBelt, sortBy, techniques]);
 
+  const goHome = () => {
+    router.navigate("/(tabs)");
+  };
+
   return (
     <SafeAreaView className="flex-1 bg-[#efedf8]" edges={["top", "left", "right", "bottom"]}>
       <ScrollView contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 16, paddingBottom: 24 }}>
+        <Pressable
+          onPress={goHome}
+          className="flex-row items-center self-start py-2 pr-4 mb-2"
+          accessibilityRole="button"
+          accessibilityLabel="Back to home"
+        >
+          <Ionicons name="chevron-back" size={22} color="#3f3f46" />
+          <Text className="text-zinc-800 ml-1 font-semibold">Home</Text>
+        </Pressable>
+
         <Text className="text-zinc-900 text-3xl font-bold">Library</Text>
         <Text className="text-zinc-500 mt-2">Search and filter your techniques.</Text>
 

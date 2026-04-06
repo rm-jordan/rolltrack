@@ -22,9 +22,23 @@ export default function LearnIndexScreen() {
     return techniques.filter((technique) => technique.beltGuideline === selectedBelt);
   }, [selectedBelt, techniques]);
 
+  const goHome = () => {
+    router.navigate("/(tabs)");
+  };
+
   return (
     <SafeAreaView className="flex-1 bg-[#efedf8]" edges={["top", "left", "right", "bottom"]}>
       <ScrollView contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 16, paddingBottom: 24 }}>
+        <Pressable
+          onPress={goHome}
+          className="flex-row items-center self-start py-2 pr-4 mb-2"
+          accessibilityRole="button"
+          accessibilityLabel="Back to home"
+        >
+          <Ionicons name="chevron-back" size={22} color="#3f3f46" />
+          <Text className="text-zinc-800 ml-1 font-semibold">Home</Text>
+        </Pressable>
+
         <Text className="text-zinc-900 text-3xl font-bold">Learn</Text>
         <Text className="text-zinc-500 mt-2">
           Belt levels are guidelines for learning, not rules. Open a belt from Home for a focused list.
@@ -36,7 +50,7 @@ export default function LearnIndexScreen() {
             <Text className="text-zinc-500 text-xs uppercase ml-2 tracking-wide">Learning path</Text>
           </View>
           <Text className="text-zinc-700 mt-2 text-sm">
-            Filter here, or use the Home tab to jump straight into a belt.
+            Filter here, or go back to Home to jump straight into a belt.
           </Text>
         </View>
 
