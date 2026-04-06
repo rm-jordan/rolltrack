@@ -16,13 +16,17 @@ npm install
 
 ### Mobile (Expo)
 
+From the **repo root**:
+
 ```bash
 npm run mobile
 ```
 
-This runs **`expo start ./mobile`** so Metro uses `mobile/app.json` and `mobile/assets` (not the repo root). Do **not** run plain `npx expo start` from the repo root — it will look for `App.tsx` and `./assets` at the root and fail.
+This runs the **`@rolltrack/mobile`** workspace script (`npx expo start`) with the **working directory set to `mobile/`**, so Metro picks up `mobile/app.json` and `mobile/assets`.
 
-Alternatively: `cd mobile && npx expo start`.
+**Do not** run plain `npx expo start` at the repo root without a project path — it will use the wrong folder.
+
+**Alternative:** `cd mobile && npx expo start`.
 
 Always run **`npm install` from the repo root** so workspaces resolve `@rolltrack/shared`.
 

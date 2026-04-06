@@ -3,12 +3,12 @@
   "private": true,
   "workspaces": ["mobile", "server", "packages/*"],
   "scripts": {
-    "start": "expo start ./mobile",
-    "mobile": "expo start ./mobile",
-    "android": "expo start ./mobile --android",
-    "ios": "expo start ./mobile --ios",
-    "web": "expo start ./mobile --web",
-    "lint": "expo lint ./mobile",
+    "start": "npm run start -w @rolltrack/mobile",
+    "mobile": "npm run start -w @rolltrack/mobile",
+    "android": "npm run android -w @rolltrack/mobile",
+    "ios": "npm run ios -w @rolltrack/mobile",
+    "web": "npm run web -w @rolltrack/mobile",
+    "lint": "npm run lint -w @rolltrack/mobile",
     "server": "npm run dev -w @rolltrack/server"
   }
 }
