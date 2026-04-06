@@ -1,0 +1,30 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Technique {
+  id             String  @id
+  name           String
+  position       String
+  category       String
+  beltGuideline  String
+  tags           Json
+  notes          String?
+  timesPracticed Int     @default(0)
+  lastPracticed  String?
+}
+
+model SessionLog {
+  id                  String  @id
+  date                String
+  giType              String
+  sessionType         String
+  notes               String
+  techniquesPracticed Json
+  rollNotes           Json?
+}
