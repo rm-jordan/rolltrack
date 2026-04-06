@@ -49,7 +49,28 @@ export const typeDefs = `#graphql
     rollNotes: [RollNoteInput!]
   }
 
+  input CreateTechniqueInput {
+    name: String!
+    position: String!
+    category: String!
+    beltGuideline: String!
+    tags: [String!]
+    notes: String
+  }
+
+  input UpdateTechniqueInput {
+    name: String
+    position: String
+    category: String
+    beltGuideline: String
+    tags: [String!]
+    notes: String
+  }
+
   type Mutation {
     createSessionLog(input: CreateSessionLogInput!): SessionLog!
+    createTechnique(input: CreateTechniqueInput!): Technique!
+    updateTechnique(id: ID!, input: UpdateTechniqueInput!): Technique!
+    deleteTechnique(id: ID!): Boolean!
   }
 `;

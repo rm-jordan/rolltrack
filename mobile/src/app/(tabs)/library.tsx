@@ -71,8 +71,18 @@ export default function LibraryScreen() {
           <Text className="text-zinc-800 ml-1 font-semibold">Home</Text>
         </Pressable>
 
-        <Text className="text-zinc-900 text-3xl font-bold">Library</Text>
-        <Text className="text-zinc-500 mt-2">Search and filter your techniques.</Text>
+        <View className="flex-row items-start justify-between gap-3">
+          <View className="flex-1">
+            <Text className="text-zinc-900 text-3xl font-bold">Library</Text>
+            <Text className="text-zinc-500 mt-2">Search and filter your techniques.</Text>
+          </View>
+          <Pressable
+            onPress={() => router.push("/technique/new")}
+            className="rounded-2xl bg-emerald-500 px-4 py-3 border border-emerald-400"
+          >
+            <Text className="text-white font-semibold text-sm">Add move</Text>
+          </Pressable>
+        </View>
 
         <View className="mt-4 rounded-3xl border border-cyan-200 bg-white p-4">
           <View className="flex-row items-center">

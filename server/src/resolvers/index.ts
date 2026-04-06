@@ -24,6 +24,24 @@ type CreateSessionLogInput = {
   rollNotes?: Array<{ partner: string; rounds: number; notes: string }> | null;
 };
 
+type CreateTechniqueInput = {
+  name: string;
+  position: string;
+  category: string;
+  beltGuideline: string;
+  tags?: string[] | null;
+  notes?: string | null;
+};
+
+type UpdateTechniqueInput = {
+  name?: string | null;
+  position?: string | null;
+  category?: string | null;
+  beltGuideline?: string | null;
+  tags?: string[] | null;
+  notes?: string | null;
+};
+
 export const resolvers = {
   Query: {
     health: () => "ok",
@@ -83,6 +101,45 @@ export const resolvers = {
       });
 
       return prisma.sessionLog.findUniqueOrThrow({ where: { id } });
+    },
+
+    createTechnique: async (_: unknown, args: { input: CreateTechniqueInput }) => {
+      const id = `tech-${Date.now()}`;
+      return prisma.technique.create({
+        data: {
+          id,
+          name: args.input.name,
+          position: args.input.position,
+          category: args.input.category,
+          beltGuideline: args.input.beltGuideline,
+          tags: args.input.tags ?? [],
+          notes: args.input.notes ?? null,
+          timesPracticed: 0,
+          lastPracticed: null,
+        },
+      });
+    },
+
+    updateTechnique: async (_: unknown, args: { id: string; input: UpdateTechniqueInput }) => {
+      const { input } = args;
+      return prisma.technique.update({
+        where: { id: args.id },
+        data: {
+          ...(input.name !== undefined && input.name !== null ? { name: input.name } : {}),
+          ...(input.position !== undefined && input.position !== null ? { position: input.position } : {}),
+          ...(input.category !== undefined && input.category !== null ? { category: input.category } : {}),
+          ...(input.beltGuideline !== undefined && input.beltGuideline !== null
+            ? { beltGuideline: input.beltGuideline }
+            : {}),
+          ...(input.tags !== undefined ? { tags: input.tags ?? [] } : {}),
+          ...(input.notes !== undefined ? { notes: input.notes } : {}),
+        },
+      });
+    },
+
+    deleteTechnique: async (_: unknown, args: { id: string }) => {
+      await prisma.technique.delete({ where: { id: args.id } });
+      return true;
     },
   },
 };

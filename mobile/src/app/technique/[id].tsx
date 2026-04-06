@@ -1,6 +1,6 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { useLocalSearchParams, useRouter } from "expo-router";
-import { Pressable, ScrollView, Text, View } from "react-native";
+import { type Href, useLocalSearchParams, useRouter } from "expo-router";
+import { Alert, Pressable, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import BeltIcon from "@/components/BeltIcon";
 import { useRollTrackStore } from "@/state/store";
@@ -9,7 +9,27 @@ export default function TechniqueDetailScreen() {
   const router = useRouter();
   const { id } = useLocalSearchParams<{ id: string }>();
   const techniques = useRollTrackStore((state) => state.techniques);
+  const deleteTechnique = useRollTrackStore((state) => state.deleteTechnique);
   const technique = techniques.find((item) => item.id === id);
+
+  const onDelete = () => {
+    if (!id) return;
+    Alert.alert("Delete technique?", "This cannot be undone.", [
+      { text: "Cancel", style: "cancel" },
+      {
+        text: "Delete",
+        style: "destructive",
+        onPress: async () => {
+          try {
+            await deleteTechnique(id);
+            router.replace("/(tabs)/library");
+          } catch (e) {
+            Alert.alert("Error", e instanceof Error ? e.message : "Unknown error");
+          }
+        },
+      },
+    ]);
+  };
 
   if (!technique) {
     return (
@@ -80,6 +100,23 @@ export default function TechniqueDetailScreen() {
           <View className="mt-4">
             <Text className="text-zinc-500 text-xs">Personal notes</Text>
             <Text className="text-zinc-700 mt-1">{technique.notes ?? "No note yet."}</Text>
+          </View>
+
+          <View className="flex-row gap-3 mt-6">
+            <Pressable
+              onPress={() =>
+                router.push(`/technique/edit/${technique.id}` as Href)
+              }
+              className="flex-1 rounded-2xl bg-violet-600 py-3.5 items-center border border-violet-500"
+            >
+              <Text className="text-white font-semibold">Edit</Text>
+            </Pressable>
+            <Pressable
+              onPress={onDelete}
+              className="flex-1 rounded-2xl bg-red-50 py-3.5 items-center border border-red-200"
+            >
+              <Text className="text-red-700 font-semibold">Delete</Text>
+            </Pressable>
           </View>
         </View>
       </ScrollView>
