@@ -4,6 +4,7 @@
   "workspaces": ["mobile", "server", "packages/*"],
   "scripts": {
     "start": "npm run start -w @rolltrack/mobile",
+    "start:clear": "npm run start -w @rolltrack/mobile -- --clear",
     "mobile": "npm run start -w @rolltrack/mobile",
     "android": "npm run android -w @rolltrack/mobile",
     "ios": "npm run ios -w @rolltrack/mobile",

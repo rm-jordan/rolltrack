@@ -13,4 +13,5 @@ config.resolver.nodeModulesPaths = [
   path.resolve(monorepoRoot, "node_modules"),
 ];
 
+// Relative input is correct when Expo is started with cwd = mobile (npm run start from repo root).
 module.exports = withNativeWind(config, { input: "./global.css" });
