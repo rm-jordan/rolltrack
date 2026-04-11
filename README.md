@@ -73,6 +73,19 @@ The API uses port **4000** by default; the process prints the exact URL (GraphQL
 | `npm run ios` / `android` / `web` | Expo for that platform |
 | `npm run server` | GraphQL API in watch mode |
 | `npm run lint` | Lint the mobile workspace |
+| `npm run test:mobile` | Jest tests for the mobile app (`*.test.ts` / `*.test.tsx`) |
+
+### Mobile unit tests
+
+Frontend tests use **Jest** with the **`jest-expo`** preset (aligned with the Expo SDK) and **`@testing-library/react-native`** for rendering components.
+
+```bash
+npm run test:mobile
+# or
+cd mobile && npm test
+```
+
+Config: `mobile/jest.config.js`. Tests live next to sources (e.g. `src/lib/config.test.ts`, `src/components/BeltIcon.test.tsx`).
 
 ## Development notes
 
