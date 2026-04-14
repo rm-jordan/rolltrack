@@ -68,12 +68,21 @@ The API uses port **4000** by default; the process prints the exact URL (GraphQL
 
 | Script | Purpose |
 |--------|---------|
+| `npm run dev` | Run mobile + server together in one terminal |
 | `npm start` / `npm run mobile` | Expo dev server (cwd `mobile/`) |
 | `npm run start:clear` | Expo with `--clear` |
 | `npm run ios` / `android` / `web` | Expo for that platform |
 | `npm run server` | GraphQL API in watch mode |
 | `npm run lint` | Lint the mobile workspace |
 | `npm run test:mobile` | Jest tests for the mobile app (`*.test.ts` / `*.test.tsx`) |
+
+### Run both services together
+
+```bash
+npm run dev
+```
+
+This starts the Expo app and GraphQL server in parallel.
 
 ### Mobile unit tests
 
