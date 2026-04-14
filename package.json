@@ -15,6 +15,7 @@
     "ios": "npm run ios -w @rolltrack/mobile",
     "web": "npm run web -w @rolltrack/mobile",
     "lint": "npm run lint -w @rolltrack/mobile",
+    "test:server": "npm run test -w @rolltrack/server",
     "test:mobile": "npm run test -w @rolltrack/mobile",
     "server": "npm run dev -w @rolltrack/server"
   },
