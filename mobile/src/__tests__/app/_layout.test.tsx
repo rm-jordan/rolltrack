@@ -1,7 +1,7 @@
 import { fireEvent, render, waitFor } from "@testing-library/react-native";
-import RootLayout from "./_layout";
+import RootLayout from "../../app/_layout";
 
-jest.mock("../../global.css", () => ({}), { virtual: true });
+jest.mock("../../../global.css", () => ({}), { virtual: true });
 
 const mockHydrateFromApi = jest
   .fn<Promise<void>, []>()

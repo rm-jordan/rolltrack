@@ -1,5 +1,5 @@
 import { fireEvent, render } from "@testing-library/react-native";
-import LibraryScreen from "./library";
+import LibraryScreen from "../../app/(tabs)/library";
 
 jest.mock("@expo/vector-icons/Ionicons", () => "Ionicons");
 
