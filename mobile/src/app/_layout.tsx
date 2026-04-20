@@ -1,6 +1,6 @@
 import { Stack } from "expo-router";
-import { useEffect, useState } from "react";
-import { ActivityIndicator, Pressable, Text, View } from "react-native";
+import { useEffect, useRef, useState } from "react";
+import { ActivityIndicator, Animated, Easing, Pressable, Text, View } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { useRollTrackStore } from "@/state/store";
 import "../../global.css";
@@ -8,6 +8,8 @@ import "../../global.css";
 export default function RootLayout() {
   const [ready, setReady] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
+  const [showIntro, setShowIntro] = useState(true);
+  const introOpacity = useRef(new Animated.Value(1)).current;
 
   const hydrate = async () => {
     setLoadError(null);
@@ -34,6 +36,30 @@ export default function RootLayout() {
       cancelled = true;
     };
   }, []);
+
+  useEffect(() => {
+    if (!ready || loadError || !showIntro) return;
+
+    const animation = Animated.sequence([
+      Animated.delay(1800),
+      Animated.timing(introOpacity, {
+        toValue: 0,
+        duration: 800,
+        easing: Easing.out(Easing.quad),
+        useNativeDriver: true,
+      }),
+    ]);
+
+    animation.start(({ finished }) => {
+      if (finished) {
+        setShowIntro(false);
+      }
+    });
+
+    return () => {
+      animation.stop();
+    };
+  }, [introOpacity, loadError, ready, showIntro]);
 
   if (!ready) {
     return (
@@ -79,7 +105,23 @@ export default function RootLayout() {
 
   return (
     <SafeAreaProvider>
-      <Stack screenOptions={{ headerShown: false }} />
+      <View className="flex-1">
+        <Stack screenOptions={{ headerShown: false }} />
+        {showIntro ? (
+          <Animated.View
+            style={{ opacity: introOpacity }}
+            className="absolute inset-0 bg-[#efedf8] items-center justify-center px-8"
+          >
+            <View className="h-16 w-16 rounded-3xl bg-violet-500 items-center justify-center">
+              <Text className="text-white text-3xl font-bold">R</Text>
+            </View>
+            <Text className="text-zinc-900 text-3xl font-bold mt-5">RollTrack</Text>
+            <Text className="text-zinc-600 text-center mt-3">
+              Log your sessions, review your techniques, and track your progress.
+            </Text>
+          </Animated.View>
+        ) : null}
+      </View>
     </SafeAreaProvider>
   );
 }

@@ -26,18 +26,11 @@ export default function HomeScreen() {
         contentContainerStyle={{ paddingHorizontal: 20, paddingTop: 12, paddingBottom: 24 }}
         showsVerticalScrollIndicator={false}
       >
-        <View className="items-center mt-2">
-          <View className="h-16 w-16 rounded-3xl bg-violet-500 items-center justify-center">
-            <Ionicons name="fitness" size={32} color="#ffffff" />
-          </View>
-          <Text className="text-zinc-900 text-3xl font-bold mt-4">RollTrack</Text>
-          <Text className="text-zinc-500 text-center mt-2 px-2">
-            Choose a belt guideline to see techniques. You can change anytime — belts organize learning, they do not
-            lock you in.
-          </Text>
+        <Text className="text-zinc-900 text-3xl font-bold mt-2 text-center">RollTrack</Text>
+        <View className="h-12 w-12 rounded-2xl bg-violet-500 items-center justify-center mt-3 self-center">
+          <Ionicons name="fitness" size={24} color="#ffffff" />
         </View>
-
-        <Text className="text-zinc-900 text-xl font-bold mt-8 mb-3">Belt tactics</Text>
+        <Text className="text-zinc-900 text-xl font-bold mt-4 mb-3">Belt tactics</Text>
 
         {beltButtons.map(({ level, subtitle, cardBg }) => (
           <Pressable
