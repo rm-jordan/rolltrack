@@ -48,6 +48,65 @@ Planned next focus areas discussed during development:
 ### Shared (`packages/shared/`)
 - Domain types and shared utilities used by both mobile and server
 
+## System Diagrams
+
+### Architecture Overview
+
+```mermaid
+flowchart LR
+  Mobile["Mobile App (Expo + React Native)"] -->|GraphQL queries/mutations| API["GraphQL API (Apollo Server)"]
+  API --> Prisma["Prisma ORM"]
+  Prisma --> DB[("SQLite DB")]
+  Shared["packages/shared"] --> Mobile
+  Shared --> API
+```
+
+### Runtime Data Flow
+
+```mermaid
+sequenceDiagram
+  participant User
+  participant Mobile as Mobile App
+  participant API as GraphQL API
+  participant DB as SQLite
+
+  User->>Mobile: Open app
+  Mobile->>API: hydrateFromApi() / { techniques, sessionLogs }
+  API->>DB: Read techniques + logs
+  DB-->>API: Result rows
+  API-->>Mobile: GraphQL response
+  Mobile-->>User: Render Home/Library/Learn/Log
+
+  User->>Mobile: Save log / create-edit-delete technique
+  Mobile->>API: GraphQL mutation
+  API->>DB: Write update
+  DB-->>API: Success
+  API-->>Mobile: Mutation response
+  Mobile->>API: Refresh data
+  Mobile-->>User: Updated UI state
+```
+
+### Navigation Map
+
+```mermaid
+flowchart TD
+  Splash["Intro Fade Overlay"] --> Home["Home (tabs/index)"]
+  Home --> LearnBelt["Learn by Belt (tabs/learn/[belt])"]
+  Home --> LearnAll["Learn (tabs/learn/index)"]
+  Home --> Library["Library (tabs/library)"]
+  Home --> Log["Training Log (tabs/log)"]
+  Library --> Detail["Technique Detail (technique/[id])"]
+  Detail --> Edit["Edit Technique (technique/edit/[id])"]
+  Library --> New["New Technique (technique/new)"]
+```
+
+### Roadmap Snapshot
+
+```mermaid
+flowchart LR
+  Now["Now<br/>- UX/UI polish<br/>- Intro fade tuning<br/>- State/empty/loading consistency"] --> Next["Next<br/>- Navigation refinements<br/>- More screen behavior tests"] --> Later["Later<br/>- Auth/security for non-local usage<br/>- Deployment + backup strategy<br/>- Broader end-to-end test coverage"]
+```
+
 ## Monorepo Structure
 
 | Path | Purpose |
