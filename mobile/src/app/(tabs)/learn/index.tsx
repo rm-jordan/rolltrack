@@ -5,6 +5,8 @@ import { useRouter } from "expo-router";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import type { BeltLevel } from "@rolltrack/shared";
 import BeltIcon from "@/components/BeltIcon";
+import EmptyStateCard from "@/components/EmptyStateCard";
+import ScreenHeader from "@/components/ScreenHeader";
 import TechniqueCard from "@/components/TechniqueCard";
 import { useRollTrackStore } from "@/state/store";
 
@@ -29,20 +31,12 @@ export default function LearnIndexScreen() {
   return (
     <SafeAreaView className="flex-1 bg-[#efedf8]" edges={["top", "left", "right", "bottom"]}>
       <ScrollView contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 16, paddingBottom: 24 }}>
-        <Pressable
-          onPress={goHome}
-          className="flex-row items-center self-start py-2 pr-4 mb-2"
-          accessibilityRole="button"
-          accessibilityLabel="Back to home"
-        >
-          <Ionicons name="chevron-back" size={22} color="#3f3f46" />
-          <Text className="text-zinc-800 ml-1 font-semibold">Home</Text>
-        </Pressable>
-
-        <Text className="text-zinc-900 text-3xl font-bold">Learn</Text>
-        <Text className="text-zinc-500 mt-2">
-          Belt levels are guidelines for learning, not rules. Open a belt from Home for a focused list.
-        </Text>
+        <ScreenHeader
+          title="Learn"
+          subtitle="Belt levels are guidelines for learning, not rules. Open a belt from Home for a focused list."
+          onBack={goHome}
+          backLabel="Home"
+        />
 
         <View className="mt-4 rounded-3xl border border-violet-200 bg-white p-4">
           <View className="flex-row items-center">
@@ -81,7 +75,12 @@ export default function LearnIndexScreen() {
 
         <View className="mt-2">
           {filteredTechniques.length === 0 ? (
-            <Text className="text-zinc-500 mt-2">No techniques for this filter.</Text>
+            <EmptyStateCard
+              title="No techniques yet"
+              message="No techniques are tagged for this belt filter right now."
+              actionLabel="Show all belts"
+              onAction={() => setSelectedBelt("All")}
+            />
           ) : (
             filteredTechniques.map((technique) => (
               <TechniqueCard

@@ -6,6 +6,8 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import type { BeltLevel } from "@rolltrack/shared";
 import BeltIcon from "@/components/BeltIcon";
 import TechniqueCard from "@/components/TechniqueCard";
+import EmptyStateCard from "@/components/EmptyStateCard";
+import ScreenHeader from "@/components/ScreenHeader";
 import { useRollTrackStore } from "@/state/store";
 
 type SortKey = "recent" | "practice" | "name";
@@ -61,28 +63,13 @@ export default function LibraryScreen() {
   return (
     <SafeAreaView className="flex-1 bg-[#efedf8]" edges={["top", "left", "right", "bottom"]}>
       <ScrollView contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 16, paddingBottom: 24 }}>
-        <Pressable
-          onPress={goHome}
-          className="flex-row items-center self-start py-2 pr-4 mb-2"
-          accessibilityRole="button"
-          accessibilityLabel="Back to home"
-        >
-          <Ionicons name="chevron-back" size={22} color="#3f3f46" />
-          <Text className="text-zinc-800 ml-1 font-semibold">Home</Text>
-        </Pressable>
-
-        <View className="flex-row items-start justify-between gap-3">
-          <View className="flex-1">
-            <Text className="text-zinc-900 text-3xl font-bold">Library</Text>
-            <Text className="text-zinc-500 mt-2">Search and filter your techniques.</Text>
-          </View>
-          <Pressable
-            onPress={() => router.push("/technique/new")}
-            className="rounded-2xl bg-emerald-500 px-4 py-3 border border-emerald-400"
-          >
-            <Text className="text-white font-semibold text-sm">Add move</Text>
-          </Pressable>
-        </View>
+        <ScreenHeader
+          title="Library"
+          subtitle="Search and filter your techniques."
+          onBack={goHome}
+          backLabel="Home"
+          rightAction={{ label: "Add move", onPress: () => router.push("/technique/new") }}
+        />
 
         <View className="mt-4 rounded-3xl border border-cyan-200 bg-white p-4">
           <View className="flex-row items-center">
@@ -152,7 +139,16 @@ export default function LibraryScreen() {
         </Text>
 
         {filteredTechniques.length === 0 ? (
-          <Text className="text-zinc-500 mt-2">No techniques match your filters.</Text>
+          <EmptyStateCard
+            title="No matching techniques"
+            message="Try clearing search text or switching belt/sort filters."
+            actionLabel="Reset filters"
+            onAction={() => {
+              setSearchQuery("");
+              setSelectedBelt("All");
+              setSortBy("recent");
+            }}
+          />
         ) : (
           filteredTechniques.map((technique) => (
             <TechniqueCard

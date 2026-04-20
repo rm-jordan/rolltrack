@@ -1,10 +1,11 @@
-import Ionicons from "@expo/vector-icons/Ionicons";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useMemo } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import type { BeltLevel } from "@rolltrack/shared";
 import BeltIcon from "@/components/BeltIcon";
+import EmptyStateCard from "@/components/EmptyStateCard";
+import ScreenHeader from "@/components/ScreenHeader";
 import TechniqueCard from "@/components/TechniqueCard";
 import { useRollTrackStore } from "@/state/store";
 
@@ -36,11 +37,7 @@ export default function BeltTechniquesScreen() {
     return (
       <SafeAreaView className="flex-1 bg-[#efedf8]" edges={["top", "left", "right", "bottom"]}>
         <View className="px-5 pt-4">
-          <Pressable onPress={goHome} className="flex-row items-center mb-4">
-            <Ionicons name="chevron-back" size={22} color="#3f3f46" />
-            <Text className="text-zinc-800 ml-1 font-medium">Home</Text>
-          </Pressable>
-          <Text className="text-zinc-900 text-lg">Unknown belt level.</Text>
+          <ScreenHeader title="Unknown belt level" onBack={goHome} backLabel="Home" />
         </View>
       </SafeAreaView>
     );
@@ -49,17 +46,9 @@ export default function BeltTechniquesScreen() {
   return (
     <SafeAreaView className="flex-1 bg-[#efedf8]" edges={["top", "left", "right", "bottom"]}>
       <ScrollView contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 12, paddingBottom: 24 }}>
-        <Pressable
-          onPress={goHome}
-          className="flex-row items-center self-start py-2 pr-4 mb-2"
-          accessibilityRole="button"
-          accessibilityLabel="Back to belt home"
-        >
-          <Ionicons name="chevron-back" size={22} color="#3f3f46" />
-          <Text className="text-zinc-800 ml-1 font-semibold">Belt home</Text>
-        </Pressable>
+        <ScreenHeader title={`${belt} belt`} onBack={goHome} backLabel="Belt home" />
 
-        <View className="flex-row items-center">
+        <View className="flex-row items-center mt-2">
           <BeltIcon belt={belt} size="lg" />
           <Text className="text-zinc-900 text-3xl font-bold ml-3">{belt} belt</Text>
         </View>
@@ -69,7 +58,12 @@ export default function BeltTechniquesScreen() {
 
         <View className="mt-4">
           {filtered.length === 0 ? (
-            <Text className="text-zinc-500 mt-2">No techniques in the library for this belt yet.</Text>
+            <EmptyStateCard
+              title="No techniques for this belt"
+              message="Add techniques in Library and tag them with this belt guideline."
+              actionLabel="Go to library"
+              onAction={() => router.push("/(tabs)/library")}
+            />
           ) : (
             filtered.map((technique) => (
               <TechniqueCard
