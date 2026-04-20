@@ -1,0 +1,48 @@
+import { fireEvent, render, waitFor } from "@testing-library/react-native";
+import RootLayout from "./_layout";
+
+jest.mock("../../global.css", () => ({}), { virtual: true });
+
+const mockHydrateFromApi = jest
+  .fn<Promise<void>, []>()
+  .mockRejectedValueOnce(new TypeError("Network request failed"))
+  .mockResolvedValueOnce(undefined);
+
+const mockStoreState = {
+  hydrateFromApi: mockHydrateFromApi,
+};
+
+jest.mock("expo-router", () => {
+  const Stack = () => null;
+  Stack.Screen = () => null;
+  return { Stack };
+});
+
+jest.mock("react-native-safe-area-context", () => ({
+  SafeAreaProvider: ({ children }: { children: unknown }) => children,
+}));
+
+jest.mock("@/state/store", () => {
+  const hook = (selector: (state: typeof mockStoreState) => unknown) => selector(mockStoreState);
+  (hook as unknown as { getState: () => typeof mockStoreState }).getState = () => mockStoreState;
+  return { useRollTrackStore: hook };
+});
+
+describe("RootLayout retry state", () => {
+  beforeEach(() => {
+    mockHydrateFromApi.mockClear();
+    mockHydrateFromApi
+      .mockRejectedValueOnce(new TypeError("Network request failed"))
+      .mockResolvedValueOnce(undefined);
+  });
+
+  it("shows error then retries successfully", async () => {
+    const { getByText, queryByText } = render(<RootLayout />);
+
+    await waitFor(() => expect(getByText("Cannot connect to API")).toBeTruthy());
+    fireEvent.press(getByText("Retry"));
+
+    await waitFor(() => expect(queryByText("Cannot connect to API")).toBeNull());
+    expect(mockHydrateFromApi).toHaveBeenCalledTimes(2);
+  });
+});
