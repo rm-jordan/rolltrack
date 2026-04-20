@@ -1,7 +1,7 @@
 # RollTrack
 
-RollTrack is a training companion for Brazilian Jiu-Jitsu.  
-It helps you log sessions, manage your technique library, and track practice over time by belt guideline.
+RollTrack is a training companion for Brazilian Jiu-Jitsu currently in active development.  
+The app build is ongoing as we iterate on UX and core training workflows.
 
 ## What The App Does
 
@@ -10,6 +10,24 @@ It helps you log sessions, manage your technique library, and track practice ove
 - Track practice count and last-practiced date for techniques
 - Filter and browse by belt guideline
 - Use a clean mobile-first UI with short intro fade on app load
+
+## Future Plans
+
+Planned next focus areas discussed during development:
+
+- UX/UI polish pass across all screens
+  - tighter spacing rhythm
+  - stronger hierarchy for CTAs
+  - improved transitions and interaction feedback
+- Continue refining startup intro/fade experience
+  - potential first-run-only behavior
+  - optional skip interaction
+- Expanded state coverage
+  - richer empty/loading/error/success feedback on every screen
+- Navigation polish
+  - consistent back behavior and context-aware headers
+- Additional test coverage
+  - more screen behavior tests and end-to-end API flow tests
 
 ## Tech Stack
 
@@ -125,24 +143,6 @@ Server:
 ```bash
 npm run test:server
 ```
-
-## Future Plans
-
-Planned next focus areas discussed during development:
-
-- UX/UI polish pass across all screens
-  - tighter spacing rhythm
-  - stronger hierarchy for CTAs
-  - improved transitions and interaction feedback
-- Continue refining startup intro/fade experience
-  - potential first-run-only behavior
-  - optional skip interaction
-- Expanded state coverage
-  - richer empty/loading/error/success feedback on every screen
-- Navigation polish
-  - consistent back behavior and context-aware headers
-- Additional test coverage
-  - more screen behavior tests and end-to-end API flow tests
 
 ---
 
