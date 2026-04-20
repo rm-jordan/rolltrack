@@ -28,6 +28,9 @@ Planned next focus areas discussed during development:
   - consistent back behavior and context-aware headers
 - Additional test coverage
   - more screen behavior tests and end-to-end API flow tests
+- Potential taxonomy update for technique organization
+  - move from belt-based grouping to level-based grouping (Beginner / Intermediate / Advanced)
+  - optional split between Gi and No-Gi technique tracks
 
 ## Tech Stack
 
