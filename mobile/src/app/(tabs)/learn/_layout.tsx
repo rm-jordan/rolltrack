@@ -4,7 +4,7 @@ export default function LearnStackLayout() {
   return (
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="index" />
-      <Stack.Screen name="[belt]" />
+      <Stack.Screen name="[level]" />
     </Stack>
   );
 }

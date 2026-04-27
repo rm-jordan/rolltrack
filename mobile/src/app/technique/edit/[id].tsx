@@ -3,12 +3,10 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import { useMemo, useState } from "react";
 import { Alert, Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import type { BeltLevel, TechniqueCategory, TechniqueLevel } from "@rolltrack/shared";
-import BeltIcon from "@/components/BeltIcon";
-import { LEVELS, levelFromBelt, techniqueLevel } from "@/lib/techniqueLevel";
+import type { TechniqueCategory, TechniqueLevel } from "@rolltrack/shared";
+import { beltFromLevel, LEVELS, techniqueLevel } from "@/lib/techniqueLevel";
 import { useRollTrackStore } from "@/state/store";
 
-const BELTS: BeltLevel[] = ["White", "Blue", "Purple", "Brown", "Black"];
 const LEVEL_BG: Record<TechniqueLevel, string> = {
   Beginner: "bg-emerald-600 border-emerald-500",
   Intermediate: "bg-cyan-600 border-cyan-500",
@@ -41,7 +39,6 @@ export default function EditTechniqueScreen() {
   const [name, setName] = useState(technique?.name ?? "");
   const [position, setPosition] = useState(technique?.position ?? "");
   const [category, setCategory] = useState<TechniqueCategory>(technique?.category ?? "Submission");
-  const [belt, setBelt] = useState<BeltLevel>(technique?.beltGuideline ?? "White");
   const [level, setLevel] = useState<TechniqueLevel>(
     technique ? techniqueLevel(technique) : "Beginner",
   );
@@ -76,7 +73,7 @@ export default function EditTechniqueScreen() {
         name: n,
         position: p,
         category,
-        beltGuideline: belt,
+        beltGuideline: beltFromLevel(level),
         level,
         tags: parseTags(tagsRaw),
         notes: notes.trim() || null,
@@ -128,30 +125,6 @@ export default function EditTechniqueScreen() {
                 className={`rounded-full px-3 py-2 border ${active ? "bg-violet-600 border-violet-500" : "bg-white border-zinc-200"}`}
               >
                 <Text className={`text-sm font-medium ${active ? "text-white" : "text-zinc-700"}`}>{c}</Text>
-              </Pressable>
-            );
-          })}
-        </View>
-
-        <Text className="text-zinc-700 font-medium mt-4 mb-2">Belt guideline</Text>
-        <View className="flex-row flex-wrap gap-2">
-          {BELTS.map((b) => {
-            const active = belt === b;
-            return (
-              <Pressable
-                key={b}
-                onPress={() => {
-                  setBelt(b);
-                  setLevel(levelFromBelt(b));
-                }}
-                className={`flex-row items-center rounded-full px-3 py-2 border ${
-                  active ? "bg-emerald-600 border-emerald-500" : "bg-white border-zinc-200"
-                }`}
-              >
-                <BeltIcon belt={b} size="xs" />
-                <Text className={`ml-1.5 text-sm font-medium ${active ? "text-white" : "text-zinc-700"}`}>
-                  {b}
-                </Text>
               </Pressable>
             );
           })}

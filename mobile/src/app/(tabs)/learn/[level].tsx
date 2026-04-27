@@ -8,9 +8,9 @@ import TechniqueCard from "@/components/TechniqueCard";
 import { normalizeLevel, techniqueLevel } from "@/lib/techniqueLevel";
 import { useRollTrackStore } from "@/state/store";
 
-export default function BeltTechniquesScreen() {
+export default function LevelTechniquesScreen() {
   const router = useRouter();
-  const { belt: levelParam } = useLocalSearchParams<{ belt: string }>();
+  const { level: levelParam } = useLocalSearchParams<{ level: string }>();
   const techniques = useRollTrackStore((state) => state.techniques);
 
   const level = normalizeLevel(levelParam);

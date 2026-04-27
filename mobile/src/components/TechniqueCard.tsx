@@ -1,6 +1,5 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Pressable, Text, View } from "react-native";
-import BeltIcon from "./BeltIcon";
 import type { Technique } from "@rolltrack/shared";
 import { techniqueLevel } from "@/lib/techniqueLevel";
 
@@ -44,9 +43,8 @@ export default function TechniqueCard({ technique, onPress }: TechniqueCardProps
           </Text>
         </View>
 
-        <View className="flex-row items-center bg-zinc-50 border border-zinc-200 pl-2 pr-2 py-1 rounded-full">
-          <BeltIcon belt={technique.beltGuideline} size="xs" />
-          <Text className="text-zinc-800 text-xs font-medium ml-1.5">{level}</Text>
+        <View className="flex-row items-center bg-zinc-50 border border-zinc-200 px-2 py-1 rounded-full">
+          <Text className="text-zinc-800 text-xs font-medium">{level}</Text>
         </View>
       </View>
 

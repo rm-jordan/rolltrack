@@ -15,6 +15,17 @@ export function levelFromBelt(belt: BeltLevel): TechniqueLevel {
   }
 }
 
+export function beltFromLevel(level: TechniqueLevel): BeltLevel {
+  switch (level) {
+    case "Beginner":
+      return "White";
+    case "Intermediate":
+      return "Purple";
+    case "Advanced":
+      return "Black";
+  }
+}
+
 export function techniqueLevel(technique: Technique): TechniqueLevel {
   return technique.level ?? levelFromBelt(technique.beltGuideline);
 }
