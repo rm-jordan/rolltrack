@@ -10,8 +10,7 @@ export const typeDefs = `#graphql
     name: String!
     position: String!
     category: String!
-    beltGuideline: String!
-    level: String
+    level: String!
     tags: [String!]!
     notes: String
     timesPracticed: Int!
@@ -54,8 +53,7 @@ export const typeDefs = `#graphql
     name: String!
     position: String!
     category: String!
-    beltGuideline: String!
-    level: String
+    level: String!
     tags: [String!]
     notes: String
   }
@@ -64,7 +62,6 @@ export const typeDefs = `#graphql
     name: String
     position: String
     category: String
-    beltGuideline: String
     level: String
     tags: [String!]
     notes: String

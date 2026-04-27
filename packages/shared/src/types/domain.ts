@@ -1,4 +1,3 @@
-export type BeltLevel = "White" | "Blue" | "Purple" | "Brown" | "Black";
 export type TechniqueLevel = "Beginner" | "Intermediate" | "Advanced";
 
 export type SessionGiType = "Gi" | "No-Gi";
@@ -18,8 +17,7 @@ export type Technique = {
   name: string;
   position: string;
   category: TechniqueCategory;
-  beltGuideline: BeltLevel;
-  level?: TechniqueLevel;
+  level: TechniqueLevel;
   tags: string[];
   notes?: string;
   timesPracticed: number;

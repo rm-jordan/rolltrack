@@ -14,7 +14,10 @@ const mockStoreState = {
 
 jest.mock("expo-router", () => {
   const Stack = () => null;
-  Stack.Screen = () => null;
+  Stack.displayName = "MockStack";
+  const Screen = () => null;
+  Screen.displayName = "MockStackScreen";
+  Stack.Screen = Screen;
   return { Stack };
 });
 

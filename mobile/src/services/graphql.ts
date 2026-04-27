@@ -28,7 +28,6 @@ const TECHNIQUE_FIELDS = `
   name
   position
   category
-  beltGuideline
   level
   tags
   notes
@@ -41,8 +40,7 @@ function mapTechnique(raw: {
   name: string;
   position: string;
   category: string;
-  beltGuideline: string;
-  level: string | null;
+  level: string;
   tags: string[];
   notes: string | null;
   timesPracticed: number;
@@ -53,8 +51,7 @@ function mapTechnique(raw: {
     name: raw.name,
     position: raw.position,
     category: raw.category as TechniqueCategory,
-    beltGuideline: raw.beltGuideline as Technique["beltGuideline"],
-    level: (raw.level ?? undefined) as TechniqueLevel | undefined,
+    level: raw.level as TechniqueLevel,
     tags: raw.tags ?? [],
     notes: raw.notes ?? undefined,
     timesPracticed: raw.timesPracticed,
@@ -145,8 +142,7 @@ export async function apiCreateTechnique(input: {
   name: string;
   position: string;
   category: string;
-  beltGuideline: string;
-  level?: string;
+  level: string;
   tags: string[];
   notes?: string;
 }): Promise<Technique> {
@@ -156,7 +152,7 @@ export async function apiCreateTechnique(input: {
       createTechnique(input: $input) { ${TECHNIQUE_FIELDS} }
     }
   `,
-    { input: { ...input, level: input.level ?? null, tags: input.tags, notes: input.notes ?? null } },
+    { input: { ...input, tags: input.tags, notes: input.notes ?? null } },
   );
   return mapTechnique(data.createTechnique);
 }
@@ -167,8 +163,7 @@ export async function apiUpdateTechnique(
     name: string;
     position: string;
     category: string;
-    beltGuideline: string;
-    level: string | null;
+    level: string;
     tags: string[];
     notes: string | null;
   }>,

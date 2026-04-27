@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { Alert, Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import type { TechniqueCategory, TechniqueLevel } from "@rolltrack/shared";
-import { beltFromLevel, LEVELS, techniqueLevel } from "@/lib/techniqueLevel";
+import { LEVELS, techniqueLevel } from "@/lib/techniqueLevel";
 import { useRollTrackStore } from "@/state/store";
 
 const LEVEL_BG: Record<TechniqueLevel, string> = {
@@ -73,7 +73,6 @@ export default function EditTechniqueScreen() {
         name: n,
         position: p,
         category,
-        beltGuideline: beltFromLevel(level),
         level,
         tags: parseTags(tagsRaw),
         notes: notes.trim() || null,

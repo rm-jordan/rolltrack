@@ -28,8 +28,7 @@ type CreateTechniqueInput = {
   name: string;
   position: string;
   category: string;
-  beltGuideline: string;
-  level?: string | null;
+  level: string;
   tags?: string[] | null;
   notes?: string | null;
 };
@@ -38,8 +37,7 @@ type UpdateTechniqueInput = {
   name?: string | null;
   position?: string | null;
   category?: string | null;
-  beltGuideline?: string | null;
-  level?: string | null;
+  level?: string;
   tags?: string[] | null;
   notes?: string | null;
 };
@@ -113,8 +111,7 @@ export const resolvers = {
           name: args.input.name,
           position: args.input.position,
           category: args.input.category,
-          beltGuideline: args.input.beltGuideline,
-          ...(args.input.level !== undefined ? { level: args.input.level } : {}),
+          level: args.input.level,
           tags: args.input.tags ?? [],
           notes: args.input.notes ?? null,
           timesPracticed: 0,
@@ -131,9 +128,6 @@ export const resolvers = {
           ...(input.name !== undefined && input.name !== null ? { name: input.name } : {}),
           ...(input.position !== undefined && input.position !== null ? { position: input.position } : {}),
           ...(input.category !== undefined && input.category !== null ? { category: input.category } : {}),
-          ...(input.beltGuideline !== undefined && input.beltGuideline !== null
-            ? { beltGuideline: input.beltGuideline }
-            : {}),
           ...(input.level !== undefined ? { level: input.level } : {}),
           ...(input.tags !== undefined ? { tags: input.tags ?? [] } : {}),
           ...(input.notes !== undefined ? { notes: input.notes } : {}),

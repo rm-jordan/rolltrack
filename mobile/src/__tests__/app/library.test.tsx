@@ -11,7 +11,7 @@ const technique = {
   name: "Armbar",
   position: "Guard",
   category: "Submission",
-  beltGuideline: "Blue",
+  level: "Beginner",
   tags: ["fundamental"],
   notes: null,
   timesPracticed: 0,

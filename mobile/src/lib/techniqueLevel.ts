@@ -1,33 +1,9 @@
-import type { BeltLevel, Technique, TechniqueLevel } from "@rolltrack/shared";
+import type { Technique, TechniqueLevel } from "@rolltrack/shared";
 
 export const LEVELS: TechniqueLevel[] = ["Beginner", "Intermediate", "Advanced"];
 
-export function levelFromBelt(belt: BeltLevel): TechniqueLevel {
-  switch (belt) {
-    case "White":
-    case "Blue":
-      return "Beginner";
-    case "Purple":
-    case "Brown":
-      return "Intermediate";
-    case "Black":
-      return "Advanced";
-  }
-}
-
-export function beltFromLevel(level: TechniqueLevel): BeltLevel {
-  switch (level) {
-    case "Beginner":
-      return "White";
-    case "Intermediate":
-      return "Purple";
-    case "Advanced":
-      return "Black";
-  }
-}
-
 export function techniqueLevel(technique: Technique): TechniqueLevel {
-  return technique.level ?? levelFromBelt(technique.beltGuideline);
+  return technique.level;
 }
 
 export function normalizeLevel(raw: string | string[] | undefined): TechniqueLevel | null {

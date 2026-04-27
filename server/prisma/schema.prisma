@@ -12,8 +12,7 @@ model Technique {
   name           String
   position       String
   category       String
-  beltGuideline  String
-  level          String?
+  level          String
   tags           Json
   notes          String?
   timesPracticed Int     @default(0)
