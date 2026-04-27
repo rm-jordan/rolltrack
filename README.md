@@ -3,12 +3,21 @@
 RollTrack is a training companion for Brazilian Jiu-Jitsu currently in active development.  
 The app build is ongoing as we iterate on UX and core training workflows.
 
+## Recent Changes
+
+- Removed belt-based taxonomy from active code paths.
+- Standardized techniques on required `level` values: `Beginner`, `Intermediate`, `Advanced`.
+- Updated GraphQL schema/resolvers and mobile data layer to level-only technique inputs/outputs.
+- Applied Prisma migration to remove `Technique.beltGuideline` and keep `Technique.level` as required.
+- Removed belt icon/color UI components and related tests.
+- Updated navigation to level route (`tabs/learn/[level]`).
+
 ## What The App Does
 
 - Create, update, and delete techniques
 - Log training sessions with notes and practiced techniques
 - Track practice count and last-practiced date for techniques
-- Filter and browse by belt guideline
+- Filter and browse by technique level (`Beginner`, `Intermediate`, `Advanced`)
 - Use a clean mobile-first UI with short intro fade on app load
 
 ## Future Plans
@@ -28,9 +37,9 @@ Planned next focus areas discussed during development:
   - consistent back behavior and context-aware headers
 - Additional test coverage
   - more screen behavior tests and end-to-end API flow tests
-- Potential taxonomy update for technique organization
-  - move from belt-based grouping to level-based grouping (Beginner / Intermediate / Advanced)
-  - optional split between Gi and No-Gi technique tracks
+- Ongoing content/model tuning
+  - refine level tagging quality across techniques
+  - expand level-driven discovery and recommendations
 
 ## Tech Stack
 
@@ -82,6 +91,7 @@ sequenceDiagram
 
   User->>Mobile: Save log / create-edit-delete technique
   Mobile->>API: GraphQL mutation
+  Note over Mobile,API: Technique payloads now use level only
   API->>DB: Write update
   DB-->>API: Success
   API-->>Mobile: Mutation response
@@ -94,7 +104,7 @@ sequenceDiagram
 ```mermaid
 flowchart TD
   Splash["Intro Fade Overlay"] --> Home["Home (tabs/index)"]
-  Home --> LearnBelt["Learn by Belt (tabs/learn/[belt])"]
+  Home --> LearnLevel["Learn by Level (tabs/learn/[level])"]
   Home --> LearnAll["Learn (tabs/learn/index)"]
   Home --> Library["Library (tabs/library)"]
   Home --> Log["Training Log (tabs/log)"]
@@ -107,7 +117,17 @@ flowchart TD
 
 ```mermaid
 flowchart LR
-  Now["Now<br/>- UX/UI polish<br/>- Intro fade tuning<br/>- State/empty/loading consistency"] --> Next["Next<br/>- Navigation refinements<br/>- More screen behavior tests"] --> Later["Later<br/>- Auth/security for non-local usage<br/>- Deployment + backup strategy<br/>- Broader end-to-end test coverage"]
+  Now["Now<br/>- Level-only taxonomy live<br/>- Belt code removed<br/>- Prisma migration applied"] --> Next["Next<br/>- UX/UI polish pass<br/>- Navigation refinements<br/>- Expanded screen behavior tests"] --> Later["Later<br/>- Auth/security for non-local usage<br/>- Deployment + backup strategy<br/>- Broader end-to-end test coverage"]
+```
+
+### Technique Taxonomy (Current)
+
+```mermaid
+flowchart LR
+  Technique["Technique"] --> Level["level (required)"]
+  Level --> Beginner["Beginner"]
+  Level --> Intermediate["Intermediate"]
+  Level --> Advanced["Advanced"]
 ```
 
 ## Monorepo Structure
@@ -180,6 +200,7 @@ cd server && cp .env.example .env && npm run prisma:migrate && npx prisma db see
 - The mobile app fetches data from the GraphQL API (`mobile/src/services/graphql.ts`)
 - The API reads/writes SQLite via Prisma (`server/prisma/`)
 - Mobile does not currently use local SQLite persistence for runtime data
+- Technique taxonomy is level-only end-to-end (`level` required in shared types, GraphQL, and DB)
 
 ## Useful Scripts
 
