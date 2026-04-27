@@ -35,6 +35,7 @@ type RollTrackState = {
     position: string;
     category: string;
     beltGuideline: string;
+    level?: string;
     tags: string[];
     notes?: string;
   }) => Promise<void>;
@@ -45,6 +46,7 @@ type RollTrackState = {
       position: string;
       category: string;
       beltGuideline: string;
+      level: string | null;
       tags: string[];
       notes: string | null;
     }>,

@@ -11,6 +11,7 @@ export const typeDefs = `#graphql
     position: String!
     category: String!
     beltGuideline: String!
+    level: String
     tags: [String!]!
     notes: String
     timesPracticed: Int!
@@ -54,6 +55,7 @@ export const typeDefs = `#graphql
     position: String!
     category: String!
     beltGuideline: String!
+    level: String
     tags: [String!]
     notes: String
   }
@@ -63,6 +65,7 @@ export const typeDefs = `#graphql
     position: String
     category: String
     beltGuideline: String
+    level: String
     tags: [String!]
     notes: String
   }

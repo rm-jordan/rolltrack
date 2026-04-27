@@ -1,4 +1,4 @@
-import type { SessionLog, Technique, TechniqueCategory } from "@rolltrack/shared";
+import type { SessionLog, Technique, TechniqueCategory, TechniqueLevel } from "@rolltrack/shared";
 import { getGraphqlUrl } from "@/lib/config";
 
 type GraphqlResponse<T> = { data?: T; errors?: { message: string }[] };
@@ -29,6 +29,7 @@ const TECHNIQUE_FIELDS = `
   position
   category
   beltGuideline
+  level
   tags
   notes
   timesPracticed
@@ -41,6 +42,7 @@ function mapTechnique(raw: {
   position: string;
   category: string;
   beltGuideline: string;
+  level: string | null;
   tags: string[];
   notes: string | null;
   timesPracticed: number;
@@ -52,6 +54,7 @@ function mapTechnique(raw: {
     position: raw.position,
     category: raw.category as TechniqueCategory,
     beltGuideline: raw.beltGuideline as Technique["beltGuideline"],
+    level: (raw.level ?? undefined) as TechniqueLevel | undefined,
     tags: raw.tags ?? [],
     notes: raw.notes ?? undefined,
     timesPracticed: raw.timesPracticed,
@@ -143,6 +146,7 @@ export async function apiCreateTechnique(input: {
   position: string;
   category: string;
   beltGuideline: string;
+  level?: string;
   tags: string[];
   notes?: string;
 }): Promise<Technique> {
@@ -152,7 +156,7 @@ export async function apiCreateTechnique(input: {
       createTechnique(input: $input) { ${TECHNIQUE_FIELDS} }
     }
   `,
-    { input: { ...input, tags: input.tags, notes: input.notes ?? null } },
+    { input: { ...input, level: input.level ?? null, tags: input.tags, notes: input.notes ?? null } },
   );
   return mapTechnique(data.createTechnique);
 }
@@ -164,6 +168,7 @@ export async function apiUpdateTechnique(
     position: string;
     category: string;
     beltGuideline: string;
+    level: string | null;
     tags: string[];
     notes: string | null;
   }>,

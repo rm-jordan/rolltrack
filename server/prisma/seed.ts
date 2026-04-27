@@ -1,7 +1,21 @@
 import { PrismaClient } from "@prisma/client";
+import type { BeltLevel, TechniqueLevel } from "@rolltrack/shared";
 import { sessionLogs, techniques } from "@rolltrack/shared";
 
 const prisma = new PrismaClient();
+
+function levelFromBelt(belt: BeltLevel): TechniqueLevel {
+  switch (belt) {
+    case "White":
+    case "Blue":
+      return "Beginner";
+    case "Purple":
+    case "Brown":
+      return "Intermediate";
+    case "Black":
+      return "Advanced";
+  }
+}
 
 async function main() {
   await prisma.sessionLog.deleteMany();
@@ -15,6 +29,7 @@ async function main() {
         position: tech.position,
         category: tech.category,
         beltGuideline: tech.beltGuideline,
+        level: tech.level ?? levelFromBelt(tech.beltGuideline),
         tags: tech.tags,
         notes: tech.notes ?? null,
         timesPracticed: tech.timesPracticed,

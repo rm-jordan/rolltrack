@@ -29,6 +29,7 @@ type CreateTechniqueInput = {
   position: string;
   category: string;
   beltGuideline: string;
+  level?: string | null;
   tags?: string[] | null;
   notes?: string | null;
 };
@@ -38,6 +39,7 @@ type UpdateTechniqueInput = {
   position?: string | null;
   category?: string | null;
   beltGuideline?: string | null;
+  level?: string | null;
   tags?: string[] | null;
   notes?: string | null;
 };
@@ -112,6 +114,7 @@ export const resolvers = {
           position: args.input.position,
           category: args.input.category,
           beltGuideline: args.input.beltGuideline,
+          ...(args.input.level !== undefined ? { level: args.input.level } : {}),
           tags: args.input.tags ?? [],
           notes: args.input.notes ?? null,
           timesPracticed: 0,
@@ -131,6 +134,7 @@ export const resolvers = {
           ...(input.beltGuideline !== undefined && input.beltGuideline !== null
             ? { beltGuideline: input.beltGuideline }
             : {}),
+          ...(input.level !== undefined ? { level: input.level } : {}),
           ...(input.tags !== undefined ? { tags: input.tags ?? [] } : {}),
           ...(input.notes !== undefined ? { notes: input.notes } : {}),
         },

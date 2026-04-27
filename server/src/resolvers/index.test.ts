@@ -54,6 +54,7 @@ describe("server resolvers", () => {
         id: "tech-1",
         input: {
           name: "Guard Retention",
+          level: "Beginner",
           tags: null,
           notes: "drill daily",
           position: null,
@@ -65,6 +66,7 @@ describe("server resolvers", () => {
       where: { id: "tech-1" },
       data: {
         name: "Guard Retention",
+        level: "Beginner",
         tags: [],
         notes: "drill daily",
       },
