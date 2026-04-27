@@ -3,6 +3,7 @@ import { type Href, useLocalSearchParams, useRouter } from "expo-router";
 import { Alert, Pressable, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import BeltIcon from "@/components/BeltIcon";
+import { techniqueLevel } from "@/lib/techniqueLevel";
 import { useRollTrackStore } from "@/state/store";
 
 export default function TechniqueDetailScreen() {
@@ -11,6 +12,7 @@ export default function TechniqueDetailScreen() {
   const techniques = useRollTrackStore((state) => state.techniques);
   const deleteTechnique = useRollTrackStore((state) => state.deleteTechnique);
   const technique = techniques.find((item) => item.id === id);
+  const level = technique ? techniqueLevel(technique) : null;
 
   const onDelete = () => {
     if (!id) return;
@@ -55,7 +57,7 @@ export default function TechniqueDetailScreen() {
 
         <View className="rounded-3xl border border-zinc-200 bg-white p-6 mb-4 items-center justify-center">
           <BeltIcon belt={technique.beltGuideline} size="lg" />
-          <Text className="text-zinc-500 text-xs mt-3">Belt guideline</Text>
+          <Text className="text-zinc-500 text-xs mt-3">Technique level: {level}</Text>
         </View>
 
         <View className="bg-white border border-zinc-200 rounded-3xl p-5">
@@ -63,7 +65,7 @@ export default function TechniqueDetailScreen() {
             <Text className="text-zinc-900 text-2xl font-bold flex-1 pr-3">{technique.name}</Text>
             <View className="flex-row items-center bg-zinc-50 border border-zinc-200 rounded-full pl-2 pr-3 py-1.5">
               <BeltIcon belt={technique.beltGuideline} size="xs" />
-              <Text className="text-zinc-800 text-xs font-medium ml-1.5">{technique.beltGuideline}</Text>
+              <Text className="text-zinc-800 text-xs font-medium ml-1.5">{level}</Text>
             </View>
           </View>
 
@@ -72,9 +74,9 @@ export default function TechniqueDetailScreen() {
           </Text>
 
           <View className="bg-zinc-50 rounded-2xl p-4 mt-4 border border-zinc-100">
-            <Text className="text-zinc-500 text-xs">Belt guideline</Text>
+            <Text className="text-zinc-500 text-xs">Technique level</Text>
             <Text className="text-zinc-700 mt-1 text-sm">
-              This belt level is a recommendation for organizing learning, not a strict rule.
+              This level is a recommendation for organizing progression, not a strict rule.
             </Text>
           </View>
 

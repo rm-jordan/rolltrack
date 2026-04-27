@@ -7,4 +7,5 @@ export type {
   SessionType,
   Technique,
   TechniqueCategory,
+  TechniqueLevel,
 } from "@rolltrack/shared";

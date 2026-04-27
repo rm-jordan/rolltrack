@@ -2,21 +2,18 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { useRouter } from "expo-router";
 import { Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import type { BeltLevel } from "@rolltrack/shared";
-import BeltIcon from "@/components/BeltIcon";
+import type { TechniqueLevel } from "@rolltrack/shared";
 
-const beltButtons: { level: BeltLevel; subtitle: string; cardBg: string }[] = [
-  { level: "White", subtitle: "Fundamentals & basics", cardBg: "#fafafa" },
-  { level: "Blue", subtitle: "Build your game", cardBg: "#eff6ff" },
-  { level: "Purple", subtitle: "Advanced chains", cardBg: "#f5f3ff" },
-  { level: "Brown", subtitle: "Refinement & pressure", cardBg: "#fffbeb" },
-  { level: "Black", subtitle: "Mastery & depth", cardBg: "#f4f4f5" },
+const levelButtons: { level: TechniqueLevel; subtitle: string; cardBg: string }[] = [
+  { level: "Beginner", subtitle: "Core fundamentals and base movement", cardBg: "#eefaf3" },
+  { level: "Intermediate", subtitle: "Combinations, timing, and transitions", cardBg: "#eff6ff" },
+  { level: "Advanced", subtitle: "Refinement, pressure, and chain attacks", cardBg: "#f5f3ff" },
 ];
 
 export default function HomeScreen() {
   const router = useRouter();
 
-  const openBeltTechniques = (level: BeltLevel) => {
+  const openLevelTechniques = (level: TechniqueLevel) => {
     router.push(`/(tabs)/learn/${level}`);
   };
 
@@ -27,20 +24,20 @@ export default function HomeScreen() {
         <View className="h-12 w-12 rounded-2xl bg-violet-500 items-center justify-center mt-3 self-center">
           <Ionicons name="fitness" size={24} color="#ffffff" />
         </View>
-        <Text className="text-zinc-900 text-xl font-bold mt-5 mb-3">Belt tactics</Text>
+        <Text className="text-zinc-900 text-xl font-bold mt-5 mb-3">Technique levels</Text>
 
-        {beltButtons.map(({ level, subtitle, cardBg }) => (
+        {levelButtons.map(({ level, subtitle, cardBg }) => (
           <Pressable
             key={level}
-            onPress={() => openBeltTechniques(level)}
+            onPress={() => openLevelTechniques(level)}
             className="rounded-2xl border border-zinc-200 px-4 py-3.5 mb-3 flex-row items-center active:opacity-90"
             style={{ backgroundColor: cardBg }}
           >
-            <View className="h-12 w-14 items-center justify-center mr-3">
-              <BeltIcon belt={level} size="md" />
+            <View className="h-11 w-11 rounded-xl bg-white/90 border border-zinc-200 items-center justify-center mr-3">
+              <Ionicons name="layers-outline" size={18} color="#52525b" />
             </View>
             <View className="flex-1">
-              <Text className="text-zinc-900 text-lg font-semibold">{level} belt</Text>
+              <Text className="text-zinc-900 text-lg font-semibold">{level}</Text>
               <Text className="text-zinc-500 text-sm mt-0.5">{subtitle}</Text>
             </View>
             <Ionicons name="chevron-forward" size={20} color="#a1a1aa" />

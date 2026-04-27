@@ -2,6 +2,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { Pressable, Text, View } from "react-native";
 import BeltIcon from "./BeltIcon";
 import type { Technique } from "@rolltrack/shared";
+import { techniqueLevel } from "@/lib/techniqueLevel";
 
 type TechniqueCardProps = {
   technique: Technique;
@@ -19,6 +20,7 @@ const categoryIconMap: Record<Technique["category"], keyof typeof Ionicons.glyph
 
 export default function TechniqueCard({ technique, onPress }: TechniqueCardProps) {
   const Container = onPress ? Pressable : View;
+  const level = techniqueLevel(technique);
 
   return (
     <Container
@@ -44,7 +46,7 @@ export default function TechniqueCard({ technique, onPress }: TechniqueCardProps
 
         <View className="flex-row items-center bg-zinc-50 border border-zinc-200 pl-2 pr-2 py-1 rounded-full">
           <BeltIcon belt={technique.beltGuideline} size="xs" />
-          <Text className="text-zinc-800 text-xs font-medium ml-1.5">{technique.beltGuideline}</Text>
+          <Text className="text-zinc-800 text-xs font-medium ml-1.5">{level}</Text>
         </View>
       </View>
 

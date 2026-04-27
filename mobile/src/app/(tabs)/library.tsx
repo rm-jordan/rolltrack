@@ -3,11 +3,11 @@ import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import type { BeltLevel } from "@rolltrack/shared";
-import BeltIcon from "@/components/BeltIcon";
+import type { TechniqueLevel } from "@rolltrack/shared";
 import TechniqueCard from "@/components/TechniqueCard";
 import EmptyStateCard from "@/components/EmptyStateCard";
 import ScreenHeader from "@/components/ScreenHeader";
+import { LEVELS, techniqueLevel } from "@/lib/techniqueLevel";
 import { useRollTrackStore } from "@/state/store";
 
 type SortKey = "recent" | "practice" | "name";
@@ -16,10 +16,10 @@ export default function LibraryScreen() {
   const router = useRouter();
   const techniques = useRollTrackStore((state) => state.techniques);
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedBelt, setSelectedBelt] = useState<"All" | BeltLevel>("All");
+  const [selectedLevel, setSelectedLevel] = useState<"All" | TechniqueLevel>("All");
   const [sortBy, setSortBy] = useState<SortKey>("recent");
 
-  const beltFilters: ("All" | BeltLevel)[] = ["All", "White", "Blue", "Purple", "Brown", "Black"];
+  const levelFilters: ("All" | TechniqueLevel)[] = ["All", ...LEVELS];
 
   const sortOptions: { key: SortKey; label: string }[] = [
     { key: "recent", label: "Recent" },
@@ -30,7 +30,7 @@ export default function LibraryScreen() {
   const filteredTechniques = useMemo(() => {
     const normalizedQuery = searchQuery.trim().toLowerCase();
     const filtered = techniques.filter((technique) => {
-      const matchesBelt = selectedBelt === "All" || technique.beltGuideline === selectedBelt;
+      const matchesLevel = selectedLevel === "All" || techniqueLevel(technique) === selectedLevel;
       const matchesSearch =
         normalizedQuery.length === 0 ||
         technique.name.toLowerCase().includes(normalizedQuery) ||
@@ -38,7 +38,7 @@ export default function LibraryScreen() {
         technique.category.toLowerCase().includes(normalizedQuery) ||
         technique.tags.some((tag) => tag.toLowerCase().includes(normalizedQuery));
 
-      return matchesBelt && matchesSearch;
+      return matchesLevel && matchesSearch;
     });
 
     const sorted = [...filtered];
@@ -54,7 +54,7 @@ export default function LibraryScreen() {
       });
     }
     return sorted;
-  }, [searchQuery, selectedBelt, sortBy, techniques]);
+  }, [searchQuery, selectedLevel, sortBy, techniques]);
 
   const goHome = () => {
     router.navigate("/(tabs)");
@@ -109,25 +109,25 @@ export default function LibraryScreen() {
           })}
         </View>
 
-        <Text className="text-zinc-600 text-xs font-medium mt-2 mb-2">Belt guideline</Text>
+        <Text className="text-zinc-600 text-xs font-medium mt-2 mb-2">Technique level</Text>
         <View className="flex-row flex-wrap">
-          {beltFilters.map((belt) => {
-            const active = selectedBelt === belt;
+          {levelFilters.map((level) => {
+            const active = selectedLevel === level;
             return (
               <Pressable
-                key={belt}
-                onPress={() => setSelectedBelt(belt)}
+                key={level}
+                onPress={() => setSelectedLevel(level)}
                 className={`flex-row items-center rounded-full px-3 py-2 mr-2 mb-2 border ${
                   active ? "bg-cyan-500 border-cyan-400" : "bg-white border-zinc-200"
                 }`}
               >
-                {belt === "All" ? (
+                {level === "All" ? (
                   <Ionicons name="layers-outline" size={15} color={active ? "#ffffff" : "#3f3f46"} />
                 ) : (
-                  <BeltIcon belt={belt} size="xs" />
+                  <Ionicons name="school-outline" size={15} color={active ? "#ffffff" : "#3f3f46"} />
                 )}
                 <Text className={`ml-1.5 ${active ? "text-white font-medium" : "text-zinc-700 font-medium"}`}>
-                  {belt}
+                  {level}
                 </Text>
               </Pressable>
             );
@@ -141,11 +141,11 @@ export default function LibraryScreen() {
         {filteredTechniques.length === 0 ? (
           <EmptyStateCard
             title="No matching techniques"
-            message="Try clearing search text or switching belt/sort filters."
+            message="Try clearing search text or switching level/sort filters."
             actionLabel="Reset filters"
             onAction={() => {
               setSearchQuery("");
-              setSelectedBelt("All");
+              setSelectedLevel("All");
               setSortBy("recent");
             }}
           />
