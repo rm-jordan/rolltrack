@@ -60,23 +60,11 @@ export default function TechniqueDetailScreen() {
         </View>
 
         <View className="bg-white border border-zinc-200 rounded-3xl p-5">
-          <View className="flex-row items-center justify-between">
-            <Text className="text-zinc-900 text-2xl font-bold flex-1 pr-3">{technique.name}</Text>
-            <View className="flex-row items-center bg-zinc-50 border border-zinc-200 rounded-full px-3 py-1.5">
-              <Text className="text-zinc-800 text-xs font-medium">{level}</Text>
-            </View>
-          </View>
+          <Text className="text-zinc-900 text-2xl font-bold">{technique.name}</Text>
 
           <Text className="text-zinc-500 mt-2">
             {technique.position} • {technique.category}
           </Text>
-
-          <View className="bg-zinc-50 rounded-2xl p-4 mt-4 border border-zinc-100">
-            <Text className="text-zinc-500 text-xs">Technique level</Text>
-            <Text className="text-zinc-700 mt-1 text-sm">
-              This level is a recommendation for organizing progression, not a strict rule.
-            </Text>
-          </View>
 
           <View className="mt-4">
             <Text className="text-zinc-500 text-xs">Tags</Text>
@@ -98,8 +86,10 @@ export default function TechniqueDetailScreen() {
           </View>
 
           <View className="mt-4">
-            <Text className="text-zinc-500 text-xs">Personal notes</Text>
-            <Text className="text-zinc-700 mt-1">{technique.notes ?? "No note yet."}</Text>
+            <Text className="text-zinc-500 text-xs">How to perform</Text>
+            <Text className="text-zinc-700 mt-1">
+              {technique.notes ?? "Add step-by-step explanation from Edit."}
+            </Text>
           </View>
 
           <View className="flex-row gap-3 mt-6">

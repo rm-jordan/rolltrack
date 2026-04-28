@@ -1,7 +1,6 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Pressable, Text, View } from "react-native";
 import type { Technique } from "@rolltrack/shared";
-import { techniqueLevel } from "@/lib/techniqueLevel";
 
 type TechniqueCardProps = {
   technique: Technique;
@@ -19,33 +18,34 @@ const categoryIconMap: Record<Technique["category"], keyof typeof Ionicons.glyph
 
 export default function TechniqueCard({ technique, onPress }: TechniqueCardProps) {
   const Container = onPress ? Pressable : View;
-  const level = techniqueLevel(technique);
+  const explanation =
+    technique.notes?.trim() ||
+    `From ${technique.position}, establish control first, off-balance your partner, and finish the ${technique.name} with tight positioning.`;
 
   return (
     <Container
       className="bg-white rounded-2xl p-4 mb-3 border border-zinc-200 shadow-sm"
       {...(onPress ? { onPress } : {})}
     >
-      <View className="flex-row items-start justify-between">
-        <View className="flex-1 pr-3">
-          <View className="flex-row items-center">
-            <Ionicons
-              name={categoryIconMap[technique.category]}
-              size={16}
-              color="#7c3aed"
-              style={{ marginRight: 6 }}
-            />
-            <Text className="text-zinc-900 text-lg font-semibold">{technique.name}</Text>
-          </View>
+      <View className="flex-row items-center">
+        <Ionicons
+          name={categoryIconMap[technique.category]}
+          size={16}
+          color="#7c3aed"
+          style={{ marginRight: 6 }}
+        />
+        <Text className="text-zinc-900 text-lg font-semibold flex-1">{technique.name}</Text>
+      </View>
 
-          <Text className="text-zinc-500 mt-1">
-            {technique.position} • {technique.category}
-          </Text>
-        </View>
+      <Text className="text-zinc-500 mt-1">
+        {technique.position} • {technique.category}
+      </Text>
 
-        <View className="flex-row items-center bg-zinc-50 border border-zinc-200 px-2 py-1 rounded-full">
-          <Text className="text-zinc-800 text-xs font-medium">{level}</Text>
-        </View>
+      <View className="mt-3 rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-2.5">
+        <Text className="text-zinc-500 text-xs">How to perform</Text>
+        <Text className="text-zinc-700 text-sm mt-1" numberOfLines={3}>
+          {explanation}
+        </Text>
       </View>
 
       <View className="flex-row flex-wrap mt-3">

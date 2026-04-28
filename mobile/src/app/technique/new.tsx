@@ -42,12 +42,17 @@ export default function NewTechniqueScreen() {
   const onSave = async () => {
     const n = name.trim();
     const p = position.trim();
+    const explanation = notes.trim();
     if (n.length < 2) {
       Alert.alert("Name required", "Enter a technique name.");
       return;
     }
     if (p.length < 2) {
       Alert.alert("Position required", "Enter a position or context (e.g. Closed Guard).");
+      return;
+    }
+    if (explanation.length < 12) {
+      Alert.alert("Explanation required", "Add a short how-to explanation for how this move is performed.");
       return;
     }
     setSaving(true);
@@ -58,7 +63,7 @@ export default function NewTechniqueScreen() {
         category,
         level,
         tags: parseTags(tagsRaw),
-        notes: notes.trim() || undefined,
+        notes: explanation,
       });
       router.back();
     } catch (e) {
@@ -140,11 +145,11 @@ export default function NewTechniqueScreen() {
           className="bg-white border border-zinc-200 rounded-2xl px-4 py-3 text-zinc-900"
         />
 
-        <Text className="text-zinc-700 font-medium mt-4 mb-2">Notes (optional)</Text>
+        <Text className="text-zinc-700 font-medium mt-4 mb-2">How to perform</Text>
         <TextInput
           value={notes}
           onChangeText={setNotes}
-          placeholder="Reminders for next time…"
+          placeholder="Step-by-step cue (setup, off-balance, finish)..."
           placeholderTextColor="#a1a1aa"
           multiline
           textAlignVertical="top"

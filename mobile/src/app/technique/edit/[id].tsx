@@ -63,8 +63,13 @@ export default function EditTechniqueScreen() {
   const onSave = async () => {
     const n = name.trim();
     const p = position.trim();
+    const explanation = notes.trim();
     if (n.length < 2 || p.length < 2) {
       Alert.alert("Check fields", "Name and position are required.");
+      return;
+    }
+    if (explanation.length < 12) {
+      Alert.alert("Explanation required", "Add a short how-to explanation for how this move is performed.");
       return;
     }
     setSaving(true);
@@ -75,7 +80,7 @@ export default function EditTechniqueScreen() {
         category,
         level,
         tags: parseTags(tagsRaw),
-        notes: notes.trim() || null,
+        notes: explanation,
       });
       router.back();
     } catch (e) {
@@ -156,10 +161,12 @@ export default function EditTechniqueScreen() {
           className="bg-white border border-zinc-200 rounded-2xl px-4 py-3 text-zinc-900"
         />
 
-        <Text className="text-zinc-700 font-medium mt-4 mb-2">Notes</Text>
+        <Text className="text-zinc-700 font-medium mt-4 mb-2">How to perform</Text>
         <TextInput
           value={notes}
           onChangeText={setNotes}
+          placeholder="Step-by-step cue (setup, off-balance, finish)..."
+          placeholderTextColor="#a1a1aa"
           multiline
           textAlignVertical="top"
           className="bg-white border border-zinc-200 rounded-2xl px-4 py-3 text-zinc-900 min-h-[100]"
