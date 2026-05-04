@@ -1,12 +1,12 @@
-import { useMemo, useState } from "react";
-import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { useRouter } from "expo-router";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { Box, HStack, Input, InputField, Pressable, ScrollView, Text, VStack } from "@gluestack-ui/themed";
+import { useRouter } from "expo-router";
+import { useMemo, useState } from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
 import type { TechniqueLevel } from "@rolltrack/shared";
-import TechniqueCard from "@/components/TechniqueCard";
 import EmptyStateCard from "@/components/EmptyStateCard";
 import ScreenHeader from "@/components/ScreenHeader";
+import TechniqueCard from "@/components/TechniqueCard";
 import { LEVELS, techniqueLevel } from "@/lib/techniqueLevel";
 import { useRollTrackStore } from "@/state/store";
 
@@ -61,8 +61,11 @@ export default function LibraryScreen() {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-[#efedf8]" edges={["top", "left", "right", "bottom"]}>
-      <ScrollView contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 16, paddingBottom: 24 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#efedf8" }} edges={["top", "left", "right", "bottom"]}>
+      <ScrollView
+        flex={1}
+        contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 16, paddingBottom: 24 }}
+      >
         <ScreenHeader
           title="Library"
           subtitle="Search and filter your techniques."
@@ -71,70 +74,106 @@ export default function LibraryScreen() {
           rightAction={{ label: "Add move", onPress: () => router.push("/technique/new") }}
         />
 
-        <View className="mt-4 rounded-3xl border border-cyan-200 bg-white p-4">
-          <View className="flex-row items-center">
+        <Box mt="$4" borderRadius="$3xl" borderWidth={1} borderColor="#a5f3fc" bg="$white" p="$4">
+          <HStack alignItems="center">
             <Ionicons name="search-outline" size={18} color="#0891b2" />
-            <Text className="text-zinc-500 text-xs uppercase ml-2 tracking-wide">Search</Text>
-          </View>
-          <Text className="text-zinc-700 mt-2 text-sm">
+            <Text color="$coolGray500" fontSize="$xs" textTransform="uppercase" ml="$2" letterSpacing={1}>
+              Search
+            </Text>
+          </HStack>
+          <Text color="$coolGray700" mt="$2" fontSize="$sm">
             By name, position, category, or tag. Tap a card for details.
           </Text>
-        </View>
+        </Box>
 
-        <TextInput
-          value={searchQuery}
-          onChangeText={setSearchQuery}
-          placeholder="Search techniques…"
-          placeholderTextColor="#a1a1aa"
-          className="bg-white text-zinc-900 border border-zinc-200 rounded-2xl px-4 py-3 mt-4"
-        />
+        <Input
+          mt="$4"
+          borderRadius="$2xl"
+          borderWidth={1}
+          borderColor="#e4e4e7"
+          bg="$white"
+          px="$1"
+        >
+          <InputField
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+            placeholder="Search techniques…"
+            placeholderTextColor="#a1a1aa"
+            color="#18181b"
+            py="$3"
+            px="$3"
+          />
+        </Input>
 
-        <Text className="text-zinc-600 text-xs font-medium mt-4 mb-2">Sort</Text>
-        <View className="flex-row flex-wrap">
+        <Text color="$coolGray600" fontSize="$xs" fontWeight="$medium" mt="$4" mb="$2">
+          Sort
+        </Text>
+        <HStack flexWrap="wrap">
           {sortOptions.map(({ key, label }) => {
             const active = sortBy === key;
             return (
               <Pressable
                 key={key}
                 onPress={() => setSortBy(key)}
-                className={`rounded-full px-4 py-2 mr-2 mb-2 border ${
-                  active ? "bg-cyan-500 border-cyan-400" : "bg-white border-zinc-200"
-                }`}
+                borderRadius="$full"
+                px="$4"
+                py="$2"
+                mr="$2"
+                mb="$2"
+                borderWidth={1}
+                bg={active ? "$cyan500" : "$white"}
+                borderColor={active ? "$cyan400" : "#e4e4e7"}
+                $pressed={{ opacity: 0.9 }}
               >
-                <Text className={active ? "text-white font-medium text-sm" : "text-zinc-700 text-sm"}>
+                <Text color={active ? "$white" : "$coolGray700"} fontWeight="$medium" fontSize="$sm">
                   {label}
                 </Text>
               </Pressable>
             );
           })}
-        </View>
+        </HStack>
 
-        <Text className="text-zinc-600 text-xs font-medium mt-2 mb-2">Technique level</Text>
-        <View className="flex-row flex-wrap">
+        <Text color="$coolGray600" fontSize="$xs" fontWeight="$medium" mt="$2" mb="$2">
+          Technique level
+        </Text>
+        <HStack flexWrap="wrap">
           {levelFilters.map((level) => {
             const active = selectedLevel === level;
             return (
               <Pressable
                 key={level}
                 onPress={() => setSelectedLevel(level)}
-                className={`flex-row items-center rounded-full px-3 py-2 mr-2 mb-2 border ${
-                  active ? "bg-cyan-500 border-cyan-400" : "bg-white border-zinc-200"
-                }`}
+                flexDirection="row"
+                alignItems="center"
+                borderRadius="$full"
+                px="$3"
+                py="$2"
+                mr="$2"
+                mb="$2"
+                borderWidth={1}
+                bg={active ? "$cyan500" : "$white"}
+                borderColor={active ? "$cyan400" : "#e4e4e7"}
+                $pressed={{ opacity: 0.9 }}
               >
                 {level === "All" ? (
                   <Ionicons name="layers-outline" size={15} color={active ? "#ffffff" : "#3f3f46"} />
                 ) : (
                   <Ionicons name="school-outline" size={15} color={active ? "#ffffff" : "#3f3f46"} />
                 )}
-                <Text className={`ml-1.5 ${active ? "text-white font-medium" : "text-zinc-700 font-medium"}`}>
+                <Text
+                  ml="$1.5"
+                  color={active ? "$white" : "$coolGray700"}
+                  fontWeight="$medium"
+                  fontSize="$sm"
+                >
                   {level}
                 </Text>
               </Pressable>
             );
           })}
-        </View>
+        </HStack>
 
-        <Text className="text-zinc-400 text-xs mb-3 mt-1">
+        <Text color="$coolGray400" fontSize="$xs" mb="$3" mt="$1">
           {filteredTechniques.length} of {techniques.length} techniques
         </Text>
 
@@ -150,18 +189,20 @@ export default function LibraryScreen() {
             }}
           />
         ) : (
-          filteredTechniques.map((technique) => (
-            <TechniqueCard
-              key={technique.id}
-              technique={technique}
-              onPress={() =>
-                router.push({
-                  pathname: "/technique/[id]",
-                  params: { id: technique.id },
-                })
-              }
-            />
-          ))
+          <VStack>
+            {filteredTechniques.map((technique) => (
+              <TechniqueCard
+                key={technique.id}
+                technique={technique}
+                onPress={() =>
+                  router.push({
+                    pathname: "/technique/[id]",
+                    params: { id: technique.id },
+                  })
+                }
+              />
+            ))}
+          </VStack>
         )}
       </ScrollView>
     </SafeAreaView>

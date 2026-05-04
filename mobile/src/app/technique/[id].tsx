@@ -1,6 +1,7 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { Box, HStack, Pressable, ScrollView, Text } from "@gluestack-ui/themed";
 import { type Href, useLocalSearchParams, useRouter } from "expo-router";
-import { Alert, Pressable, ScrollView, Text, View } from "react-native";
+import { Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { techniqueLevel } from "@/lib/techniqueLevel";
 import { useRollTrackStore } from "@/state/store";
@@ -34,81 +35,138 @@ export default function TechniqueDetailScreen() {
 
   if (!technique) {
     return (
-      <SafeAreaView className="flex-1 bg-[#efedf8]" edges={["top", "left", "right", "bottom"]}>
-        <View className="px-5 pt-6">
-          <Pressable onPress={() => router.back()} className="mb-5 flex-row items-center">
+      <SafeAreaView style={{ flex: 1, backgroundColor: "#efedf8" }} edges={["top", "left", "right", "bottom"]}>
+        <Box px="$5" pt="$6">
+          <Pressable
+            onPress={() => router.back()}
+            mb="$5"
+            flexDirection="row"
+            alignItems="center"
+            $pressed={{ opacity: 0.85 }}
+          >
             <Ionicons name="chevron-back" size={20} color="#3f3f46" />
-            <Text className="text-zinc-700 ml-1">Back</Text>
+            <Text color="$coolGray700" ml="$1">
+              Back
+            </Text>
           </Pressable>
-          <Text className="text-zinc-900 text-2xl font-bold">Technique not found</Text>
-        </View>
+          <Text color="$coolGray900" fontSize="$2xl" fontWeight="$bold">
+            Technique not found
+          </Text>
+        </Box>
       </SafeAreaView>
     );
   }
 
   return (
-    <SafeAreaView className="flex-1 bg-[#efedf8]" edges={["top", "left", "right", "bottom"]}>
-      <ScrollView contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 12, paddingBottom: 32 }}>
-        <Pressable onPress={() => router.back()} className="flex-row items-center mb-4">
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#efedf8" }} edges={["top", "left", "right", "bottom"]}>
+      <ScrollView flex={1} contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 12, paddingBottom: 32 }}>
+        <Pressable
+          onPress={() => router.back()}
+          flexDirection="row"
+          alignItems="center"
+          mb="$4"
+          $pressed={{ opacity: 0.85 }}
+        >
           <Ionicons name="chevron-back" size={20} color="#3f3f46" />
-          <Text className="text-zinc-700 ml-1 font-medium">Back</Text>
+          <Text color="$coolGray700" ml="$1" fontWeight="$medium">
+            Back
+          </Text>
         </Pressable>
 
-        <View className="rounded-3xl border border-zinc-200 bg-white p-6 mb-4 items-center justify-center">
+        <Box
+          borderRadius="$3xl"
+          borderWidth={1}
+          borderColor="#e4e4e7"
+          bg="$white"
+          p="$6"
+          mb="$4"
+          alignItems="center"
+          justifyContent="center"
+        >
           <Ionicons name="layers-outline" size={28} color="#3f3f46" />
-          <Text className="text-zinc-500 text-xs mt-3">Technique level: {level}</Text>
-        </View>
+          <Text color="$coolGray500" fontSize="$xs" mt="$3">
+            Technique level: {level}
+          </Text>
+        </Box>
 
-        <View className="bg-white border border-zinc-200 rounded-3xl p-5">
-          <Text className="text-zinc-900 text-2xl font-bold">{technique.name}</Text>
+        <Box borderRadius="$3xl" borderWidth={1} borderColor="#e4e4e7" bg="$white" p="$5">
+          <Text color="$coolGray900" fontSize="$2xl" fontWeight="$bold">
+            {technique.name}
+          </Text>
 
-          <Text className="text-zinc-500 mt-2">
+          <Text color="$coolGray500" mt="$2">
             {technique.position} • {technique.category}
           </Text>
 
-          <View className="mt-4">
-            <Text className="text-zinc-500 text-xs">Tags</Text>
-            <View className="flex-row flex-wrap mt-2">
+          <Box mt="$4">
+            <Text color="$coolGray500" fontSize="$xs">
+              Tags
+            </Text>
+            <HStack flexWrap="wrap" mt="$2">
               {technique.tags.map((tag) => (
-                <View key={tag} className="bg-zinc-100 px-2 py-1 rounded-full mr-2 mb-2">
-                  <Text className="text-zinc-600 text-xs">{tag}</Text>
-                </View>
+                <Box key={tag} bg="$coolGray100" px="$2" py="$1" borderRadius="$full" mr="$2" mb="$2">
+                  <Text color="$coolGray600" fontSize="$xs">
+                    {tag}
+                  </Text>
+                </Box>
               ))}
-            </View>
-          </View>
+            </HStack>
+          </Box>
 
-          <View className="mt-2">
-            <Text className="text-zinc-500 text-xs">Practice history</Text>
-            <Text className="text-zinc-900 mt-1 font-medium">Practiced {technique.timesPracticed} times</Text>
-            <Text className="text-zinc-500 mt-1 text-sm">
+          <Box mt="$2">
+            <Text color="$coolGray500" fontSize="$xs">
+              Practice history
+            </Text>
+            <Text color="$coolGray900" mt="$1" fontWeight="$medium">
+              Practiced {technique.timesPracticed} times
+            </Text>
+            <Text color="$coolGray500" mt="$1" fontSize="$sm">
               Last practiced: {technique.lastPracticed ?? "—"}
             </Text>
-          </View>
+          </Box>
 
-          <View className="mt-4">
-            <Text className="text-zinc-500 text-xs">How to perform</Text>
-            <Text className="text-zinc-700 mt-1">
+          <Box mt="$4">
+            <Text color="$coolGray500" fontSize="$xs">
+              How to perform
+            </Text>
+            <Text color="$coolGray700" mt="$1">
               {technique.notes ?? "Add step-by-step explanation from Edit."}
             </Text>
-          </View>
+          </Box>
 
-          <View className="flex-row gap-3 mt-6">
+          <HStack mt="$6" space="md">
             <Pressable
-              onPress={() =>
-                router.push(`/technique/edit/${technique.id}` as Href)
-              }
-              className="flex-1 rounded-2xl bg-violet-600 py-3.5 items-center border border-violet-500"
+              onPress={() => router.push(`/technique/edit/${technique.id}` as Href)}
+              flex={1}
+              borderRadius="$2xl"
+              bg="#7c3aed"
+              py="$3"
+              alignItems="center"
+              borderWidth={1}
+              borderColor="#8b5cf6"
+              $pressed={{ opacity: 0.92 }}
             >
-              <Text className="text-white font-semibold">Edit</Text>
+              <Text color="$white" fontWeight="$semibold">
+                Edit
+              </Text>
             </Pressable>
             <Pressable
               onPress={onDelete}
-              className="flex-1 rounded-2xl bg-red-50 py-3.5 items-center border border-red-200"
+              flex={1}
+              borderRadius="$2xl"
+              bg="#fef2f2"
+              py="$3"
+              alignItems="center"
+              borderWidth={1}
+              borderColor="#fecaca"
+              $pressed={{ opacity: 0.92 }}
             >
-              <Text className="text-red-700 font-semibold">Delete</Text>
+              <Text color="#b91c1c" fontWeight="$semibold">
+                Delete
+              </Text>
             </Pressable>
-          </View>
-        </View>
+          </HStack>
+        </Box>
       </ScrollView>
     </SafeAreaView>
   );

@@ -1,8 +1,8 @@
-import { useMemo, useState } from "react";
-import { Pressable, ScrollView, Text, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { useRouter } from "expo-router";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { Box, HStack, Pressable, ScrollView, Text, VStack } from "@gluestack-ui/themed";
+import { useRouter } from "expo-router";
+import { useMemo, useState } from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
 import type { TechniqueLevel } from "@rolltrack/shared";
 import EmptyStateCard from "@/components/EmptyStateCard";
 import ScreenHeader from "@/components/ScreenHeader";
@@ -29,8 +29,11 @@ export default function LearnIndexScreen() {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-[#efedf8]" edges={["top", "left", "right", "bottom"]}>
-      <ScrollView contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 16, paddingBottom: 24 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#efedf8" }} edges={["top", "left", "right", "bottom"]}>
+      <ScrollView
+        flex={1}
+        contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 16, paddingBottom: 24 }}
+      >
         <ScreenHeader
           title="Learn"
           subtitle="Technique levels are guidelines for progression, not strict rules."
@@ -38,42 +41,59 @@ export default function LearnIndexScreen() {
           backLabel="Home"
         />
 
-        <View className="mt-4 rounded-3xl border border-violet-200 bg-white p-4">
-          <View className="flex-row items-center">
+        <Box mt="$4" borderRadius="$3xl" borderWidth={1} borderColor="#ddd6fe" bg="$white" p="$4">
+          <HStack alignItems="center">
             <Ionicons name="school-outline" size={18} color="#7c3aed" />
-            <Text className="text-zinc-500 text-xs uppercase ml-2 tracking-wide">Learning path</Text>
-          </View>
-          <Text className="text-zinc-700 mt-2 text-sm">
+            <Text color="$coolGray500" fontSize="$xs" textTransform="uppercase" ml="$2" letterSpacing={1}>
+              Learning path
+            </Text>
+          </HStack>
+          <Text color="$coolGray700" mt="$2" fontSize="$sm">
             Filter here, or use Home to jump straight into a level.
           </Text>
-        </View>
+        </Box>
 
-        <Text className="text-zinc-600 text-xs font-medium mt-4 mb-2">Technique level</Text>
-        <View className="flex-row flex-wrap">
+        <Text color="$coolGray600" fontSize="$xs" fontWeight="$medium" mt="$4" mb="$2">
+          Technique level
+        </Text>
+        <HStack flexWrap="wrap">
           {levelFilters.map((level) => {
             const active = selectedLevel === level;
             return (
               <Pressable
                 key={level}
                 onPress={() => setSelectedLevel(level)}
-                className={`flex-row items-center rounded-full px-3 py-2 mr-2 mb-2 border ${
-                  active ? "bg-violet-600 border-violet-500" : "bg-white border-zinc-200"
-                }`}
+                flexDirection="row"
+                alignItems="center"
+                borderRadius="$full"
+                px="$3"
+                py="$2"
+                mr="$2"
+                mb="$2"
+                borderWidth={1}
+                bg={active ? "$violet600" : "$white"}
+                borderColor={active ? "$violet500" : "#e4e4e7"}
+                $pressed={{ opacity: 0.9 }}
               >
                 {level === "All" ? (
                   <Ionicons name="layers-outline" size={15} color={active ? "#ffffff" : "#3f3f46"} />
                 ) : (
                   <Ionicons name="school-outline" size={15} color={active ? "#ffffff" : "#3f3f46"} />
                 )}
-                <Text className={`ml-1.5 ${active ? "text-white font-medium" : "text-zinc-700 font-medium"}`}>
+                <Text
+                  ml="$1.5"
+                  color={active ? "$white" : "$coolGray700"}
+                  fontWeight="$medium"
+                  fontSize="$sm"
+                >
                   {level}
                 </Text>
               </Pressable>
             );
           })}
-        </View>
+        </HStack>
 
-        <View className="mt-2">
+        <Box mt="$2">
           {filteredTechniques.length === 0 ? (
             <EmptyStateCard
               title="No techniques yet"
@@ -82,20 +102,22 @@ export default function LearnIndexScreen() {
               onAction={() => setSelectedLevel("All")}
             />
           ) : (
-            filteredTechniques.map((technique) => (
-              <TechniqueCard
-                key={technique.id}
-                technique={technique}
-                onPress={() =>
-                  router.push({
-                    pathname: "/technique/[id]",
-                    params: { id: technique.id },
-                  })
-                }
-              />
-            ))
+            <VStack>
+              {filteredTechniques.map((technique) => (
+                <TechniqueCard
+                  key={technique.id}
+                  technique={technique}
+                  onPress={() =>
+                    router.push({
+                      pathname: "/technique/[id]",
+                      params: { id: technique.id },
+                    })
+                  }
+                />
+              ))}
+            </VStack>
           )}
-        </View>
+        </Box>
       </ScrollView>
     </SafeAreaView>
   );

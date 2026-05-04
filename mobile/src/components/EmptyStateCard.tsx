@@ -1,5 +1,5 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { Pressable, Text, View } from "react-native";
+import { Box, HStack, Pressable, Text } from "@gluestack-ui/themed";
 
 type EmptyStateCardProps = {
   title: string;
@@ -15,20 +15,34 @@ export default function EmptyStateCard({
   onAction,
 }: EmptyStateCardProps) {
   return (
-    <View className="rounded-3xl border border-zinc-200 bg-white p-5 mt-2">
-      <View className="flex-row items-center">
+    <Box borderRadius="$3xl" borderWidth={1} borderColor="#e4e4e7" bg="$white" p="$5" mt="$2">
+      <HStack alignItems="center">
         <Ionicons name="sparkles-outline" size={18} color="#6b7280" />
-        <Text className="text-zinc-900 font-semibold ml-2">{title}</Text>
-      </View>
-      <Text className="text-zinc-500 text-sm mt-2">{message}</Text>
+        <Text color="$coolGray900" fontWeight="$semibold" ml="$2">
+          {title}
+        </Text>
+      </HStack>
+      <Text color="$coolGray500" fontSize="$sm" mt="$2">
+        {message}
+      </Text>
       {actionLabel && onAction ? (
         <Pressable
           onPress={onAction}
-          className="self-start mt-4 rounded-xl border border-zinc-300 bg-zinc-50 px-3 py-2"
+          alignSelf="flex-start"
+          mt="$4"
+          borderRadius="$xl"
+          borderWidth={1}
+          borderColor="#d4d4d8"
+          bg="$coolGray50"
+          px="$3"
+          py="$2"
+          $pressed={{ opacity: 0.9 }}
         >
-          <Text className="text-zinc-700 text-sm font-medium">{actionLabel}</Text>
+          <Text color="$coolGray700" fontSize="$sm" fontWeight="$medium">
+            {actionLabel}
+          </Text>
         </Pressable>
       ) : null}
-    </View>
+    </Box>
   );
 }

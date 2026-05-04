@@ -1,6 +1,9 @@
 import { act, fireEvent, render, waitFor } from "@testing-library/react-native";
 import RootLayout from "../../app/_layout";
 
+jest.mock("@gluestack-ui/config");
+jest.mock("@gluestack-ui/themed");
+
 jest.mock("../../../global.css", () => ({}), { virtual: true });
 
 const mockHydrateFromApi = jest

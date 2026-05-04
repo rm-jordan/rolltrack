@@ -1,5 +1,5 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { Pressable, Text, View } from "react-native";
+import { Box, HStack, Pressable, Text, VStack } from "@gluestack-ui/themed";
 
 type ScreenHeaderProps = {
   title: string;
@@ -20,33 +20,55 @@ export default function ScreenHeader({
   rightAction,
 }: ScreenHeaderProps) {
   return (
-    <View>
+    <Box>
       {onBack ? (
         <Pressable
           onPress={onBack}
-          className="flex-row items-center self-start py-2 pr-4 mb-2"
+          flexDirection="row"
+          alignItems="center"
+          alignSelf="flex-start"
+          py="$2"
+          pr="$4"
+          mb="$2"
           accessibilityRole="button"
           accessibilityLabel={backLabel}
+          $pressed={{ opacity: 0.85 }}
         >
           <Ionicons name="chevron-back" size={22} color="#3f3f46" />
-          <Text className="text-zinc-800 ml-1 font-semibold">{backLabel}</Text>
+          <Text color="$coolGray800" ml="$1" fontWeight="$semibold">
+            {backLabel}
+          </Text>
         </Pressable>
       ) : null}
 
-      <View className="flex-row items-start justify-between gap-3">
-        <View className="flex-1">
-          <Text className="text-zinc-900 text-3xl font-bold">{title}</Text>
-          {subtitle ? <Text className="text-zinc-500 mt-2">{subtitle}</Text> : null}
-        </View>
+      <HStack alignItems="flex-start" justifyContent="space-between" space="md">
+        <VStack flex={1}>
+          <Text color="$coolGray900" fontSize="$3xl" fontWeight="$bold">
+            {title}
+          </Text>
+          {subtitle ? (
+            <Text color="$coolGray500" mt="$2">
+              {subtitle}
+            </Text>
+          ) : null}
+        </VStack>
         {rightAction ? (
           <Pressable
             onPress={rightAction.onPress}
-            className="rounded-2xl bg-emerald-500 px-4 py-3 border border-emerald-400"
+            borderRadius="$2xl"
+            bg="$emerald500"
+            px="$4"
+            py="$3"
+            borderWidth={1}
+            borderColor="$emerald400"
+            $pressed={{ opacity: 0.9 }}
           >
-            <Text className="text-white font-semibold text-sm">{rightAction.label}</Text>
+            <Text color="$white" fontWeight="$semibold" fontSize="$sm">
+              {rightAction.label}
+            </Text>
           </Pressable>
         ) : null}
-      </View>
-    </View>
+      </HStack>
+    </Box>
   );
 }

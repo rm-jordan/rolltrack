@@ -1,11 +1,13 @@
-import { fireEvent, render } from "@testing-library/react-native";
+import { fireEvent } from "@testing-library/react-native";
+import { renderWithGluestack } from "@/test-utils/renderWithGluestack";
 import EmptyStateCard from "./EmptyStateCard";
 
+jest.mock("@gluestack-ui/config");
 jest.mock("@expo/vector-icons/Ionicons", () => "Ionicons");
 
 describe("EmptyStateCard", () => {
   it("renders title and message", () => {
-    const { getByText, queryByText } = render(
+    const { getByText, queryByText } = renderWithGluestack(
       <EmptyStateCard title="No items" message="Try adding one." />,
     );
 
@@ -16,7 +18,7 @@ describe("EmptyStateCard", () => {
 
   it("renders and handles action press when action props exist", () => {
     const onAction = jest.fn();
-    const { getByText } = render(
+    const { getByText } = renderWithGluestack(
       <EmptyStateCard
         title="No data"
         message="Connect and retry."

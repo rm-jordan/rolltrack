@@ -1,9 +1,19 @@
+import { config } from "@gluestack-ui/config";
+import { Box, GluestackUIProvider, Pressable, Text, VStack } from "@gluestack-ui/themed";
 import { Stack } from "expo-router";
-import { useEffect, useRef, useState } from "react";
-import { ActivityIndicator, Animated, Easing, Pressable, Text, View } from "react-native";
+import { type ReactNode, useEffect, useRef, useState } from "react";
+import { ActivityIndicator, Animated, Easing } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { useRollTrackStore } from "@/state/store";
 import "../../global.css";
+
+function AppProviders({ children }: { children: ReactNode }) {
+  return (
+    <GluestackUIProvider config={config}>
+      <SafeAreaProvider>{children}</SafeAreaProvider>
+    </GluestackUIProvider>
+  );
+}
 
 export default function RootLayout() {
   const [ready, setReady] = useState(false);
@@ -63,22 +73,28 @@ export default function RootLayout() {
 
   if (!ready) {
     return (
-      <SafeAreaProvider>
-        <View className="flex-1 bg-[#efedf8] items-center justify-center px-6">
+      <AppProviders>
+        <VStack flex={1} bg="#efedf8" alignItems="center" justifyContent="center" px="$6">
           <ActivityIndicator color="#059669" size="large" />
-          <Text className="text-zinc-500 mt-3 text-sm">Loading data…</Text>
-        </View>
-      </SafeAreaProvider>
+          <Text color="$coolGray500" mt="$3" fontSize="$sm">
+            Loading data…
+          </Text>
+        </VStack>
+      </AppProviders>
     );
   }
 
   if (loadError) {
     return (
-      <SafeAreaProvider>
-        <View className="flex-1 bg-[#efedf8] items-center justify-center px-6">
-          <Text className="text-zinc-900 text-lg font-semibold text-center">Cannot connect to API</Text>
-          <Text className="text-zinc-600 text-sm mt-3 text-center">{loadError}</Text>
-          <View className="flex-row mt-4 gap-3">
+      <AppProviders>
+        <VStack flex={1} bg="#efedf8" alignItems="center" justifyContent="center" px="$6">
+          <Text color="$coolGray900" fontSize="$lg" fontWeight="$semibold" textAlign="center">
+            Cannot connect to API
+          </Text>
+          <Text color="$coolGray600" fontSize="$sm" mt="$3" textAlign="center">
+            {loadError}
+          </Text>
+          <Box flexDirection="row" mt="$4">
             <Pressable
               onPress={() => {
                 setReady(false);
@@ -89,39 +105,61 @@ export default function RootLayout() {
                     setReady(true);
                   });
               }}
-              className="rounded-xl border border-zinc-300 bg-white px-4 py-2"
+              borderRadius="$xl"
+              borderWidth={1}
+              borderColor="#d4d4d8"
+              bg="$white"
+              px="$4"
+              py="$2"
+              $pressed={{ opacity: 0.9 }}
             >
-              <Text className="text-zinc-700 font-medium">Retry</Text>
+              <Text color="$coolGray700" fontWeight="$medium">
+                Retry
+              </Text>
             </Pressable>
-          </View>
-          <Text className="text-zinc-500 text-xs mt-4 text-center">
+          </Box>
+          <Text color="$coolGray500" fontSize="$xs" mt="$4" textAlign="center">
             Start the server: npm run server{"\n"}
             Set EXPO_PUBLIC_GRAPHQL_URL in mobile/.env (see mobile/.env.example).
           </Text>
-        </View>
-      </SafeAreaProvider>
+        </VStack>
+      </AppProviders>
     );
   }
 
   return (
-    <SafeAreaProvider>
-      <View className="flex-1">
+    <AppProviders>
+      <Box flex={1}>
         <Stack screenOptions={{ headerShown: false }} />
         {showIntro ? (
           <Animated.View
-            style={{ opacity: introOpacity }}
-            className="absolute inset-0 bg-[#efedf8] items-center justify-center px-8"
+            style={{
+              opacity: introOpacity,
+              position: "absolute",
+              top: 0,
+              right: 0,
+              bottom: 0,
+              left: 0,
+              backgroundColor: "#efedf8",
+              alignItems: "center",
+              justifyContent: "center",
+              paddingHorizontal: 32,
+            }}
           >
-            <View className="h-16 w-16 rounded-3xl bg-violet-500 items-center justify-center">
-              <Text className="text-white text-3xl font-bold">R</Text>
-            </View>
-            <Text className="text-zinc-900 text-3xl font-bold mt-5">RollTrack</Text>
-            <Text className="text-zinc-600 text-center mt-3">
+            <Box h={64} w={64} borderRadius="$3xl" bg="#8b5cf6" alignItems="center" justifyContent="center">
+              <Text color="$white" fontSize="$3xl" fontWeight="$bold">
+                R
+              </Text>
+            </Box>
+            <Text color="$coolGray900" fontSize="$3xl" fontWeight="$bold" mt="$5">
+              RollTrack
+            </Text>
+            <Text color="$coolGray600" textAlign="center" mt="$3">
               Log your sessions, review your techniques, and track your progress.
             </Text>
           </Animated.View>
         ) : null}
-      </View>
-    </SafeAreaProvider>
+      </Box>
+    </AppProviders>
   );
 }

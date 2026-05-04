@@ -11,6 +11,7 @@ The app build is ongoing as we iterate on UX and core training workflows.
 - Applied Prisma migration to remove `Technique.beltGuideline` and keep `Technique.level` as required.
 - Removed belt icon/color UI components and related tests.
 - Updated navigation to level route (`tabs/learn/[level]`).
+- Adopted Gluestack UI for the home screen (provider + larger level cards); NativeWind remains for other screens.
 
 ## What The App Does
 
@@ -47,7 +48,8 @@ Planned next focus areas discussed during development:
 - Expo + React Native + Expo Router
 - TypeScript
 - Zustand (state)
-- NativeWind + Tailwind CSS (styling)
+- Gluestack UI (`@gluestack-ui/themed` + `@gluestack-ui/config`) for component layout and themed primitives
+- NativeWind + Tailwind CSS (styling for screens not yet on Gluestack)
 - Jest + `@testing-library/react-native` (tests)
 
 ### Backend (`server/`)

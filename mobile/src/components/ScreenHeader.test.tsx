@@ -1,11 +1,13 @@
-import { fireEvent, render } from "@testing-library/react-native";
+import { fireEvent } from "@testing-library/react-native";
+import { renderWithGluestack } from "@/test-utils/renderWithGluestack";
 import ScreenHeader from "./ScreenHeader";
 
+jest.mock("@gluestack-ui/config");
 jest.mock("@expo/vector-icons/Ionicons", () => "Ionicons");
 
 describe("ScreenHeader", () => {
   it("renders title/subtitle and no back button by default", () => {
-    const { getByText, queryByLabelText } = render(
+    const { getByText, queryByLabelText } = renderWithGluestack(
       <ScreenHeader title="Library" subtitle="Search and filter." />,
     );
 
@@ -16,7 +18,7 @@ describe("ScreenHeader", () => {
 
   it("renders back button and calls onBack", () => {
     const onBack = jest.fn();
-    const { getByLabelText } = render(
+    const { getByLabelText } = renderWithGluestack(
       <ScreenHeader title="Learn" onBack={onBack} backLabel="Home" />,
     );
 
@@ -26,7 +28,7 @@ describe("ScreenHeader", () => {
 
   it("renders right action and calls it", () => {
     const onPress = jest.fn();
-    const { getByText } = render(
+    const { getByText } = renderWithGluestack(
       <ScreenHeader title="Library" rightAction={{ label: "Add move", onPress }} />,
     );
 
