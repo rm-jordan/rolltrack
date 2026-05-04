@@ -2,7 +2,6 @@ import { fireEvent } from "@testing-library/react-native";
 import { renderWithGluestack } from "@/test-utils/renderWithGluestack";
 import EmptyStateCard from "./EmptyStateCard";
 
-jest.mock("@gluestack-ui/config");
 jest.mock("@expo/vector-icons/Ionicons", () => "Ionicons");
 
 describe("EmptyStateCard", () => {

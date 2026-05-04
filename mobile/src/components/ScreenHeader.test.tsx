@@ -2,7 +2,6 @@ import { fireEvent } from "@testing-library/react-native";
 import { renderWithGluestack } from "@/test-utils/renderWithGluestack";
 import ScreenHeader from "./ScreenHeader";
 
-jest.mock("@gluestack-ui/config");
 jest.mock("@expo/vector-icons/Ionicons", () => "Ionicons");
 
 describe("ScreenHeader", () => {

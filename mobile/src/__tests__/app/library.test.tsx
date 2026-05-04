@@ -1,5 +1,6 @@
-import { fireEvent, render } from "@testing-library/react-native";
+import { fireEvent } from "@testing-library/react-native";
 import LibraryScreen from "../../app/(tabs)/library";
+import { renderWithGluestack } from "@/test-utils/renderWithGluestack";
 
 jest.mock("@expo/vector-icons/Ionicons", () => "Ionicons");
 
@@ -41,7 +42,7 @@ describe("LibraryScreen filters", () => {
   });
 
   it("resets filters from empty state action", () => {
-    const { getByPlaceholderText, getByText, queryByText } = render(<LibraryScreen />);
+    const { getByPlaceholderText, getByText, queryByText } = renderWithGluestack(<LibraryScreen />);
 
     fireEvent.changeText(getByPlaceholderText("Search techniques…"), "zzzz");
 

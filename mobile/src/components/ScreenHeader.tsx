@@ -1,5 +1,7 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { Box, HStack, Pressable, Text, VStack } from "@gluestack-ui/themed";
+import { Box, Button, ButtonText, HStack, Pressable, Text, VStack } from "@gluestack-ui/themed";
+import { useRolltrackColor } from "@/theme/useRolltrackToken";
+import ThemeAppearanceControl from "@/components/ThemeAppearanceControl";
 
 type ScreenHeaderProps = {
   title: string;
@@ -10,6 +12,8 @@ type ScreenHeaderProps = {
     label: string;
     onPress: () => void;
   };
+  /** Show Auto / Light / Dark control (Gluestack color mode). */
+  appearanceToggle?: boolean;
 };
 
 export default function ScreenHeader({
@@ -18,7 +22,10 @@ export default function ScreenHeader({
   onBack,
   backLabel = "Back",
   rightAction,
+  appearanceToggle = false,
 }: ScreenHeaderProps) {
+  const chevronColor = useRolltrackColor("rtIconMuted");
+
   return (
     <Box>
       {onBack ? (
@@ -34,8 +41,8 @@ export default function ScreenHeader({
           accessibilityLabel={backLabel}
           $pressed={{ opacity: 0.85 }}
         >
-          <Ionicons name="chevron-back" size={22} color="#3f3f46" />
-          <Text color="$coolGray800" ml="$1" fontWeight="$semibold">
+          <Ionicons name="chevron-back" size={22} color={chevronColor} />
+          <Text color="$rtHeading" ml="$1" fontWeight="$semibold">
             {backLabel}
           </Text>
         </Pressable>
@@ -43,31 +50,29 @@ export default function ScreenHeader({
 
       <HStack alignItems="flex-start" justifyContent="space-between" space="md">
         <VStack flex={1}>
-          <Text color="$coolGray900" fontSize="$3xl" fontWeight="$bold">
+          <Text color="$rtHeading" fontSize="$3xl" fontWeight="$bold">
             {title}
           </Text>
           {subtitle ? (
-            <Text color="$coolGray500" mt="$2">
+            <Text color="$rtBody" mt="$2">
               {subtitle}
             </Text>
           ) : null}
         </VStack>
-        {rightAction ? (
-          <Pressable
-            onPress={rightAction.onPress}
-            borderRadius="$2xl"
-            bg="$emerald500"
-            px="$4"
-            py="$3"
-            borderWidth={1}
-            borderColor="$emerald400"
-            $pressed={{ opacity: 0.9 }}
-          >
-            <Text color="$white" fontWeight="$semibold" fontSize="$sm">
-              {rightAction.label}
-            </Text>
-          </Pressable>
-        ) : null}
+        <VStack alignItems="flex-end" space="sm">
+          {appearanceToggle ? <ThemeAppearanceControl /> : null}
+          {rightAction ? (
+            <Button
+              size="sm"
+              action="primary"
+              variant="solid"
+              borderRadius="$2xl"
+              onPress={rightAction.onPress}
+            >
+              <ButtonText>{rightAction.label}</ButtonText>
+            </Button>
+          ) : null}
+        </VStack>
       </HStack>
     </Box>
   );

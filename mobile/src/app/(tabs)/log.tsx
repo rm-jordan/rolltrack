@@ -1,5 +1,7 @@
 import {
-  Box,
+  Button,
+  ButtonText,
+  Card,
   HStack,
   Input,
   InputField,
@@ -13,7 +15,7 @@ import {
 import { useRouter } from "expo-router";
 import { useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { SafeAreaView } from "react-native-safe-area-context";
+import ScreenCanvas from "@/components/ScreenCanvas";
 import { z } from "zod";
 import { formatLogDate, localTodayIso, type SessionGiType, type SessionType } from "@rolltrack/shared";
 import EmptyStateCard from "@/components/EmptyStateCard";
@@ -121,7 +123,7 @@ export default function LogScreen() {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#efedf8" }} edges={["top", "left", "right", "bottom"]}>
+    <ScreenCanvas>
       <ScrollView
         flex={1}
         contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 16, paddingBottom: 24 }}
@@ -131,10 +133,11 @@ export default function LogScreen() {
           subtitle="Write what you learned. Entries are saved through the GraphQL API. Optionally tag techniques to update practice stats."
           onBack={goHome}
           backLabel="Home"
+          appearanceToggle
         />
 
-        <Box mt="$5" borderRadius="$3xl" borderWidth={1} borderColor="#e4e4e7" bg="$white" p="$4">
-          <Text color="$coolGray700" fontWeight="$medium" mb="$2">
+        <Card variant="outline" size="lg" mt="$5" p="$4" borderColor="$rtBorder">
+          <Text color="$rtHeading" fontWeight="$medium" mb="$2">
             Date for this entry
           </Text>
           <HStack alignItems="center" space="sm">
@@ -146,43 +149,39 @@ export default function LogScreen() {
                   flex={1}
                   borderRadius="$2xl"
                   borderWidth={1}
-                  borderColor="#e4e4e7"
-                  bg="$coolGray50"
+                  borderColor="$rtBorder"
+                  bg="$backgroundLightMuted"
+                  sx={{ _dark: { bg: "$backgroundDarkMuted" } }}
                 >
                   <InputField
                     value={value}
                     onChangeText={onChange}
                     placeholder="YYYY-MM-DD"
-                    placeholderTextColor="#a1a1aa"
-                    color="#18181b"
+                    placeholderTextColor="$rtSubtle"
+                    color="$rtHeading"
                     py="$3"
                     px="$4"
                   />
                 </Input>
               )}
             />
-            <Pressable
-              onPress={setToday}
+            <Button
+              size="sm"
+              action="positive"
+              variant="solid"
               borderRadius="$2xl"
-              bg="$emerald500"
-              px="$4"
-              py="$3"
-              borderWidth={1}
-              borderColor="$emerald400"
-              $pressed={{ opacity: 0.9 }}
+              onPress={setToday}
             >
-              <Text color="$white" fontWeight="$semibold" fontSize="$sm">
-                Today
-              </Text>
-            </Pressable>
+              <ButtonText>Today</ButtonText>
+            </Button>
           </HStack>
-        </Box>
+        </Card>
 
-        <Box mt="$4" borderRadius="$3xl" borderWidth={1} borderColor="#e4e4e7" bg="$white" p="$4">
-          <Text color="$coolGray700" fontWeight="$medium" mb="$2">
+        <Card variant="outline" size="lg" mt="$4" p="$4" borderColor="$rtBorder">
+          <Text color="$rtHeading" fontWeight="$medium" mb="$2">
             What did you drill? (optional)
           </Text>
-          <Text color="$coolGray500" fontSize="$sm" mb="$3">
+          <Text color="$rtBody" fontSize="$sm" mb="$3">
             Tap to tag techniques. Leave empty for a simple journal entry.
           </Text>
           {sortedTechniques.length === 0 ? (
@@ -206,14 +205,25 @@ export default function LogScreen() {
                     mr="$2"
                     mb="$2"
                     borderWidth={1}
-                    bg={selected ? "#d1fae5" : "$coolGray50"}
-                    borderColor={selected ? "$emerald400" : "#e4e4e7"}
+                    borderColor={selected ? "$success400" : "$rtBorder"}
+                    bg={selected ? "$backgroundLightSuccess" : "$backgroundLightMuted"}
+                    sx={{
+                      _dark: {
+                        bg: selected ? "$backgroundDarkSuccess" : "$backgroundDarkMuted",
+                        borderColor: selected ? "$success400" : "$rtBorder",
+                      },
+                    }}
                     $pressed={{ opacity: 0.9 }}
                   >
                     <Text
                       fontSize="$sm"
                       fontWeight="$medium"
-                      color={selected ? "#064e3b" : "$coolGray700"}
+                      color={selected ? "$success800" : "$rtHeading"}
+                      sx={{
+                        _dark: {
+                          color: selected ? "$success200" : "$rtHeading",
+                        },
+                      }}
                       numberOfLines={1}
                     >
                       {tech.name}
@@ -223,23 +233,29 @@ export default function LogScreen() {
               })}
             </HStack>
           )}
-        </Box>
+        </Card>
 
-        <Box mt="$4" borderRadius="$3xl" borderWidth={1} borderColor="#e4e4e7" bg="$white" p="$4">
-          <Text color="$coolGray700" fontWeight="$medium" mb="$2">
+        <Card variant="outline" size="lg" mt="$4" p="$4" borderColor="$rtBorder">
+          <Text color="$rtHeading" fontWeight="$medium" mb="$2">
             What did you learn today?
           </Text>
           <Controller
             control={control}
             name="notes"
             render={({ field: { onChange, value } }) => (
-              <Textarea borderRadius="$2xl" borderWidth={1} borderColor="#e4e4e7" bg="$coolGray50">
+              <Textarea
+                borderRadius="$2xl"
+                borderWidth={1}
+                borderColor="$rtBorder"
+                bg="$backgroundLightMuted"
+                sx={{ _dark: { bg: "$backgroundDarkMuted" } }}
+              >
                 <TextareaInput
                   value={value}
                   onChangeText={onChange}
                   placeholder="Drills, positions, mistakes, wins — anything you want to remember."
-                  placeholderTextColor="#a1a1aa"
-                  color="#18181b"
+                  placeholderTextColor="$rtSubtle"
+                  color="$rtHeading"
                   multiline
                   textAlignVertical="top"
                   minHeight={160}
@@ -249,7 +265,7 @@ export default function LogScreen() {
               </Textarea>
             )}
           />
-        </Box>
+        </Card>
 
         {formError ? (
           <Text color="$red600" mt="$4">
@@ -257,29 +273,25 @@ export default function LogScreen() {
           </Text>
         ) : null}
         {submitMessage ? (
-          <Text color="#047857" mt="$4" fontWeight="$medium">
+          <Text color="$success600" mt="$4" fontWeight="$medium">
             {submitMessage}
           </Text>
         ) : null}
 
-        <Pressable
+        <Button
+          size="lg"
+          action="positive"
+          variant="solid"
+          borderRadius="$2xl"
+          mt="$5"
           onPress={handleSubmit(onSubmit)}
           disabled={saving}
           opacity={saving ? 0.85 : 1}
-          borderRadius="$2xl"
-          py="$4"
-          mt="$5"
-          borderWidth={1}
-          bg={saving ? "$emerald300" : "$emerald500"}
-          borderColor={saving ? "$emerald200" : "$emerald400"}
-          $pressed={{ opacity: 0.92 }}
         >
-          <Text color="$white" textAlign="center" fontWeight="$semibold" fontSize="$md">
-            {saving ? "Saving…" : "Save entry"}
-          </Text>
-        </Pressable>
+          <ButtonText>{saving ? "Saving…" : "Save entry"}</ButtonText>
+        </Button>
 
-        <Text color="$coolGray900" fontSize="$lg" fontWeight="$bold" mt="$10" mb="$3">
+        <Text color="$rtHeading" fontSize="$lg" fontWeight="$bold" mt="$10" mb="$3">
           Recent entries
         </Text>
         {recentEntries.length === 0 ? (
@@ -294,32 +306,24 @@ export default function LogScreen() {
                 .map((id) => techniqueNameById[id])
                 .filter(Boolean);
               return (
-                <Box
-                  key={entry.id}
-                  borderRadius="$2xl"
-                  borderWidth={1}
-                  borderColor="#e4e4e7"
-                  bg="$white"
-                  p="$4"
-                  mb="$3"
-                >
-                  <Text color="$coolGray900" fontWeight="$semibold">
+                <Card key={entry.id} variant="outline" size="md" p="$4" mb="$3" borderColor="$rtBorder">
+                  <Text color="$rtHeading" fontWeight="$semibold">
                     {formatLogDate(entry.date)}
                   </Text>
-                  <Text color="$coolGray600" fontSize="$sm" mt="$2" numberOfLines={6}>
+                  <Text color="$rtBody" fontSize="$sm" mt="$2" numberOfLines={6}>
                     {entry.notes}
                   </Text>
                   {taggedNames.length > 0 ? (
-                    <Text color="$coolGray500" fontSize="$xs" mt="$2" numberOfLines={2}>
+                    <Text color="$rtSubtle" fontSize="$xs" mt="$2" numberOfLines={2}>
                       Tagged: {taggedNames.join(", ")}
                     </Text>
                   ) : null}
-                </Box>
+                </Card>
               );
             })}
           </VStack>
         )}
       </ScrollView>
-    </SafeAreaView>
+    </ScreenCanvas>
   );
 }

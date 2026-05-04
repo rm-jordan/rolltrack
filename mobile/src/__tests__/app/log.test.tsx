@@ -1,5 +1,6 @@
-import { fireEvent, render } from "@testing-library/react-native";
+import { fireEvent } from "@testing-library/react-native";
 import LogScreen from "../../app/(tabs)/log";
+import { renderWithGluestack } from "@/test-utils/renderWithGluestack";
 
 jest.mock("@expo/vector-icons/Ionicons", () => "Ionicons");
 
@@ -33,7 +34,7 @@ describe("LogScreen states", () => {
   });
 
   it("shows techniques empty state and routes to library action", () => {
-    const { getByText } = render(<LogScreen />);
+    const { getByText } = renderWithGluestack(<LogScreen />);
 
     expect(getByText("No techniques available")).toBeTruthy();
     fireEvent.press(getByText("Go to library"));

@@ -1,5 +1,6 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { Box, HStack, Pressable, Text } from "@gluestack-ui/themed";
+import { Button, ButtonText, Card, HStack, Text } from "@gluestack-ui/themed";
+import { useRolltrackColor } from "@/theme/useRolltrackToken";
 
 type EmptyStateCardProps = {
   title: string;
@@ -14,35 +15,32 @@ export default function EmptyStateCard({
   actionLabel,
   onAction,
 }: EmptyStateCardProps) {
+  const iconColor = useRolltrackColor("rtIconMuted");
+
   return (
-    <Box borderRadius="$3xl" borderWidth={1} borderColor="#e4e4e7" bg="$white" p="$5" mt="$2">
+    <Card variant="outline" size="lg" p="$5" mt="$2" borderColor="$rtBorder">
       <HStack alignItems="center">
-        <Ionicons name="sparkles-outline" size={18} color="#6b7280" />
-        <Text color="$coolGray900" fontWeight="$semibold" ml="$2">
+        <Ionicons name="sparkles-outline" size={18} color={iconColor} />
+        <Text color="$rtHeading" fontWeight="$semibold" ml="$2">
           {title}
         </Text>
       </HStack>
-      <Text color="$coolGray500" fontSize="$sm" mt="$2">
+      <Text color="$rtBody" fontSize="$sm" mt="$2">
         {message}
       </Text>
       {actionLabel && onAction ? (
-        <Pressable
-          onPress={onAction}
+        <Button
+          size="sm"
+          action="secondary"
+          variant="outline"
           alignSelf="flex-start"
           mt="$4"
-          borderRadius="$xl"
-          borderWidth={1}
-          borderColor="#d4d4d8"
-          bg="$coolGray50"
-          px="$3"
-          py="$2"
-          $pressed={{ opacity: 0.9 }}
+          borderColor="$rtBorder"
+          onPress={onAction}
         >
-          <Text color="$coolGray700" fontSize="$sm" fontWeight="$medium">
-            {actionLabel}
-          </Text>
-        </Pressable>
+          <ButtonText>{actionLabel}</ButtonText>
+        </Button>
       ) : null}
-    </Box>
+    </Card>
   );
 }

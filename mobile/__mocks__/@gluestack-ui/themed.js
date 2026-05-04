@@ -29,6 +29,26 @@ function TextareaInput(props) {
   return React.createElement(TextInput, props);
 }
 
+function Button({ children, onPress, ...props }) {
+  return React.createElement(
+    Pressable,
+    { onPress, accessibilityRole: "button", ...props },
+    children,
+  );
+}
+
+function ButtonText({ children, ...props }) {
+  return React.createElement(Text, props, children);
+}
+
+function Card({ children, ...props }) {
+  return React.createElement(View, props, children);
+}
+
+function useToken() {
+  return "#525252";
+}
+
 module.exports = {
   GluestackUIProvider: ({ children }) => React.createElement(React.Fragment, null, children),
   Box,
@@ -41,4 +61,8 @@ module.exports = {
   InputField,
   Textarea,
   TextareaInput,
+  Button,
+  ButtonText,
+  Card,
+  useToken,
 };

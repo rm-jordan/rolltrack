@@ -1,33 +1,42 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { Box, Button, ButtonText, Card, HStack, Text, VStack } from "@gluestack-ui/themed";
+import { useRolltrackColor } from "@/theme/useRolltrackToken";
 import { useRouter } from "expo-router";
-import { Box, HStack, Pressable, Text, VStack } from "@gluestack-ui/themed";
-import { SafeAreaView } from "react-native-safe-area-context";
+import ScreenCanvas from "@/components/ScreenCanvas";
+import ThemeAppearanceControl from "@/components/ThemeAppearanceControl";
 import type { TechniqueLevel } from "@rolltrack/shared";
 
-const levelButtons: { level: TechniqueLevel; subtitle: string; cardBg: string }[] = [
-  { level: "Beginner", subtitle: "Core fundamentals and base movement", cardBg: "#eefaf3" },
-  { level: "Intermediate", subtitle: "Combinations, timing, and transitions", cardBg: "#eff6ff" },
-  { level: "Advanced", subtitle: "Refinement, pressure, and chain attacks", cardBg: "#f5f3ff" },
-];
+const levels: { level: TechniqueLevel; subtitle: string; bg: "$rtLevelBeginner" | "$rtLevelIntermediate" | "$rtLevelAdvanced" }[] =
+  [
+    { level: "Beginner", subtitle: "Core fundamentals and base movement", bg: "$rtLevelBeginner" },
+    { level: "Intermediate", subtitle: "Combinations, timing, and transitions", bg: "$rtLevelIntermediate" },
+    { level: "Advanced", subtitle: "Refinement, pressure, and chain attacks", bg: "$rtLevelAdvanced" },
+  ];
 
 export default function HomeScreen() {
   const router = useRouter();
+  const libraryAccent = useRolltrackColor("rtLibraryAccent");
+  const logAccent = useRolltrackColor("rtLogAccent");
+  const iconMuted = useRolltrackColor("rtIconMuted");
 
   const openLevelTechniques = (level: TechniqueLevel) => {
     router.push(`/(tabs)/learn/${level}`);
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#efedf8" }} edges={["top", "left", "right", "bottom"]}>
+    <ScreenCanvas>
       <Box flex={1} px="$4" pt="$3" pb="$5">
-        <Text color="$coolGray900" fontSize="$3xl" fontWeight="$bold" mt="$2" textAlign="center">
+        <HStack justifyContent="flex-end" mb="$2">
+          <ThemeAppearanceControl />
+        </HStack>
+        <Text color="$rtHeading" fontSize="$3xl" fontWeight="$bold" mt="$1" textAlign="center">
           RollTrack
         </Text>
         <Box
           h="$12"
           w="$12"
           borderRadius="$2xl"
-          bg="$violet500"
+          bg="$primary500"
           alignItems="center"
           justifyContent="center"
           mt="$3"
@@ -35,107 +44,111 @@ export default function HomeScreen() {
         >
           <Ionicons name="fitness" size={24} color="#ffffff" />
         </Box>
-        <Text color="$coolGray900" fontSize="$xl" fontWeight="$bold" mt="$5" mb="$2">
+        <Text color="$rtHeading" fontSize="$xl" fontWeight="$bold" mt="$5" mb="$2">
           Technique levels
         </Text>
 
         <VStack flex={1} space="md" minHeight="$32">
-          {levelButtons.map(({ level, subtitle, cardBg }) => (
-            <Pressable
+          {levels.map(({ level, subtitle, bg }) => (
+            <Card
               key={level}
-              flex={1}
-              onPress={() => openLevelTechniques(level)}
-              bg={cardBg}
-              borderRadius="$2xl"
-              borderWidth={1}
-              borderColor="#e4e4e7"
-              $pressed={{ opacity: 0.92 }}
+              variant="outline"
+              size="lg"
+              p="$0"
+              overflow="hidden"
+              borderColor="$rtBorder"
+              bg={bg}
             >
-              <HStack flex={1} alignItems="center" px="$4" py="$5">
-                <Box
-                  h={48}
-                  w={48}
-                  borderRadius="$xl"
-                  bg="rgba(255,255,255,0.92)"
-                  borderWidth={1}
-                  borderColor="#e4e4e7"
-                  alignItems="center"
-                  justifyContent="center"
-                  mr="$3"
-                >
-                  <Ionicons name="layers-outline" size={22} color="#52525b" />
-                </Box>
-                <VStack flex={1} mr="$2">
-                  <Text color="$coolGray900" fontSize="$xl" fontWeight="$semibold">
-                    {level}
-                  </Text>
-                  <Text color="$coolGray500" fontSize="$md" mt="$1" numberOfLines={2}>
-                    {subtitle}
-                  </Text>
-                </VStack>
-                <Ionicons name="chevron-forward" size={22} color="#a1a1aa" />
-              </HStack>
-            </Pressable>
+              <Button
+                variant="link"
+                p="$0"
+                h="auto"
+                onPress={() => openLevelTechniques(level)}
+                justifyContent="flex-start"
+              >
+                <HStack flex={1} alignItems="center" px="$4" py="$5" w="$full">
+                  <Box
+                    h={48}
+                    w={48}
+                    borderRadius="$xl"
+                    bg="$rtCardIconBg"
+                    borderWidth={1}
+                    borderColor="$rtBorder"
+                    alignItems="center"
+                    justifyContent="center"
+                    mr="$3"
+                  >
+                    <Ionicons name="layers-outline" size={22} color={iconMuted} />
+                  </Box>
+                  <VStack flex={1} mr="$2" alignItems="flex-start">
+                    <Text color="$rtHeading" fontSize="$xl" fontWeight="$semibold">
+                      {level}
+                    </Text>
+                    <Text color="$rtBody" fontSize="$md" mt="$1" numberOfLines={2} textAlign="left">
+                      {subtitle}
+                    </Text>
+                  </VStack>
+                  <Ionicons name="chevron-forward" size={22} color={iconMuted} />
+                </HStack>
+              </Button>
+            </Card>
           ))}
         </VStack>
 
         <VStack mt="$3" space="md">
           <HStack space="sm">
-            <Pressable
-              flex={1}
-              mr="$1"
-              borderRadius="$2xl"
-              bg="$white"
-              borderWidth={1}
-              borderColor="#e4e4e7"
-              p="$4"
-              onPress={() => router.push("/(tabs)/library")}
-              $pressed={{ opacity: 0.92 }}
-            >
-              <Ionicons name="albums-outline" size={22} color="#0891b2" />
-              <Text color="$coolGray900" fontWeight="$semibold" fontSize="$md" mt="$2">
-                Library
-              </Text>
-              <Text color="$coolGray500" fontSize="$sm" mt="$1">
-                Search techniques
-              </Text>
-            </Pressable>
-            <Pressable
-              flex={1}
-              ml="$1"
-              borderRadius="$2xl"
-              bg="$white"
-              borderWidth={1}
-              borderColor="#e4e4e7"
-              p="$4"
-              onPress={() => router.push("/(tabs)/log")}
-              $pressed={{ opacity: 0.92 }}
-            >
-              <Ionicons name="create-outline" size={22} color="#059669" />
-              <Text color="$coolGray900" fontWeight="$semibold" fontSize="$md" mt="$2">
-                Log
-              </Text>
-              <Text color="$coolGray500" fontSize="$sm" mt="$1">
-                Track session notes
-              </Text>
-            </Pressable>
+            <Card variant="outline" size="md" flex={1} mr="$1" p="$4" borderColor="$rtBorder">
+              <Button
+                variant="link"
+                p="$0"
+                h="auto"
+                onPress={() => router.push("/(tabs)/library")}
+                justifyContent="flex-start"
+              >
+                <Box alignItems="flex-start">
+                  <Ionicons name="albums-outline" size={22} color={libraryAccent} />
+                  <Text color="$rtHeading" fontWeight="$semibold" fontSize="$md" mt="$2" textAlign="left">
+                    Library
+                  </Text>
+                  <Text color="$rtBody" fontSize="$sm" mt="$1" textAlign="left">
+                    Search techniques
+                  </Text>
+                </Box>
+              </Button>
+            </Card>
+            <Card variant="outline" size="md" flex={1} ml="$1" p="$4" borderColor="$rtBorder">
+              <Button
+                variant="link"
+                p="$0"
+                h="auto"
+                onPress={() => router.push("/(tabs)/log")}
+                justifyContent="flex-start"
+              >
+                <Box alignItems="flex-start">
+                  <Ionicons name="create-outline" size={22} color={logAccent} />
+                  <Text color="$rtHeading" fontWeight="$semibold" fontSize="$md" mt="$2" textAlign="left">
+                    Log
+                  </Text>
+                  <Text color="$rtBody" fontSize="$sm" mt="$1" textAlign="left">
+                    Track session notes
+                  </Text>
+                </Box>
+              </Button>
+            </Card>
           </HStack>
 
-          <Pressable
-            py="$4"
+          <Button
+            size="md"
+            action="secondary"
+            variant="outline"
+            borderColor="$rtBorder"
             borderRadius="$2xl"
-            bg="$white"
-            borderWidth={1}
-            borderColor="#e4e4e7"
             onPress={() => router.push("/(tabs)/learn")}
-              $pressed={{ opacity: 0.92 }}
           >
-            <Text color="$coolGray700" textAlign="center" fontSize="$md" fontWeight="$semibold">
-              Browse Learn (all filters)
-            </Text>
-          </Pressable>
+            <ButtonText color="$rtHeading">Browse Learn (all filters)</ButtonText>
+          </Button>
         </VStack>
       </Box>
-    </SafeAreaView>
+    </ScreenCanvas>
   );
 }

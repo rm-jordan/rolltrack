@@ -1,8 +1,8 @@
 import { Box, ScrollView, Text, VStack } from "@gluestack-ui/themed";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useMemo } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
 import EmptyStateCard from "@/components/EmptyStateCard";
+import ScreenCanvas from "@/components/ScreenCanvas";
 import ScreenHeader from "@/components/ScreenHeader";
 import TechniqueCard from "@/components/TechniqueCard";
 import { normalizeLevel, techniqueLevel } from "@/lib/techniqueLevel";
@@ -26,26 +26,26 @@ export default function LevelTechniquesScreen() {
 
   if (!level) {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#efedf8" }} edges={["top", "left", "right", "bottom"]}>
+      <ScreenCanvas>
         <Box px="$5" pt="$4">
-          <ScreenHeader title="Unknown level" onBack={goHome} backLabel="Home" />
+          <ScreenHeader title="Unknown level" onBack={goHome} backLabel="Home" appearanceToggle />
         </Box>
-      </SafeAreaView>
+      </ScreenCanvas>
     );
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#efedf8" }} edges={["top", "left", "right", "bottom"]}>
+    <ScreenCanvas>
       <ScrollView
         flex={1}
         contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 12, paddingBottom: 24 }}
       >
-        <ScreenHeader title={`${level} techniques`} onBack={goHome} backLabel="Home" />
+        <ScreenHeader title={`${level} techniques`} onBack={goHome} backLabel="Home" appearanceToggle />
 
-        <Text color="$coolGray900" fontSize="$3xl" fontWeight="$bold" mt="$2">
+        <Text color="$rtHeading" fontSize="$3xl" fontWeight="$bold" mt="$2">
           {level}
         </Text>
-        <Text color="$coolGray500" mt="$1">
+        <Text color="$rtBody" mt="$1">
           {filtered.length} technique{filtered.length === 1 ? "" : "s"} · level guidance
         </Text>
 
@@ -75,6 +75,6 @@ export default function LevelTechniquesScreen() {
           )}
         </Box>
       </ScrollView>
-    </SafeAreaView>
+    </ScreenCanvas>
   );
 }

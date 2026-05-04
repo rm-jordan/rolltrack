@@ -1,10 +1,11 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { Box, HStack, Input, InputField, Pressable, ScrollView, Text, VStack } from "@gluestack-ui/themed";
+import { Card, HStack, Input, InputField, Pressable, ScrollView, Text, VStack } from "@gluestack-ui/themed";
+import { useRolltrackColor } from "@/theme/useRolltrackToken";
 import { useRouter } from "expo-router";
 import { useMemo, useState } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
 import type { TechniqueLevel } from "@rolltrack/shared";
 import EmptyStateCard from "@/components/EmptyStateCard";
+import ScreenCanvas from "@/components/ScreenCanvas";
 import ScreenHeader from "@/components/ScreenHeader";
 import TechniqueCard from "@/components/TechniqueCard";
 import { LEVELS, techniqueLevel } from "@/lib/techniqueLevel";
@@ -14,6 +15,7 @@ type SortKey = "recent" | "practice" | "name";
 
 export default function LibraryScreen() {
   const router = useRouter();
+  const libraryAccent = useRolltrackColor("rtLibraryAccent");
   const techniques = useRollTrackStore((state) => state.techniques);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedLevel, setSelectedLevel] = useState<"All" | TechniqueLevel>("All");
@@ -61,7 +63,7 @@ export default function LibraryScreen() {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#efedf8" }} edges={["top", "left", "right", "bottom"]}>
+    <ScreenCanvas>
       <ScrollView
         flex={1}
         contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 16, paddingBottom: 24 }}
@@ -71,41 +73,43 @@ export default function LibraryScreen() {
           subtitle="Search and filter your techniques."
           onBack={goHome}
           backLabel="Home"
+          appearanceToggle
           rightAction={{ label: "Add move", onPress: () => router.push("/technique/new") }}
         />
 
-        <Box mt="$4" borderRadius="$3xl" borderWidth={1} borderColor="#a5f3fc" bg="$white" p="$4">
+        <Card variant="outline" size="lg" mt="$4" p="$4" borderColor="$primary300" sx={{ _dark: { borderColor: "$primary700" } }}>
           <HStack alignItems="center">
-            <Ionicons name="search-outline" size={18} color="#0891b2" />
-            <Text color="$coolGray500" fontSize="$xs" textTransform="uppercase" ml="$2" letterSpacing={1}>
+            <Ionicons name="search-outline" size={18} color={libraryAccent} />
+            <Text color="$rtSubtle" fontSize="$xs" textTransform="uppercase" ml="$2" letterSpacing={1}>
               Search
             </Text>
           </HStack>
-          <Text color="$coolGray700" mt="$2" fontSize="$sm">
+          <Text color="$rtBody" mt="$2" fontSize="$sm">
             By name, position, category, or tag. Tap a card for details.
           </Text>
-        </Box>
+        </Card>
 
         <Input
           mt="$4"
           borderRadius="$2xl"
           borderWidth={1}
-          borderColor="#e4e4e7"
-          bg="$white"
+          borderColor="$rtBorder"
+          bg="$backgroundLight0"
           px="$1"
+          sx={{ _dark: { bg: "$backgroundDark900" } }}
         >
           <InputField
             value={searchQuery}
             onChangeText={setSearchQuery}
             placeholder="Search techniques…"
-            placeholderTextColor="#a1a1aa"
-            color="#18181b"
+            placeholderTextColor="$rtSubtle"
+            color="$rtHeading"
             py="$3"
             px="$3"
           />
         </Input>
 
-        <Text color="$coolGray600" fontSize="$xs" fontWeight="$medium" mt="$4" mb="$2">
+        <Text color="$rtBody" fontSize="$xs" fontWeight="$medium" mt="$4" mb="$2">
           Sort
         </Text>
         <HStack flexWrap="wrap">
@@ -121,11 +125,17 @@ export default function LibraryScreen() {
                 mr="$2"
                 mb="$2"
                 borderWidth={1}
-                bg={active ? "$cyan500" : "$white"}
-                borderColor={active ? "$cyan400" : "#e4e4e7"}
+                borderColor={active ? "$primary400" : "$rtBorder"}
+                bg={active ? "$primary500" : "$backgroundLightMuted"}
+                sx={{
+                  _dark: {
+                    bg: active ? "$primary500" : "$backgroundDarkMuted",
+                    borderColor: active ? "$primary400" : "$rtBorder",
+                  },
+                }}
                 $pressed={{ opacity: 0.9 }}
               >
-                <Text color={active ? "$white" : "$coolGray700"} fontWeight="$medium" fontSize="$sm">
+                <Text color={active ? "$white" : "$rtHeading"} fontWeight="$medium" fontSize="$sm">
                   {label}
                 </Text>
               </Pressable>
@@ -133,7 +143,7 @@ export default function LibraryScreen() {
           })}
         </HStack>
 
-        <Text color="$coolGray600" fontSize="$xs" fontWeight="$medium" mt="$2" mb="$2">
+        <Text color="$rtBody" fontSize="$xs" fontWeight="$medium" mt="$2" mb="$2">
           Technique level
         </Text>
         <HStack flexWrap="wrap">
@@ -151,21 +161,22 @@ export default function LibraryScreen() {
                 mr="$2"
                 mb="$2"
                 borderWidth={1}
-                bg={active ? "$cyan500" : "$white"}
-                borderColor={active ? "$cyan400" : "#e4e4e7"}
+                borderColor={active ? "$primary400" : "$rtBorder"}
+                bg={active ? "$primary500" : "$backgroundLightMuted"}
+                sx={{
+                  _dark: {
+                    bg: active ? "$primary500" : "$backgroundDarkMuted",
+                    borderColor: active ? "$primary400" : "$rtBorder",
+                  },
+                }}
                 $pressed={{ opacity: 0.9 }}
               >
                 {level === "All" ? (
-                  <Ionicons name="layers-outline" size={15} color={active ? "#ffffff" : "#3f3f46"} />
+                  <Ionicons name="layers-outline" size={15} color={active ? "#ffffff" : libraryAccent} />
                 ) : (
-                  <Ionicons name="school-outline" size={15} color={active ? "#ffffff" : "#3f3f46"} />
+                  <Ionicons name="school-outline" size={15} color={active ? "#ffffff" : libraryAccent} />
                 )}
-                <Text
-                  ml="$1.5"
-                  color={active ? "$white" : "$coolGray700"}
-                  fontWeight="$medium"
-                  fontSize="$sm"
-                >
+                <Text ml="$1.5" color={active ? "$white" : "$rtHeading"} fontWeight="$medium" fontSize="$sm">
                   {level}
                 </Text>
               </Pressable>
@@ -173,7 +184,7 @@ export default function LibraryScreen() {
           })}
         </HStack>
 
-        <Text color="$coolGray400" fontSize="$xs" mb="$3" mt="$1">
+        <Text color="$rtSubtle" fontSize="$xs" mb="$3" mt="$1">
           {filteredTechniques.length} of {techniques.length} techniques
         </Text>
 
@@ -205,6 +216,6 @@ export default function LibraryScreen() {
           </VStack>
         )}
       </ScrollView>
-    </SafeAreaView>
+    </ScreenCanvas>
   );
 }

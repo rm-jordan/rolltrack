@@ -1,10 +1,12 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { Box, HStack, Pressable, ScrollView, Text } from "@gluestack-ui/themed";
+import { Box, Button, ButtonText, Card, HStack, Pressable, ScrollView, Text } from "@gluestack-ui/themed";
 import { type Href, useLocalSearchParams, useRouter } from "expo-router";
 import { Alert } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import ScreenCanvas from "@/components/ScreenCanvas";
+import ThemeAppearanceControl from "@/components/ThemeAppearanceControl";
 import { techniqueLevel } from "@/lib/techniqueLevel";
 import { useRollTrackStore } from "@/state/store";
+import { useRolltrackColor } from "@/theme/useRolltrackToken";
 
 export default function TechniqueDetailScreen() {
   const router = useRouter();
@@ -13,6 +15,7 @@ export default function TechniqueDetailScreen() {
   const deleteTechnique = useRollTrackStore((state) => state.deleteTechnique);
   const technique = techniques.find((item) => item.id === id);
   const level = technique ? techniqueLevel(technique) : null;
+  const iconMuted = useRolltrackColor("rtIconMuted");
 
   const onDelete = () => {
     if (!id) return;
@@ -35,77 +38,89 @@ export default function TechniqueDetailScreen() {
 
   if (!technique) {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#efedf8" }} edges={["top", "left", "right", "bottom"]}>
+      <ScreenCanvas>
         <Box px="$5" pt="$6">
-          <Pressable
-            onPress={() => router.back()}
-            mb="$5"
-            flexDirection="row"
-            alignItems="center"
-            $pressed={{ opacity: 0.85 }}
-          >
-            <Ionicons name="chevron-back" size={20} color="#3f3f46" />
-            <Text color="$coolGray700" ml="$1">
-              Back
-            </Text>
-          </Pressable>
-          <Text color="$coolGray900" fontSize="$2xl" fontWeight="$bold">
+          <HStack justifyContent="space-between" alignItems="center" mb="$4">
+            <Pressable
+              onPress={() => router.back()}
+              flexDirection="row"
+              alignItems="center"
+              $pressed={{ opacity: 0.85 }}
+            >
+              <Ionicons name="chevron-back" size={20} color={iconMuted} />
+              <Text color="$rtBody" ml="$1">
+                Back
+              </Text>
+            </Pressable>
+            <ThemeAppearanceControl />
+          </HStack>
+          <Text color="$rtHeading" fontSize="$2xl" fontWeight="$bold">
             Technique not found
           </Text>
         </Box>
-      </SafeAreaView>
+      </ScreenCanvas>
     );
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#efedf8" }} edges={["top", "left", "right", "bottom"]}>
+    <ScreenCanvas>
       <ScrollView flex={1} contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 12, paddingBottom: 32 }}>
-        <Pressable
-          onPress={() => router.back()}
-          flexDirection="row"
-          alignItems="center"
-          mb="$4"
-          $pressed={{ opacity: 0.85 }}
-        >
-          <Ionicons name="chevron-back" size={20} color="#3f3f46" />
-          <Text color="$coolGray700" ml="$1" fontWeight="$medium">
-            Back
-          </Text>
-        </Pressable>
+        <HStack justifyContent="space-between" alignItems="center" mb="$4">
+          <Pressable
+            onPress={() => router.back()}
+            flexDirection="row"
+            alignItems="center"
+            $pressed={{ opacity: 0.85 }}
+          >
+            <Ionicons name="chevron-back" size={20} color={iconMuted} />
+            <Text color="$rtBody" ml="$1" fontWeight="$medium">
+              Back
+            </Text>
+          </Pressable>
+          <ThemeAppearanceControl />
+        </HStack>
 
-        <Box
-          borderRadius="$3xl"
-          borderWidth={1}
-          borderColor="#e4e4e7"
-          bg="$white"
+        <Card
+          variant="outline"
+          size="lg"
           p="$6"
           mb="$4"
+          borderColor="$rtBorder"
           alignItems="center"
           justifyContent="center"
         >
-          <Ionicons name="layers-outline" size={28} color="#3f3f46" />
-          <Text color="$coolGray500" fontSize="$xs" mt="$3">
+          <Ionicons name="layers-outline" size={28} color={iconMuted} />
+          <Text color="$rtSubtle" fontSize="$xs" mt="$3">
             Technique level: {level}
           </Text>
-        </Box>
+        </Card>
 
-        <Box borderRadius="$3xl" borderWidth={1} borderColor="#e4e4e7" bg="$white" p="$5">
-          <Text color="$coolGray900" fontSize="$2xl" fontWeight="$bold">
+        <Card variant="outline" size="lg" p="$5" borderColor="$rtBorder">
+          <Text color="$rtHeading" fontSize="$2xl" fontWeight="$bold">
             {technique.name}
           </Text>
 
-          <Text color="$coolGray500" mt="$2">
+          <Text color="$rtBody" mt="$2">
             {technique.position} • {technique.category}
           </Text>
 
           <Box mt="$4">
-            <Text color="$coolGray500" fontSize="$xs">
+            <Text color="$rtSubtle" fontSize="$xs">
               Tags
             </Text>
             <HStack flexWrap="wrap" mt="$2">
               {technique.tags.map((tag) => (
-                <Box key={tag} bg="$coolGray100" px="$2" py="$1" borderRadius="$full" mr="$2" mb="$2">
-                  <Text color="$coolGray600" fontSize="$xs">
+                <Box
+                  key={tag}
+                  bg="$backgroundLight200"
+                  px="$2"
+                  py="$1"
+                  borderRadius="$full"
+                  mr="$2"
+                  mb="$2"
+                  sx={{ _dark: { bg: "$backgroundDark700" } }}
+                >
+                  <Text color="$rtBody" fontSize="$xs">
                     {tag}
                   </Text>
                 </Box>
@@ -114,60 +129,43 @@ export default function TechniqueDetailScreen() {
           </Box>
 
           <Box mt="$2">
-            <Text color="$coolGray500" fontSize="$xs">
+            <Text color="$rtSubtle" fontSize="$xs">
               Practice history
             </Text>
-            <Text color="$coolGray900" mt="$1" fontWeight="$medium">
+            <Text color="$rtHeading" mt="$1" fontWeight="$medium">
               Practiced {technique.timesPracticed} times
             </Text>
-            <Text color="$coolGray500" mt="$1" fontSize="$sm">
+            <Text color="$rtBody" mt="$1" fontSize="$sm">
               Last practiced: {technique.lastPracticed ?? "—"}
             </Text>
           </Box>
 
           <Box mt="$4">
-            <Text color="$coolGray500" fontSize="$xs">
+            <Text color="$rtSubtle" fontSize="$xs">
               How to perform
             </Text>
-            <Text color="$coolGray700" mt="$1">
+            <Text color="$rtBody" mt="$1">
               {technique.notes ?? "Add step-by-step explanation from Edit."}
             </Text>
           </Box>
 
           <HStack mt="$6" space="md">
-            <Pressable
+            <Button
+              flex={1}
+              size="md"
+              action="primary"
+              variant="solid"
+              borderRadius="$2xl"
               onPress={() => router.push(`/technique/edit/${technique.id}` as Href)}
-              flex={1}
-              borderRadius="$2xl"
-              bg="#7c3aed"
-              py="$3"
-              alignItems="center"
-              borderWidth={1}
-              borderColor="#8b5cf6"
-              $pressed={{ opacity: 0.92 }}
             >
-              <Text color="$white" fontWeight="$semibold">
-                Edit
-              </Text>
-            </Pressable>
-            <Pressable
-              onPress={onDelete}
-              flex={1}
-              borderRadius="$2xl"
-              bg="#fef2f2"
-              py="$3"
-              alignItems="center"
-              borderWidth={1}
-              borderColor="#fecaca"
-              $pressed={{ opacity: 0.92 }}
-            >
-              <Text color="#b91c1c" fontWeight="$semibold">
-                Delete
-              </Text>
-            </Pressable>
+              <ButtonText>Edit</ButtonText>
+            </Button>
+            <Button flex={1} size="md" action="negative" variant="outline" borderRadius="$2xl" onPress={onDelete}>
+              <ButtonText>Delete</ButtonText>
+            </Button>
           </HStack>
-        </Box>
+        </Card>
       </ScrollView>
-    </SafeAreaView>
+    </ScreenCanvas>
   );
 }

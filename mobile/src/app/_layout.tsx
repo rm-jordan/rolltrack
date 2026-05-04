@@ -1,25 +1,32 @@
-import { config } from "@gluestack-ui/config";
 import { Box, GluestackUIProvider, Pressable, Text, VStack } from "@gluestack-ui/themed";
 import { Stack } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 import { type ReactNode, useEffect, useRef, useState } from "react";
 import { ActivityIndicator, Animated, Easing } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { useRollTrackStore } from "@/state/store";
+import { rolltrackConfig } from "@/theme/rolltrackGluestackConfig";
+import { ThemePreferenceProvider, useThemePreference } from "@/theme/ThemePreferenceContext";
 import "../../global.css";
 
 function AppProviders({ children }: { children: ReactNode }) {
+  const { resolvedScheme } = useThemePreference();
   return (
-    <GluestackUIProvider config={config}>
-      <SafeAreaProvider>{children}</SafeAreaProvider>
+    <GluestackUIProvider config={rolltrackConfig} colorMode={resolvedScheme}>
+      <SafeAreaProvider>
+        <StatusBar style={resolvedScheme === "dark" ? "light" : "dark"} />
+        {children}
+      </SafeAreaProvider>
     </GluestackUIProvider>
   );
 }
 
-export default function RootLayout() {
+function RootLayoutBody() {
   const [ready, setReady] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [showIntro, setShowIntro] = useState(true);
   const introOpacity = useRef(new Animated.Value(1)).current;
+  const { resolvedScheme } = useThemePreference();
 
   const hydrate = async () => {
     setLoadError(null);
@@ -73,93 +80,102 @@ export default function RootLayout() {
 
   if (!ready) {
     return (
-      <AppProviders>
-        <VStack flex={1} bg="#efedf8" alignItems="center" justifyContent="center" px="$6">
-          <ActivityIndicator color="#059669" size="large" />
-          <Text color="$coolGray500" mt="$3" fontSize="$sm">
-            Loading data…
-          </Text>
-        </VStack>
-      </AppProviders>
+      <VStack flex={1} bg="$rtCanvas" alignItems="center" justifyContent="center" px="$6">
+        <ActivityIndicator color="#7c3aed" size="large" />
+        <Text color="$rtBody" mt="$3" fontSize="$sm">
+          Loading data…
+        </Text>
+      </VStack>
     );
   }
 
   if (loadError) {
     return (
-      <AppProviders>
-        <VStack flex={1} bg="#efedf8" alignItems="center" justifyContent="center" px="$6">
-          <Text color="$coolGray900" fontSize="$lg" fontWeight="$semibold" textAlign="center">
-            Cannot connect to API
-          </Text>
-          <Text color="$coolGray600" fontSize="$sm" mt="$3" textAlign="center">
-            {loadError}
-          </Text>
-          <Box flexDirection="row" mt="$4">
-            <Pressable
-              onPress={() => {
-                setReady(false);
-                hydrate()
-                  .then(() => setReady(true))
-                  .catch((err: unknown) => {
-                    setLoadError(err instanceof Error ? err.message : "Could not load data from the API.");
-                    setReady(true);
-                  });
-              }}
-              borderRadius="$xl"
-              borderWidth={1}
-              borderColor="#d4d4d8"
-              bg="$white"
-              px="$4"
-              py="$2"
-              $pressed={{ opacity: 0.9 }}
-            >
-              <Text color="$coolGray700" fontWeight="$medium">
-                Retry
-              </Text>
-            </Pressable>
-          </Box>
-          <Text color="$coolGray500" fontSize="$xs" mt="$4" textAlign="center">
-            Start the server: npm run server{"\n"}
-            Set EXPO_PUBLIC_GRAPHQL_URL in mobile/.env (see mobile/.env.example).
-          </Text>
-        </VStack>
-      </AppProviders>
+      <VStack flex={1} bg="$rtCanvas" alignItems="center" justifyContent="center" px="$6">
+        <Text color="$rtHeading" fontSize="$lg" fontWeight="$semibold" textAlign="center">
+          Cannot connect to API
+        </Text>
+        <Text color="$rtBody" fontSize="$sm" mt="$3" textAlign="center">
+          {loadError}
+        </Text>
+        <Box flexDirection="row" mt="$4">
+          <Pressable
+            onPress={() => {
+              setReady(false);
+              hydrate()
+                .then(() => setReady(true))
+                .catch((err: unknown) => {
+                  setLoadError(err instanceof Error ? err.message : "Could not load data from the API.");
+                  setReady(true);
+                });
+            }}
+            borderRadius="$xl"
+            borderWidth={1}
+            borderColor="$rtBorder"
+            bg="$backgroundLight0"
+            px="$4"
+            py="$2"
+            sx={{
+              _dark: { bg: "$backgroundDark900" },
+            }}
+            $pressed={{ opacity: 0.9 }}
+          >
+            <Text color="$rtHeading" fontWeight="$medium">
+              Retry
+            </Text>
+          </Pressable>
+        </Box>
+        <Text color="$rtSubtle" fontSize="$xs" mt="$4" textAlign="center">
+          Start the server: npm run server{"\n"}
+          Set EXPO_PUBLIC_GRAPHQL_URL in mobile/.env (see mobile/.env.example).
+        </Text>
+      </VStack>
     );
   }
 
+  const introBg = resolvedScheme === "dark" ? "#0c0a12" : "#f3effc";
+
   return (
-    <AppProviders>
-      <Box flex={1}>
-        <Stack screenOptions={{ headerShown: false }} />
-        {showIntro ? (
-          <Animated.View
-            style={{
-              opacity: introOpacity,
-              position: "absolute",
-              top: 0,
-              right: 0,
-              bottom: 0,
-              left: 0,
-              backgroundColor: "#efedf8",
-              alignItems: "center",
-              justifyContent: "center",
-              paddingHorizontal: 32,
-            }}
-          >
-            <Box h={64} w={64} borderRadius="$3xl" bg="#8b5cf6" alignItems="center" justifyContent="center">
-              <Text color="$white" fontSize="$3xl" fontWeight="$bold">
-                R
-              </Text>
-            </Box>
-            <Text color="$coolGray900" fontSize="$3xl" fontWeight="$bold" mt="$5">
-              RollTrack
+    <Box flex={1}>
+      <Stack screenOptions={{ headerShown: false }} />
+      {showIntro ? (
+        <Animated.View
+          style={{
+            opacity: introOpacity,
+            position: "absolute",
+            top: 0,
+            right: 0,
+            bottom: 0,
+            left: 0,
+            backgroundColor: introBg,
+            alignItems: "center",
+            justifyContent: "center",
+            paddingHorizontal: 32,
+          }}
+        >
+          <Box h={64} w={64} borderRadius="$3xl" bg="$primary500" alignItems="center" justifyContent="center">
+            <Text color="$white" fontSize="$3xl" fontWeight="$bold">
+              R
             </Text>
-            <Text color="$coolGray600" textAlign="center" mt="$3">
-              Log your sessions, review your techniques, and track your progress.
-            </Text>
-          </Animated.View>
-        ) : null}
-      </Box>
-    </AppProviders>
+          </Box>
+          <Text color="$rtHeading" fontSize="$3xl" fontWeight="$bold" mt="$5">
+            RollTrack
+          </Text>
+          <Text color="$rtBody" textAlign="center" mt="$3">
+            Log your sessions, review your techniques, and track your progress.
+          </Text>
+        </Animated.View>
+      ) : null}
+    </Box>
+  );
+}
+
+export default function RootLayout() {
+  return (
+    <ThemePreferenceProvider>
+      <AppProviders>
+        <RootLayoutBody />
+      </AppProviders>
+    </ThemePreferenceProvider>
   );
 }

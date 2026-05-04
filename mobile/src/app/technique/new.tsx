@@ -1,5 +1,7 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 import {
+  Button,
+  ButtonText,
   HStack,
   Input,
   InputField,
@@ -12,10 +14,12 @@ import {
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import { Alert } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import ScreenCanvas from "@/components/ScreenCanvas";
+import ThemeAppearanceControl from "@/components/ThemeAppearanceControl";
 import type { TechniqueCategory, TechniqueLevel } from "@rolltrack/shared";
 import { LEVELS } from "@/lib/techniqueLevel";
 import { useRollTrackStore } from "@/state/store";
+import { useRolltrackColor } from "@/theme/useRolltrackToken";
 
 const LEVEL_CHIP_ACTIVE: Record<TechniqueLevel, { bg: string; borderColor: string }> = {
   Beginner: { bg: "#059669", borderColor: "#10b981" },
@@ -41,6 +45,7 @@ function parseTags(raw: string): string[] {
 export default function NewTechniqueScreen() {
   const router = useRouter();
   const createTechnique = useRollTrackStore((s) => s.createTechnique);
+  const iconMuted = useRolltrackColor("rtIconMuted");
   const [name, setName] = useState("");
   const [position, setPosition] = useState("");
   const [category, setCategory] = useState<TechniqueCategory>("Submission");
@@ -84,59 +89,73 @@ export default function NewTechniqueScreen() {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#efedf8" }} edges={["top", "left", "right", "bottom"]}>
+    <ScreenCanvas>
       <ScrollView flex={1} contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 12, paddingBottom: 32 }}>
-        <Pressable
-          onPress={() => router.back()}
-          flexDirection="row"
-          alignItems="center"
-          mb="$4"
-          $pressed={{ opacity: 0.85 }}
-        >
-          <Ionicons name="chevron-back" size={22} color="#3f3f46" />
-          <Text color="#27272a" ml="$1" fontWeight="$medium">
-            Cancel
-          </Text>
-        </Pressable>
+        <HStack justifyContent="space-between" alignItems="center" mb="$4">
+          <Pressable
+            onPress={() => router.back()}
+            flexDirection="row"
+            alignItems="center"
+            $pressed={{ opacity: 0.85 }}
+          >
+            <Ionicons name="chevron-back" size={22} color={iconMuted} />
+            <Text color="$rtHeading" ml="$1" fontWeight="$medium">
+              Cancel
+            </Text>
+          </Pressable>
+          <ThemeAppearanceControl />
+        </HStack>
 
-        <Text color="$coolGray900" fontSize="$2xl" fontWeight="$bold">
+        <Text color="$rtHeading" fontSize="$2xl" fontWeight="$bold">
           New technique
         </Text>
-        <Text color="$coolGray500" mt="$1" fontSize="$sm">
+        <Text color="$rtBody" mt="$1" fontSize="$sm">
           Saved to the GraphQL API (server database).
         </Text>
 
-        <Text color="$coolGray700" fontWeight="$medium" mt="$5" mb="$2">
+        <Text color="$rtHeading" fontWeight="$medium" mt="$5" mb="$2">
           Name
         </Text>
-        <Input borderRadius="$2xl" borderWidth={1} borderColor="#e4e4e7" bg="$white">
+        <Input
+          borderRadius="$2xl"
+          borderWidth={1}
+          borderColor="$rtBorder"
+          bg="$backgroundLight0"
+          sx={{ _dark: { bg: "$backgroundDark900" } }}
+        >
           <InputField
             value={name}
             onChangeText={setName}
             placeholder="e.g. Triangle from Guard"
-            placeholderTextColor="#a1a1aa"
-            color="#18181b"
+            placeholderTextColor="$rtSubtle"
+            color="$rtHeading"
             py="$3"
             px="$4"
           />
         </Input>
 
-        <Text color="$coolGray700" fontWeight="$medium" mt="$4" mb="$2">
+        <Text color="$rtHeading" fontWeight="$medium" mt="$4" mb="$2">
           Position / context
         </Text>
-        <Input borderRadius="$2xl" borderWidth={1} borderColor="#e4e4e7" bg="$white">
+        <Input
+          borderRadius="$2xl"
+          borderWidth={1}
+          borderColor="$rtBorder"
+          bg="$backgroundLight0"
+          sx={{ _dark: { bg: "$backgroundDark900" } }}
+        >
           <InputField
             value={position}
             onChangeText={setPosition}
             placeholder="e.g. Closed Guard, Top Passing"
-            placeholderTextColor="#a1a1aa"
-            color="#18181b"
+            placeholderTextColor="$rtSubtle"
+            color="$rtHeading"
             py="$3"
             px="$4"
           />
         </Input>
 
-        <Text color="$coolGray700" fontWeight="$medium" mt="$4" mb="$2">
+        <Text color="$rtHeading" fontWeight="$medium" mt="$4" mb="$2">
           Category
         </Text>
         <HStack flexWrap="wrap">
@@ -152,11 +171,17 @@ export default function NewTechniqueScreen() {
                 mr="$2"
                 mb="$2"
                 borderWidth={1}
-                bg={active ? "#7c3aed" : "$white"}
-                borderColor={active ? "#8b5cf6" : "#e4e4e7"}
+                borderColor={active ? "$primary400" : "$rtBorder"}
+                bg={active ? "$primary500" : "$backgroundLightMuted"}
+                sx={{
+                  _dark: {
+                    bg: active ? "$primary500" : "$backgroundDarkMuted",
+                    borderColor: active ? "$primary400" : "$rtBorder",
+                  },
+                }}
                 $pressed={{ opacity: 0.9 }}
               >
-                <Text fontSize="$sm" fontWeight="$medium" color={active ? "$white" : "$coolGray700"}>
+                <Text fontSize="$sm" fontWeight="$medium" color={active ? "$white" : "$rtHeading"}>
                   {c}
                 </Text>
               </Pressable>
@@ -164,7 +189,7 @@ export default function NewTechniqueScreen() {
           })}
         </HStack>
 
-        <Text color="$coolGray700" fontWeight="$medium" mt="$4" mb="$2">
+        <Text color="$rtHeading" fontWeight="$medium" mt="$4" mb="$2">
           Technique level
         </Text>
         <HStack flexWrap="wrap">
@@ -181,11 +206,17 @@ export default function NewTechniqueScreen() {
                 mr="$2"
                 mb="$2"
                 borderWidth={1}
-                bg={active ? chip.bg : "$white"}
-                borderColor={active ? chip.borderColor : "#e4e4e7"}
+                bg={active ? chip.bg : "$backgroundLightMuted"}
+                borderColor={active ? chip.borderColor : "$rtBorder"}
+                sx={{
+                  _dark: {
+                    bg: active ? chip.bg : "$backgroundDarkMuted",
+                    borderColor: active ? chip.borderColor : "$rtBorder",
+                  },
+                }}
                 $pressed={{ opacity: 0.9 }}
               >
-                <Text fontSize="$sm" fontWeight="$medium" color={active ? "$white" : "$coolGray700"}>
+                <Text fontSize="$sm" fontWeight="$medium" color={active ? "$white" : "$rtHeading"}>
                   {candidate}
                 </Text>
               </Pressable>
@@ -193,31 +224,43 @@ export default function NewTechniqueScreen() {
           })}
         </HStack>
 
-        <Text color="$coolGray700" fontWeight="$medium" mt="$4" mb="$2">
+        <Text color="$rtHeading" fontWeight="$medium" mt="$4" mb="$2">
           Tags (optional, comma-separated)
         </Text>
-        <Input borderRadius="$2xl" borderWidth={1} borderColor="#e4e4e7" bg="$white">
+        <Input
+          borderRadius="$2xl"
+          borderWidth={1}
+          borderColor="$rtBorder"
+          bg="$backgroundLight0"
+          sx={{ _dark: { bg: "$backgroundDark900" } }}
+        >
           <InputField
             value={tagsRaw}
             onChangeText={setTagsRaw}
             placeholder="choke, fundamental"
-            placeholderTextColor="#a1a1aa"
-            color="#18181b"
+            placeholderTextColor="$rtSubtle"
+            color="$rtHeading"
             py="$3"
             px="$4"
           />
         </Input>
 
-        <Text color="$coolGray700" fontWeight="$medium" mt="$4" mb="$2">
+        <Text color="$rtHeading" fontWeight="$medium" mt="$4" mb="$2">
           How to perform
         </Text>
-        <Textarea borderRadius="$2xl" borderWidth={1} borderColor="#e4e4e7" bg="$white">
+        <Textarea
+          borderRadius="$2xl"
+          borderWidth={1}
+          borderColor="$rtBorder"
+          bg="$backgroundLight0"
+          sx={{ _dark: { bg: "$backgroundDark900" } }}
+        >
           <TextareaInput
             value={notes}
             onChangeText={setNotes}
             placeholder="Step-by-step cue (setup, off-balance, finish)..."
-            placeholderTextColor="#a1a1aa"
-            color="#18181b"
+            placeholderTextColor="$rtSubtle"
+            color="$rtHeading"
             multiline
             textAlignVertical="top"
             minHeight={100}
@@ -226,23 +269,19 @@ export default function NewTechniqueScreen() {
           />
         </Textarea>
 
-        <Pressable
+        <Button
+          size="lg"
+          action="positive"
+          variant="solid"
+          mt="$6"
+          borderRadius="$2xl"
           onPress={onSave}
           disabled={saving}
           opacity={saving ? 0.85 : 1}
-          mt="$6"
-          borderRadius="$2xl"
-          py="$4"
-          borderWidth={1}
-          bg={saving ? "$emerald300" : "$emerald500"}
-          borderColor={saving ? "$emerald200" : "$emerald400"}
-          $pressed={{ opacity: 0.92 }}
         >
-          <Text color="$white" textAlign="center" fontWeight="$semibold" fontSize="$md">
-            {saving ? "Saving…" : "Save technique"}
-          </Text>
-        </Pressable>
+          <ButtonText>{saving ? "Saving…" : "Save technique"}</ButtonText>
+        </Button>
       </ScrollView>
-    </SafeAreaView>
+    </ScreenCanvas>
   );
 }

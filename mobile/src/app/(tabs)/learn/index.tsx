@@ -1,10 +1,10 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { Box, HStack, Pressable, ScrollView, Text, VStack } from "@gluestack-ui/themed";
+import { Box, Card, HStack, Pressable, ScrollView, Text, useToken, VStack } from "@gluestack-ui/themed";
 import { useRouter } from "expo-router";
 import { useMemo, useState } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
 import type { TechniqueLevel } from "@rolltrack/shared";
 import EmptyStateCard from "@/components/EmptyStateCard";
+import ScreenCanvas from "@/components/ScreenCanvas";
 import ScreenHeader from "@/components/ScreenHeader";
 import TechniqueCard from "@/components/TechniqueCard";
 import { LEVELS, techniqueLevel } from "@/lib/techniqueLevel";
@@ -14,6 +14,7 @@ const levelFilters: ("All" | TechniqueLevel)[] = ["All", ...LEVELS];
 
 export default function LearnIndexScreen() {
   const router = useRouter();
+  const primaryHex = useToken("colors", "primary500");
   const techniques = useRollTrackStore((state) => state.techniques);
   const [selectedLevel, setSelectedLevel] = useState<"All" | TechniqueLevel>("All");
 
@@ -29,7 +30,7 @@ export default function LearnIndexScreen() {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#efedf8" }} edges={["top", "left", "right", "bottom"]}>
+    <ScreenCanvas>
       <ScrollView
         flex={1}
         contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 16, paddingBottom: 24 }}
@@ -39,21 +40,22 @@ export default function LearnIndexScreen() {
           subtitle="Technique levels are guidelines for progression, not strict rules."
           onBack={goHome}
           backLabel="Home"
+          appearanceToggle
         />
 
-        <Box mt="$4" borderRadius="$3xl" borderWidth={1} borderColor="#ddd6fe" bg="$white" p="$4">
+        <Card variant="outline" size="lg" mt="$4" p="$4" borderColor="$primary300" sx={{ _dark: { borderColor: "$primary700" } }}>
           <HStack alignItems="center">
-            <Ionicons name="school-outline" size={18} color="#7c3aed" />
-            <Text color="$coolGray500" fontSize="$xs" textTransform="uppercase" ml="$2" letterSpacing={1}>
+            <Ionicons name="school-outline" size={18} color={primaryHex} />
+            <Text color="$rtSubtle" fontSize="$xs" textTransform="uppercase" ml="$2" letterSpacing={1}>
               Learning path
             </Text>
           </HStack>
-          <Text color="$coolGray700" mt="$2" fontSize="$sm">
+          <Text color="$rtBody" mt="$2" fontSize="$sm">
             Filter here, or use Home to jump straight into a level.
           </Text>
-        </Box>
+        </Card>
 
-        <Text color="$coolGray600" fontSize="$xs" fontWeight="$medium" mt="$4" mb="$2">
+        <Text color="$rtBody" fontSize="$xs" fontWeight="$medium" mt="$4" mb="$2">
           Technique level
         </Text>
         <HStack flexWrap="wrap">
@@ -71,21 +73,22 @@ export default function LearnIndexScreen() {
                 mr="$2"
                 mb="$2"
                 borderWidth={1}
-                bg={active ? "$violet600" : "$white"}
-                borderColor={active ? "$violet500" : "#e4e4e7"}
+                borderColor={active ? "$primary400" : "$rtBorder"}
+                bg={active ? "$primary500" : "$backgroundLightMuted"}
+                sx={{
+                  _dark: {
+                    bg: active ? "$primary500" : "$backgroundDarkMuted",
+                    borderColor: active ? "$primary400" : "$rtBorder",
+                  },
+                }}
                 $pressed={{ opacity: 0.9 }}
               >
                 {level === "All" ? (
-                  <Ionicons name="layers-outline" size={15} color={active ? "#ffffff" : "#3f3f46"} />
+                  <Ionicons name="layers-outline" size={15} color={active ? "#ffffff" : primaryHex} />
                 ) : (
-                  <Ionicons name="school-outline" size={15} color={active ? "#ffffff" : "#3f3f46"} />
+                  <Ionicons name="school-outline" size={15} color={active ? "#ffffff" : primaryHex} />
                 )}
-                <Text
-                  ml="$1.5"
-                  color={active ? "$white" : "$coolGray700"}
-                  fontWeight="$medium"
-                  fontSize="$sm"
-                >
+                <Text ml="$1.5" color={active ? "$white" : "$rtHeading"} fontWeight="$medium" fontSize="$sm">
                   {level}
                 </Text>
               </Pressable>
@@ -93,13 +96,13 @@ export default function LearnIndexScreen() {
           })}
         </HStack>
 
-        <Box mt="$2">
+        <Box mt="$4">
           {filteredTechniques.length === 0 ? (
             <EmptyStateCard
               title="No techniques yet"
-              message="No techniques are tagged for this level yet."
-              actionLabel="Show all levels"
-              onAction={() => setSelectedLevel("All")}
+              message="Add techniques from Library to start learning."
+              actionLabel="Open library"
+              onAction={() => router.push("/(tabs)/library")}
             />
           ) : (
             <VStack>
@@ -119,6 +122,6 @@ export default function LearnIndexScreen() {
           )}
         </Box>
       </ScrollView>
-    </SafeAreaView>
+    </ScreenCanvas>
   );
 }
