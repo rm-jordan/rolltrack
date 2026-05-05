@@ -1,10 +1,39 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createContext, type ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { useColorScheme } from "react-native";
+import { Platform, useColorScheme } from "react-native";
 
 const STORAGE_KEY = "rolltrack-theme-preference";
 
 export type ThemePreference = "system" | "light" | "dark";
+
+function parsePreference(raw: string | null): ThemePreference | null {
+  if (raw === "light" || raw === "dark" || raw === "system") return raw;
+  return null;
+}
+
+async function loadStoredPreference(): Promise<ThemePreference | null> {
+  try {
+    if (Platform.OS === "web" && typeof localStorage !== "undefined") {
+      return parsePreference(localStorage.getItem(STORAGE_KEY));
+    }
+    const raw = await AsyncStorage.getItem(STORAGE_KEY);
+    return parsePreference(raw);
+  } catch {
+    return null;
+  }
+}
+
+async function storePreference(p: ThemePreference): Promise<void> {
+  try {
+    if (Platform.OS === "web" && typeof localStorage !== "undefined") {
+      localStorage.setItem(STORAGE_KEY, p);
+      return;
+    }
+    await AsyncStorage.setItem(STORAGE_KEY, p);
+  } catch {
+    /* Native module missing or storage unavailable; in-memory preference still applies */
+  }
+}
 
 type ThemePreferenceContextValue = {
   preference: ThemePreference;
@@ -21,15 +50,9 @@ export function ThemePreferenceProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     let cancelled = false;
     void (async () => {
-      try {
-        const raw = await AsyncStorage.getItem(STORAGE_KEY);
-        if (cancelled) return;
-        if (raw === "light" || raw === "dark" || raw === "system") {
-          setPreferenceState(raw);
-        }
-      } catch {
-        /* keep default */
-      }
+      const stored = await loadStoredPreference();
+      if (cancelled || stored == null) return;
+      setPreferenceState(stored);
     })();
     return () => {
       cancelled = true;
@@ -38,7 +61,7 @@ export function ThemePreferenceProvider({ children }: { children: ReactNode }) {
 
   const setPreference = useCallback((p: ThemePreference) => {
     setPreferenceState(p);
-    void AsyncStorage.setItem(STORAGE_KEY, p);
+    void storePreference(p);
   }, []);
 
   const resolvedScheme = useMemo((): "light" | "dark" => {
