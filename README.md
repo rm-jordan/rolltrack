@@ -68,7 +68,7 @@ Planned next focus areas discussed during development:
 
 ```mermaid
 flowchart LR
-  Mobile["Mobile App (Expo + React Native)"] -->|GraphQL queries/mutations| API["GraphQL API (Apollo Server)"]
+  Mobile["Mobile App (Expo + React Native + Gluestack UI)\n- ThemePreferenceContext\n- AsyncStorage / localStorage"] -->|GraphQL queries/mutations| API["GraphQL API (Apollo Server)"]
   API --> Prisma["Prisma ORM"]
   Prisma --> DB[("SQLite DB")]
   Shared["packages/shared"] --> Mobile
@@ -83,22 +83,32 @@ sequenceDiagram
   participant Mobile as Mobile App
   participant API as GraphQL API
   participant DB as SQLite
+  participant Store as Theme Storage (AsyncStorage / localStorage)
 
   User->>Mobile: Open app
-  Mobile->>API: hydrateFromApi() / { techniques, sessionLogs }
-  API->>DB: Read techniques + logs
-  DB-->>API: Result rows
-  API-->>Mobile: GraphQL response
-  Mobile-->>User: Render Home/Library/Learn/Log
+  par Theme
+    Mobile->>Store: Read theme preference (system / light / dark)
+    Store-->>Mobile: Preference or null (fallback to system)
+    Mobile-->>Mobile: Set Gluestack colorMode (light/dark)
+  and Data
+    Mobile->>API: hydrateFromApi() / { techniques, sessionLogs }
+    API->>DB: Read techniques + logs
+    DB-->>API: Result rows
+    API-->>Mobile: GraphQL response
+  end
+  Mobile-->>User: Render Home / Library / Learn / Log
 
   User->>Mobile: Save log / create-edit-delete technique
-  Mobile->>API: GraphQL mutation
-  Note over Mobile,API: Technique payloads now use level only
+  Mobile->>API: GraphQL mutation (level-only technique payloads)
   API->>DB: Write update
   DB-->>API: Success
   API-->>Mobile: Mutation response
-  Mobile->>API: Refresh data
+  Mobile->>API: Optional refresh query
   Mobile-->>User: Updated UI state
+
+  User->>Mobile: Change theme (Auto / Light / Dark)
+  Mobile->>Store: Persist preference (best effort; ignores storage failures)
+  Mobile-->>Mobile: Update Gluestack colorMode live
 ```
 
 ### Navigation Map
