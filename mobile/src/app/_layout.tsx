@@ -1,9 +1,10 @@
-import { Box, GluestackUIProvider, Pressable, Text, VStack } from "@gluestack-ui/themed";
+import { Box, Button, ButtonText, GluestackUIProvider, Pressable, Text, VStack } from "@gluestack-ui/themed";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { type ReactNode, useEffect, useRef, useState } from "react";
-import { ActivityIndicator, Animated, Easing } from "react-native";
+import { ActivityIndicator, Animated, Easing, Platform } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRollTrackStore } from "@/state/store";
 import { rolltrackConfig } from "@/theme/rolltrackGluestackConfig";
 import { ThemePreferenceProvider, useThemePreference } from "@/theme/ThemePreferenceContext";
@@ -24,9 +25,25 @@ function AppProviders({ children }: { children: ReactNode }) {
 function RootLayoutBody() {
   const [ready, setReady] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
-  const [showIntro, setShowIntro] = useState(true);
+  const [showIntro, setShowIntro] = useState(false);
+  const [introSeen, setIntroSeen] = useState(false);
   const introOpacity = useRef(new Animated.Value(1)).current;
   const { resolvedScheme } = useThemePreference();
+
+  const INTRO_KEY = "rolltrack-intro-seen";
+
+  const markIntroSeen = async () => {
+    try {
+      if (Platform.OS === "web" && typeof localStorage !== "undefined") {
+        localStorage.setItem(INTRO_KEY, "1");
+      } else {
+        await AsyncStorage.setItem(INTRO_KEY, "1");
+      }
+    } catch {
+      // best-effort only; ignore storage failures
+    }
+    setIntroSeen(true);
+  };
 
   const hydrate = async () => {
     setLoadError(null);
@@ -35,6 +52,29 @@ function RootLayoutBody() {
 
   useEffect(() => {
     let cancelled = false;
+
+    // Check if intro has already been seen
+    void (async () => {
+      try {
+        let seen = false;
+        if (Platform.OS === "web" && typeof localStorage !== "undefined") {
+          seen = localStorage.getItem(INTRO_KEY) === "1";
+        } else {
+          const stored = await AsyncStorage.getItem(INTRO_KEY);
+          seen = stored === "1";
+        }
+        if (!cancelled) {
+          setIntroSeen(seen);
+          if (seen) {
+            setShowIntro(false);
+          }
+        }
+      } catch {
+        if (!cancelled) {
+          setIntroSeen(false);
+        }
+      }
+    })();
 
     hydrate()
       .then(() => {
@@ -55,7 +95,7 @@ function RootLayoutBody() {
   }, []);
 
   useEffect(() => {
-    if (!ready || loadError || !showIntro) return;
+    if (!ready || loadError || introSeen || showIntro) return;
 
     const animation = Animated.sequence([
       Animated.delay(1800),
@@ -67,9 +107,12 @@ function RootLayoutBody() {
       }),
     ]);
 
-    animation.start(({ finished }) => {
+    setShowIntro(true);
+
+    animation.start(async ({ finished }) => {
       if (finished) {
         setShowIntro(false);
+        await markIntroSeen();
       }
     });
 
@@ -164,6 +207,20 @@ function RootLayoutBody() {
           <Text color="$rtBody" textAlign="center" mt="$3">
             Log your sessions, review your techniques, and track your progress.
           </Text>
+          <Button
+            size="sm"
+            variant="outline"
+            action="secondary"
+            mt="$6"
+            borderRadius="$2xl"
+            borderColor="$rtBorder"
+            onPress={async () => {
+              setShowIntro(false);
+              await markIntroSeen();
+            }}
+          >
+            <ButtonText>Skip intro</ButtonText>
+          </Button>
         </Animated.View>
       ) : null}
     </Box>

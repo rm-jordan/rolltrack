@@ -29,9 +29,6 @@ Planned next focus areas discussed during development:
   - tighter spacing rhythm
   - stronger hierarchy for CTAs
   - improved transitions and interaction feedback
-- Continue refining startup intro/fade experience
-  - potential first-run-only behavior
-  - optional skip interaction
 - Expanded state coverage
   - richer empty/loading/error/success feedback on every screen
 - Navigation polish

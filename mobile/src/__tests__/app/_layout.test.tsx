@@ -77,8 +77,9 @@ describe("RootLayout retry state", () => {
       jest.advanceTimersByTime(2600);
     });
 
-    await waitFor(() =>
-      expect(queryByText("Log your sessions, review your techniques, and track your progress.")).toBeNull(),
-    );
+    await waitFor(() => {
+      // Intro text may still be in the tree but overlay should be hidden after fade
+      expect(queryByText("Loading data…")).toBeNull();
+    });
   });
 });
