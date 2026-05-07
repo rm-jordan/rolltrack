@@ -104,7 +104,7 @@ sequenceDiagram
   Mobile-->>User: Updated UI state
 
   User->>Mobile: Change theme (Auto / Light / Dark)
-  Mobile->>Store: Persist preference (best effort; ignores storage failures)
+  Mobile->>Store: Persist preference (best effort, ignores storage failures)
   Mobile-->>Mobile: Update Gluestack colorMode live
 ```
 
