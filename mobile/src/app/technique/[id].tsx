@@ -16,6 +16,7 @@ export default function TechniqueDetailScreen() {
   const technique = techniques.find((item) => item.id === id);
   const level = technique ? techniqueLevel(technique) : null;
   const iconMuted = useRolltrackColor("rtIconMuted");
+  const brandIcon = useRolltrackColor("primary500");
 
   const onDelete = () => {
     if (!id) return;
@@ -86,16 +87,25 @@ export default function TechniqueDetailScreen() {
           p="$6"
           mb="$4"
           borderColor="$rtBorder"
+          bg="$backgroundLight0"
+          sx={{ _dark: { bg: "$backgroundDark900" } }}
           alignItems="center"
           justifyContent="center"
         >
-          <Ionicons name="layers-outline" size={28} color={iconMuted} />
+          <Ionicons name="layers-outline" size={28} color={brandIcon} />
           <Text color="$rtSubtle" fontSize="$xs" mt="$3">
             Technique level: {level}
           </Text>
         </Card>
 
-        <Card variant="outline" size="lg" p="$5" borderColor="$rtBorder">
+        <Card
+          variant="outline"
+          size="lg"
+          p="$5"
+          borderColor="$rtBorder"
+          bg="$backgroundLight0"
+          sx={{ _dark: { bg: "$backgroundDark900" } }}
+        >
           <Text color="$rtHeading" fontSize="$2xl" fontWeight="$bold">
             {technique.name}
           </Text>

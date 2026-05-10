@@ -30,7 +30,7 @@ function RootLayoutBody() {
   const [introSeen, setIntroSeen] = useState(false);
   const introOpacity = useRef(new Animated.Value(1)).current;
   const canvasColor = useRolltrackColor("rtCanvas");
-  const spinnerColor = useRolltrackColor("rtHeading");
+  const spinnerColor = useRolltrackColor("primary500");
 
   const INTRO_KEY = "rolltrack-intro-seen";
 

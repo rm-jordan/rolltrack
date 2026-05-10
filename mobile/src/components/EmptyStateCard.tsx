@@ -15,10 +15,18 @@ export default function EmptyStateCard({
   actionLabel,
   onAction,
 }: EmptyStateCardProps) {
-  const iconColor = useRolltrackColor("rtIconMuted");
+  const iconColor = useRolltrackColor("primary500");
 
   return (
-    <Card variant="outline" size="lg" p="$5" mt="$2" borderColor="$rtBorder">
+    <Card
+      variant="outline"
+      size="lg"
+      p="$5"
+      mt="$2"
+      borderColor="$rtBorder"
+      bg="$backgroundLight0"
+      sx={{ _dark: { bg: "$backgroundDark900" } }}
+    >
       <HStack alignItems="center">
         <Ionicons name="sparkles-outline" size={18} color={iconColor} />
         <Text color="$rtHeading" fontWeight="$semibold" ml="$2">
@@ -38,7 +46,7 @@ export default function EmptyStateCard({
           borderColor="$rtBorder"
           onPress={onAction}
         >
-          <ButtonText>{actionLabel}</ButtonText>
+          <ButtonText color="$rtHeading">{actionLabel}</ButtonText>
         </Button>
       ) : null}
     </Card>

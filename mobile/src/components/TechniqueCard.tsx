@@ -26,7 +26,7 @@ function CardBody({
   explanation: string;
   showChevron: boolean;
 }) {
-  const categoryIcon = useRolltrackColor("rtHeading");
+  const brandIcon = useRolltrackColor("primary500");
   const mutedHex = useRolltrackColor("rtIconMuted");
 
   return (
@@ -35,7 +35,7 @@ function CardBody({
         <Ionicons
           name={categoryIconMap[technique.category]}
           size={16}
-          color={categoryIcon}
+          color={brandIcon}
           style={{ marginRight: 6 }}
         />
         <Text color="$rtHeading" fontSize="$lg" fontWeight="$semibold" flex={1}>

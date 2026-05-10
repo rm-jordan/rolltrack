@@ -17,6 +17,7 @@ export default function LearnIndexScreen() {
   const router = useRouter();
   const onPrimary = useRolltrackColor("rtOnPrimary");
   const filterIconMuted = useRolltrackColor("rtIconMuted");
+  const learnCalloutIcon = useRolltrackColor("primary500");
   const techniques = useRollTrackStore((state) => state.techniques);
   const [selectedLevel, setSelectedLevel] = useState<"All" | TechniqueLevel>("All");
 
@@ -47,7 +48,7 @@ export default function LearnIndexScreen() {
 
         <Card variant="outline" size="lg" mt="$4" p="$4" borderColor="$rtBorder" bg="$backgroundLight0" sx={{ _dark: { bg: "$backgroundDark900" } }}>
           <HStack alignItems="center">
-            <Ionicons name="school-outline" size={18} color={filterIconMuted} />
+            <Ionicons name="school-outline" size={18} color={learnCalloutIcon} />
             <Text color="$rtSubtle" fontSize="$xs" textTransform="uppercase" ml="$2" letterSpacing={1}>
               Learning path
             </Text>

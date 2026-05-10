@@ -17,6 +17,7 @@ export default function HomeScreen() {
   const libraryAccent = useRolltrackColor("rtLibraryAccent");
   const logAccent = useRolltrackColor("rtLogAccent");
   const iconMuted = useRolltrackColor("rtIconMuted");
+  const brandIcon = useRolltrackColor("primary500");
   const onPrimary = useRolltrackColor("rtOnPrimary");
 
   const openLevelTechniques = (level: TechniqueLevel) => {
@@ -88,7 +89,7 @@ export default function HomeScreen() {
                     justifyContent="center"
                     mr="$3"
                   >
-                    <Ionicons name="layers-outline" size={22} color={iconMuted} />
+                    <Ionicons name="layers-outline" size={22} color={brandIcon} />
                   </Box>
                   <VStack flex={1} mr="$2" alignItems="flex-start">
                     <Text color="$rtHeading" fontSize="$xl" fontWeight="$semibold">

@@ -1,3 +1,4 @@
+import Ionicons from "@expo/vector-icons/Ionicons";
 import {
   Button,
   ButtonText,
@@ -21,6 +22,7 @@ import { formatLogDate, localTodayIso, type SessionGiType, type SessionType } fr
 import EmptyStateCard from "@/components/EmptyStateCard";
 import ScreenHeader from "@/components/ScreenHeader";
 import { useRollTrackStore } from "@/state/store";
+import { useRolltrackColor } from "@/theme/useRolltrackToken";
 
 const formSchema = z.object({
   date: z.string().min(1, "Date is required"),
@@ -35,6 +37,8 @@ const defaultSessionType: SessionType = "Class";
 
 export default function LogScreen() {
   const router = useRouter();
+  const logAccent = useRolltrackColor("rtLogAccent");
+  const sectionBrandIcon = useRolltrackColor("primary500");
   const addSessionLog = useRollTrackStore((state) => state.addSessionLog);
   const sessionLogs = useRollTrackStore((state) => state.sessionLogs);
   const techniques = useRollTrackStore((state) => state.techniques);
@@ -136,7 +140,22 @@ export default function LogScreen() {
           appearanceToggle
         />
 
-        <Card variant="outline" size="lg" mt="$5" p="$4" borderColor="$rtBorder">
+        <HStack alignItems="center" mt="$4">
+          <Ionicons name="calendar-outline" size={18} color={sectionBrandIcon} />
+          <Text color="$rtSubtle" fontSize="$xs" textTransform="uppercase" ml="$2" letterSpacing={1}>
+            New entry
+          </Text>
+        </HStack>
+
+        <Card
+          variant="outline"
+          size="lg"
+          mt="$3"
+          p="$4"
+          borderColor="$rtBorder"
+          bg="$backgroundLight0"
+          sx={{ _dark: { bg: "$backgroundDark900" } }}
+        >
           <Text color="$rtHeading" fontWeight="$medium" mb="$2">
             Date for this entry
           </Text>
@@ -177,7 +196,15 @@ export default function LogScreen() {
           </HStack>
         </Card>
 
-        <Card variant="outline" size="lg" mt="$4" p="$4" borderColor="$rtBorder">
+        <Card
+          variant="outline"
+          size="lg"
+          mt="$4"
+          p="$4"
+          borderColor="$rtBorder"
+          bg="$backgroundLight0"
+          sx={{ _dark: { bg: "$backgroundDark900" } }}
+        >
           <Text color="$rtHeading" fontWeight="$medium" mb="$2">
             What did you drill? (optional)
           </Text>
@@ -230,7 +257,15 @@ export default function LogScreen() {
           )}
         </Card>
 
-        <Card variant="outline" size="lg" mt="$4" p="$4" borderColor="$rtBorder">
+        <Card
+          variant="outline"
+          size="lg"
+          mt="$4"
+          p="$4"
+          borderColor="$rtBorder"
+          bg="$backgroundLight0"
+          sx={{ _dark: { bg: "$backgroundDark900" } }}
+        >
           <Text color="$rtHeading" fontWeight="$medium" mb="$2">
             What did you learn today?
           </Text>
@@ -286,9 +321,12 @@ export default function LogScreen() {
           <ButtonText>{saving ? "Saving…" : "Save entry"}</ButtonText>
         </Button>
 
-        <Text color="$rtHeading" fontSize="$lg" fontWeight="$bold" mt="$10" mb="$3">
-          Recent entries
-        </Text>
+        <HStack alignItems="center" mt="$10" mb="$3">
+          <Ionicons name="reader-outline" size={22} color={logAccent} />
+          <Text color="$rtHeading" fontSize="$lg" fontWeight="$bold" ml="$2">
+            Recent entries
+          </Text>
+        </HStack>
         {recentEntries.length === 0 ? (
           <EmptyStateCard
             title="No entries yet"
@@ -301,7 +339,16 @@ export default function LogScreen() {
                 .map((id) => techniqueNameById[id])
                 .filter(Boolean);
               return (
-                <Card key={entry.id} variant="outline" size="md" p="$4" mb="$3" borderColor="$rtBorder">
+                <Card
+                  key={entry.id}
+                  variant="outline"
+                  size="md"
+                  p="$4"
+                  mb="$3"
+                  borderColor="$rtBorder"
+                  bg="$backgroundLight0"
+                  sx={{ _dark: { bg: "$backgroundDark900" } }}
+                >
                   <Text color="$rtHeading" fontWeight="$semibold">
                     {formatLogDate(entry.date)}
                   </Text>

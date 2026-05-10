@@ -1,4 +1,4 @@
-import { Box, ScrollView, Text, VStack } from "@gluestack-ui/themed";
+import { Box, ScrollView, VStack } from "@gluestack-ui/themed";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useMemo } from "react";
 import EmptyStateCard from "@/components/EmptyStateCard";
@@ -34,20 +34,21 @@ export default function LevelTechniquesScreen() {
     );
   }
 
+  const subtitle = `${filtered.length} technique${filtered.length === 1 ? "" : "s"} · level guidance`;
+
   return (
     <ScreenCanvas>
       <ScrollView
         flex={1}
         contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 12, paddingBottom: 24 }}
       >
-        <ScreenHeader title={`${level} techniques`} onBack={goHome} backLabel="Home" appearanceToggle />
-
-        <Text color="$rtHeading" fontSize="$3xl" fontWeight="$bold" mt="$2">
-          {level}
-        </Text>
-        <Text color="$rtBody" mt="$1">
-          {filtered.length} technique{filtered.length === 1 ? "" : "s"} · level guidance
-        </Text>
+        <ScreenHeader
+          title={level}
+          subtitle={subtitle}
+          onBack={goHome}
+          backLabel="Home"
+          appearanceToggle
+        />
 
         <Box mt="$4">
           {filtered.length === 0 ? (
