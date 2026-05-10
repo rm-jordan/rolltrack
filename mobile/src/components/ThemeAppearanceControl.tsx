@@ -8,17 +8,24 @@ const options: { key: ThemePreference; label: string }[] = [
   { key: "dark", label: "Dark" },
 ];
 
-export default function ThemeAppearanceControl() {
+type ThemeAppearanceControlProps = {
+  /** Wider layout for the Settings screen (default: compact for header). */
+  variant?: "compact" | "panel";
+};
+
+export default function ThemeAppearanceControl({ variant = "compact" }: ThemeAppearanceControlProps) {
   const { preference, setPreference } = useThemePreference();
+  const panel = variant === "panel";
 
   return (
     <HStack
       alignItems="center"
+      justifyContent={panel ? "space-between" : "flex-start"}
       borderRadius="$full"
       borderWidth={1}
       borderColor="$rtBorder"
       p="$0.5"
-      alignSelf="flex-end"
+      alignSelf={panel ? "stretch" : "flex-end"}
       bg="$backgroundLightMuted"
       sx={{
         _dark: {
@@ -34,8 +41,9 @@ export default function ThemeAppearanceControl() {
             key={key}
             onPress={() => setPreference(key)}
             borderRadius="$full"
-            px="$2.5"
+            px={panel ? "$3" : "$2.5"}
             py="$1.5"
+            flex={panel ? 1 : undefined}
             bg={active ? "$primary500" : "transparent"}
             $pressed={{ opacity: 0.88 }}
             accessibilityRole="button"

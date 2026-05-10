@@ -11,6 +11,10 @@ import { ThemePreferenceProvider, useThemePreference } from "@/theme/ThemePrefer
 import { useRolltrackColor } from "@/theme/useRolltrackToken";
 import "../../global.css";
 
+/** Time from intro shown until overlay is gone (hold + fade). */
+const INTRO_HOLD_MS = 3200;
+const INTRO_FADE_MS = 800;
+
 function AppProviders({ children }: { children: ReactNode }) {
   const { resolvedScheme } = useThemePreference();
   return (
@@ -29,6 +33,8 @@ function RootLayoutBody() {
   const [showIntro, setShowIntro] = useState(false);
   const [introSeen, setIntroSeen] = useState(false);
   const introOpacity = useRef(new Animated.Value(1)).current;
+  /** Holds the running sequence so Skip can cancel before the callback fires. */
+  const introAnimationRef = useRef<Animated.CompositeAnimation | null>(null);
   const canvasColor = useRolltrackColor("rtCanvas");
   const spinnerColor = useRolltrackColor("primary500");
 
@@ -97,21 +103,24 @@ function RootLayoutBody() {
   }, []);
 
   useEffect(() => {
-    if (!ready || loadError || introSeen || showIntro) return;
+    if (!ready || loadError || introSeen) return;
+
+    introOpacity.setValue(1);
+    setShowIntro(true);
 
     const animation = Animated.sequence([
-      Animated.delay(1800),
+      Animated.delay(INTRO_HOLD_MS),
       Animated.timing(introOpacity, {
         toValue: 0,
-        duration: 800,
+        duration: INTRO_FADE_MS,
         easing: Easing.out(Easing.quad),
         useNativeDriver: true,
       }),
     ]);
-
-    setShowIntro(true);
+    introAnimationRef.current = animation;
 
     animation.start(async ({ finished }) => {
+      introAnimationRef.current = null;
       if (finished) {
         setShowIntro(false);
         await markIntroSeen();
@@ -120,8 +129,9 @@ function RootLayoutBody() {
 
     return () => {
       animation.stop();
+      introAnimationRef.current = null;
     };
-  }, [introOpacity, loadError, ready, showIntro]);
+  }, [introOpacity, loadError, introSeen, ready]);
 
   if (!ready) {
     return (
@@ -215,6 +225,9 @@ function RootLayoutBody() {
             borderRadius="$md"
             borderColor="$rtBorder"
             onPress={async () => {
+              introAnimationRef.current?.stop?.();
+              introAnimationRef.current = null;
+              introOpacity.setValue(0);
               setShowIntro(false);
               await markIntroSeen();
             }}

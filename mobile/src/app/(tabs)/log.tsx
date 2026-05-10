@@ -137,7 +137,7 @@ export default function LogScreen() {
           subtitle="Write what you learned. Entries are saved through the GraphQL API. Optionally tag techniques to update practice stats."
           onBack={goHome}
           backLabel="Home"
-          appearanceToggle
+          settingsGear
         />
 
         <HStack alignItems="center" mt="$4">

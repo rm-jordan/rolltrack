@@ -43,7 +43,7 @@ export default function LearnIndexScreen() {
           subtitle="Technique levels are guidelines for progression, not strict rules."
           onBack={goHome}
           backLabel="Home"
-          appearanceToggle
+          settingsGear
         />
 
         <Card variant="outline" size="lg" mt="$4" p="$4" borderColor="$rtBorder" bg="$backgroundLight0" sx={{ _dark: { bg: "$backgroundDark900" } }}>

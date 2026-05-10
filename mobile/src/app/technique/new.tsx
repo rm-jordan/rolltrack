@@ -15,7 +15,7 @@ import { useRouter } from "expo-router";
 import { useState } from "react";
 import { Alert } from "react-native";
 import ScreenCanvas from "@/components/ScreenCanvas";
-import ThemeAppearanceControl from "@/components/ThemeAppearanceControl";
+import SettingsGearButton from "@/components/SettingsGearButton";
 import type { TechniqueCategory, TechniqueLevel } from "@rolltrack/shared";
 import { LEVELS } from "@/lib/techniqueLevel";
 import { useRollTrackStore } from "@/state/store";
@@ -98,7 +98,7 @@ export default function NewTechniqueScreen() {
               Cancel
             </Text>
           </Pressable>
-          <ThemeAppearanceControl />
+          <SettingsGearButton />
         </HStack>
 
         <Text color="$rtHeading" fontSize="$2xl" fontWeight="$bold">

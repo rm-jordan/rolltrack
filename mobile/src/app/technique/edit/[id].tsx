@@ -15,7 +15,7 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import { useMemo, useState } from "react";
 import { Alert } from "react-native";
 import ScreenCanvas from "@/components/ScreenCanvas";
-import ThemeAppearanceControl from "@/components/ThemeAppearanceControl";
+import SettingsGearButton from "@/components/SettingsGearButton";
 import type { TechniqueCategory, TechniqueLevel } from "@rolltrack/shared";
 import { LEVELS, techniqueLevel } from "@/lib/techniqueLevel";
 import { useRollTrackStore } from "@/state/store";
@@ -72,7 +72,7 @@ export default function EditTechniqueScreen() {
                 Back
               </Text>
             </Pressable>
-            <ThemeAppearanceControl />
+            <SettingsGearButton />
           </HStack>
           <Text color="$rtHeading" fontSize="$lg">
             Technique not found.
@@ -127,7 +127,7 @@ export default function EditTechniqueScreen() {
               Cancel
             </Text>
           </Pressable>
-          <ThemeAppearanceControl />
+          <SettingsGearButton />
         </HStack>
 
         <Text color="$rtHeading" fontSize="$2xl" fontWeight="$bold">

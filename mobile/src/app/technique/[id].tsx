@@ -3,7 +3,7 @@ import { Box, Button, ButtonText, Card, HStack, Pressable, ScrollView, Text } fr
 import { type Href, useLocalSearchParams, useRouter } from "expo-router";
 import { Alert } from "react-native";
 import ScreenCanvas from "@/components/ScreenCanvas";
-import ThemeAppearanceControl from "@/components/ThemeAppearanceControl";
+import SettingsGearButton from "@/components/SettingsGearButton";
 import { techniqueLevel } from "@/lib/techniqueLevel";
 import { useRollTrackStore } from "@/state/store";
 import { useRolltrackColor } from "@/theme/useRolltrackToken";
@@ -53,7 +53,7 @@ export default function TechniqueDetailScreen() {
                 Back
               </Text>
             </Pressable>
-            <ThemeAppearanceControl />
+            <SettingsGearButton />
           </HStack>
           <Text color="$rtHeading" fontSize="$2xl" fontWeight="$bold">
             Technique not found
@@ -78,7 +78,7 @@ export default function TechniqueDetailScreen() {
               Back
             </Text>
           </Pressable>
-          <ThemeAppearanceControl />
+          <SettingsGearButton />
         </HStack>
 
         <Card

@@ -1,7 +1,7 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Box, Button, ButtonText, HStack, Pressable, Text, VStack } from "@gluestack-ui/themed";
 import { useRolltrackColor } from "@/theme/useRolltrackToken";
-import ThemeAppearanceControl from "@/components/ThemeAppearanceControl";
+import SettingsGearButton from "@/components/SettingsGearButton";
 
 type ScreenHeaderProps = {
   title: string;
@@ -12,8 +12,8 @@ type ScreenHeaderProps = {
     label: string;
     onPress: () => void;
   };
-  /** Show Auto / Light / Dark control (Gluestack color mode). */
-  appearanceToggle?: boolean;
+  /** Cog icon → Settings (theme, etc.). */
+  settingsGear?: boolean;
 };
 
 export default function ScreenHeader({
@@ -22,7 +22,7 @@ export default function ScreenHeader({
   onBack,
   backLabel = "Back",
   rightAction,
-  appearanceToggle = false,
+  settingsGear = false,
 }: ScreenHeaderProps) {
   const chevronColor = useRolltrackColor("rtIconMuted");
 
@@ -60,7 +60,7 @@ export default function ScreenHeader({
           ) : null}
         </VStack>
         <VStack alignItems="flex-end" space="sm">
-          {appearanceToggle ? <ThemeAppearanceControl /> : null}
+          {settingsGear ? <SettingsGearButton /> : null}
           {rightAction ? (
             <Button
               size="sm"

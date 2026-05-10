@@ -74,7 +74,7 @@ describe("RootLayout retry state", () => {
     await waitFor(() => expect(getByText("RollTrack")).toBeTruthy());
 
     act(() => {
-      jest.advanceTimersByTime(2600);
+      jest.advanceTimersByTime(4000);
     });
 
     await waitFor(() => {

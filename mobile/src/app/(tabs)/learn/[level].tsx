@@ -28,7 +28,7 @@ export default function LevelTechniquesScreen() {
     return (
       <ScreenCanvas>
         <Box px="$5" pt="$4">
-          <ScreenHeader title="Unknown level" onBack={goHome} backLabel="Home" appearanceToggle />
+          <ScreenHeader title="Unknown level" onBack={goHome} backLabel="Home" settingsGear />
         </Box>
       </ScreenCanvas>
     );
@@ -47,7 +47,7 @@ export default function LevelTechniquesScreen() {
           subtitle={subtitle}
           onBack={goHome}
           backLabel="Home"
-          appearanceToggle
+          settingsGear
         />
 
         <Box mt="$4">

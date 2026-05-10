@@ -74,7 +74,7 @@ export default function LibraryScreen() {
           subtitle="Search and filter your techniques."
           onBack={goHome}
           backLabel="Home"
-          appearanceToggle
+          settingsGear
           rightAction={{ label: "Add move", onPress: () => router.push("/technique/new") }}
         />
 

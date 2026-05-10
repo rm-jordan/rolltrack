@@ -3,13 +3,17 @@ import { Box, Button, ButtonText, Card, HStack, Text, VStack } from "@gluestack-
 import { useRolltrackColor } from "@/theme/useRolltrackToken";
 import { useRouter } from "expo-router";
 import ScreenCanvas from "@/components/ScreenCanvas";
-import ThemeAppearanceControl from "@/components/ThemeAppearanceControl";
+import SettingsGearButton from "@/components/SettingsGearButton";
 import type { TechniqueLevel } from "@rolltrack/shared";
 
-const levels: { level: TechniqueLevel; subtitle: string }[] = [
-  { level: "Beginner", subtitle: "Core fundamentals and base movement" },
-  { level: "Intermediate", subtitle: "Combinations, timing, and transitions" },
-  { level: "Advanced", subtitle: "Refinement, pressure, and chain attacks" },
+const levels: {
+  level: TechniqueLevel;
+  subtitle: string;
+  icon: keyof typeof Ionicons.glyphMap;
+}[] = [
+  { level: "Beginner", subtitle: "Core fundamentals and base movement", icon: "school-outline" },
+  { level: "Intermediate", subtitle: "Combinations, timing, and transitions", icon: "layers-outline" },
+  { level: "Advanced", subtitle: "Refinement, pressure, and chain attacks", icon: "trophy-outline" },
 ];
 
 export default function HomeScreen() {
@@ -28,7 +32,7 @@ export default function HomeScreen() {
     <ScreenCanvas>
       <Box flex={1} px="$4" pt="$3" pb="$5">
         <HStack justifyContent="flex-end" mb="$2">
-          <ThemeAppearanceControl />
+          <SettingsGearButton />
         </HStack>
         <Text color="$rtHeading" fontSize="$3xl" fontWeight="$bold" mt="$1" textAlign="center">
           RollTrack
@@ -57,7 +61,7 @@ export default function HomeScreen() {
         </Text>
 
         <VStack flex={1} space="md" minHeight="$32">
-          {levels.map(({ level, subtitle }) => (
+          {levels.map(({ level, subtitle, icon }) => (
             <Card
               key={level}
               variant="outline"
@@ -89,7 +93,7 @@ export default function HomeScreen() {
                     justifyContent="center"
                     mr="$3"
                   >
-                    <Ionicons name="layers-outline" size={22} color={brandIcon} />
+                    <Ionicons name={icon} size={22} color={brandIcon} />
                   </Box>
                   <VStack flex={1} mr="$2" alignItems="flex-start">
                     <Text color="$rtHeading" fontSize="$xl" fontWeight="$semibold">
