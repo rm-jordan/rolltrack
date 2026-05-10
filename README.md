@@ -10,8 +10,12 @@ The app build is ongoing as we iterate on UX and core training workflows.
 - Updated GraphQL schema/resolvers and mobile data layer to level-only technique inputs/outputs.
 - Applied Prisma migration to remove `Technique.beltGuideline` and keep `Technique.level` as required.
 - Removed belt icon/color UI components and related tests.
-- Updated navigation to level route (`tabs/learn/[level]`).
-- Adopted Gluestack UI for the home screen (provider + larger level cards); NativeWind remains for other screens.
+- Navigation to level route (`tabs/learn/[level]`).
+- **Mobile UI:** Gluestack UI across main flows (home, learn, library, log, technique CRUD); Tailwind/NativeWind kept in the toolchain (`global.css`) for compatibility.
+- **Theme:** Astro.build-inspired palette (blue/purple accent, neutral surfaces); default appearance is **dark**; **Settings** screen (`/settings`) opened from a **gear** icon; Auto / Light / Dark persisted via AsyncStorage / `localStorage`.
+- **Intro:** Full-screen splash with skip; hold + fade to app (~4s total) after data load; storage key `rolltrack-intro-seen`.
+- **Home:** Distinct level icons (Beginner `school-outline`, Intermediate `layers-outline`, Advanced `trophy-outline`); level drill-in screen uses a single header title (no duplicate “techniques” title).
+- **Tests:** Coverage for settings screen, settings gear, theme provider defaults, `ThemeAppearanceControl`, and `ScreenHeader` gear navigation.
 
 ## What The App Does
 
@@ -19,25 +23,31 @@ The app build is ongoing as we iterate on UX and core training workflows.
 - Log training sessions with notes and practiced techniques
 - Track practice count and last-practiced date for techniques
 - Filter and browse by technique level (`Beginner`, `Intermediate`, `Advanced`)
-- Use a clean mobile-first UI with short intro fade on app load
+- Choose **Auto / Light / Dark** theme in **Settings** (gear icon on main screens)
+- Short intro overlay on first launch (skippable); fade through to home after load
 
 ## Future Plans
 
-Planned next focus areas discussed during development:
+**Still open**
 
-- UX/UI polish pass across all screens
-  - tighter spacing rhythm
-  - stronger hierarchy for CTAs
-  - improved transitions and interaction feedback
-- Expanded state coverage
-  - richer empty/loading/error/success feedback on every screen
-- Navigation polish
-  - consistent back behavior and context-aware headers
-- Additional test coverage
-  - more screen behavior tests and end-to-end API flow tests
-- Ongoing content/model tuning
-  - refine level tagging quality across techniques
-  - expand level-driven discovery and recommendations
+- UX/UI polish
+  - Gradient or richer primary CTAs (marketing-style) if desired
+  - Motion / haptics on key actions
+  - Further spacing and typography tuning
+- State & feedback
+  - Richer empty / loading / error / success patterns on every screen
+  - Offline or retry UX for flaky API
+- Navigation
+  - Deeper linking and context-aware headers where helpful
+- Testing
+  - More screen-level tests; end-to-end flows against a running API
+  - Optional Detox / Maestro-style E2E
+- Product / data
+  - Refine level tagging quality across techniques
+  - Level-driven discovery and recommendations
+- Platform
+  - Auth and secure remote usage when moving beyond local dev
+  - Deployment, backups, and environment strategy
 
 ## Tech Stack
 
@@ -45,8 +55,8 @@ Planned next focus areas discussed during development:
 - Expo + React Native + Expo Router
 - TypeScript
 - Zustand (state)
-- Gluestack UI (`@gluestack-ui/themed` + `@gluestack-ui/config`) for component layout and themed primitives
-- NativeWind + Tailwind CSS (styling for screens not yet on Gluestack)
+- Gluestack UI (`@gluestack-ui/themed` + extended `@gluestack-ui/config` in `mobile/src/theme/rolltrackGluestackConfig.ts`)
+- Tailwind CSS + NativeWind (bundler pipeline; most UI is Gluestack tokens/components)
 - Jest + `@testing-library/react-native` (tests)
 
 ### Backend (`server/`)
@@ -65,7 +75,7 @@ Planned next focus areas discussed during development:
 
 ```mermaid
 flowchart LR
-  Mobile["Mobile App (Expo + React Native + Gluestack UI)\n- ThemePreferenceContext\n- AsyncStorage / localStorage"] -->|GraphQL queries/mutations| API["GraphQL API (Apollo Server)"]
+  Mobile["Mobile App (Expo + React Native + Gluestack UI)\n- ThemePreferenceContext (default dark)\n- AsyncStorage / localStorage"] -->|GraphQL queries/mutations| API["GraphQL API (Apollo Server)"]
   API --> Prisma["Prisma ORM"]
   Prisma --> DB[("SQLite DB")]
   Shared["packages/shared"] --> Mobile
@@ -85,7 +95,7 @@ sequenceDiagram
   User->>Mobile: Open app
   par Theme
     Mobile->>Store: Read theme preference (system / light / dark)
-    Store-->>Mobile: Preference or null (fallback to system)
+    Store-->>Mobile: Preference or null (default dark if unset)
     Mobile-->>Mobile: Set Gluestack colorMode (light/dark)
   and Data
     Mobile->>API: hydrateFromApi() / { techniques, sessionLogs }
@@ -103,8 +113,8 @@ sequenceDiagram
   Mobile->>API: Optional refresh query
   Mobile-->>User: Updated UI state
 
-  User->>Mobile: Change theme (Auto / Light / Dark)
-  Mobile->>Store: Persist preference (best effort, ignores storage failures)
+  User->>Mobile: Open Settings (gear) / change theme
+  Mobile->>Store: Persist preference (best effort)
   Mobile-->>Mobile: Update Gluestack colorMode live
 ```
 
@@ -113,6 +123,7 @@ sequenceDiagram
 ```mermaid
 flowchart TD
   Splash["Intro Fade Overlay"] --> Home["Home (tabs/index)"]
+  Home --> Settings["Settings (/settings)"]
   Home --> LearnLevel["Learn by Level (tabs/learn/[level])"]
   Home --> LearnAll["Learn (tabs/learn/index)"]
   Home --> Library["Library (tabs/library)"]
@@ -126,7 +137,7 @@ flowchart TD
 
 ```mermaid
 flowchart LR
-  Now["Now<br/>- Level-only taxonomy live<br/>- Belt code removed<br/>- Prisma migration applied"] --> Next["Next<br/>- UX/UI polish pass<br/>- Navigation refinements<br/>- Expanded screen behavior tests"] --> Later["Later<br/>- Auth/security for non-local usage<br/>- Deployment + backup strategy<br/>- Broader end-to-end test coverage"]
+  Done["Done<br/>- Level-only taxonomy + migration<br/>- Gluestack + Astro-style theme<br/>- Settings + gear; default dark<br/>- Intro fade + skip; level icons<br/>- Unit tests for settings/theme UI"] --> Next["Next<br/>- Deeper UX polish + feedback states<br/>- More screen + E2E tests<br/>- Navigation refinements"] --> Later["Later<br/>- Auth / remote deployment<br/>- Recommendations + content tuning"]
 ```
 
 ### Technique Taxonomy (Current)

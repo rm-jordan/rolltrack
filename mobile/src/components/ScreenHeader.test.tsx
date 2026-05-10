@@ -2,9 +2,21 @@ import { fireEvent } from "@testing-library/react-native";
 import { renderWithGluestack } from "@/test-utils/renderWithGluestack";
 import ScreenHeader from "./ScreenHeader";
 
+const mockPush = jest.fn();
+
 jest.mock("@expo/vector-icons/Ionicons", () => "Ionicons");
 
+jest.mock("expo-router", () => ({
+  useRouter: () => ({
+    push: mockPush,
+    back: jest.fn(),
+  }),
+}));
+
 describe("ScreenHeader", () => {
+  beforeEach(() => {
+    mockPush.mockClear();
+  });
   it("renders title/subtitle and no back button by default", () => {
     const { getByText, queryByLabelText } = renderWithGluestack(
       <ScreenHeader title="Library" subtitle="Search and filter." />,
@@ -33,5 +45,12 @@ describe("ScreenHeader", () => {
 
     fireEvent.press(getByText("Add move"));
     expect(onPress).toHaveBeenCalledTimes(1);
+  });
+
+  it("renders settings gear and navigates to /settings", () => {
+    const { getByLabelText } = renderWithGluestack(<ScreenHeader title="Library" settingsGear />);
+
+    fireEvent.press(getByLabelText("Settings"));
+    expect(mockPush).toHaveBeenCalledWith("/settings");
   });
 });
