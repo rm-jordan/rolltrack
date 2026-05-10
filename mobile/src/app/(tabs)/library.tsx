@@ -16,6 +16,7 @@ type SortKey = "recent" | "practice" | "name";
 export default function LibraryScreen() {
   const router = useRouter();
   const libraryAccent = useRolltrackColor("rtLibraryAccent");
+  const onPrimary = useRolltrackColor("rtOnPrimary");
   const techniques = useRollTrackStore((state) => state.techniques);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedLevel, setSelectedLevel] = useState<"All" | TechniqueLevel>("All");
@@ -77,7 +78,7 @@ export default function LibraryScreen() {
           rightAction={{ label: "Add move", onPress: () => router.push("/technique/new") }}
         />
 
-        <Card variant="outline" size="lg" mt="$4" p="$4" borderColor="$primary300" sx={{ _dark: { borderColor: "$primary700" } }}>
+        <Card variant="outline" size="lg" mt="$4" p="$4" borderColor="$rtBorder" bg="$backgroundLight0" sx={{ _dark: { bg: "$backgroundDark900" } }}>
           <HStack alignItems="center">
             <Ionicons name="search-outline" size={18} color={libraryAccent} />
             <Text color="$rtSubtle" fontSize="$xs" textTransform="uppercase" ml="$2" letterSpacing={1}>
@@ -135,7 +136,7 @@ export default function LibraryScreen() {
                 }}
                 $pressed={{ opacity: 0.9 }}
               >
-                <Text color={active ? "$white" : "$rtHeading"} fontWeight="$medium" fontSize="$sm">
+                <Text color={active ? "$rtOnPrimary" : "$rtHeading"} fontWeight="$medium" fontSize="$sm">
                   {label}
                 </Text>
               </Pressable>
@@ -172,11 +173,11 @@ export default function LibraryScreen() {
                 $pressed={{ opacity: 0.9 }}
               >
                 {level === "All" ? (
-                  <Ionicons name="layers-outline" size={15} color={active ? "#ffffff" : libraryAccent} />
+                  <Ionicons name="layers-outline" size={15} color={active ? onPrimary : libraryAccent} />
                 ) : (
-                  <Ionicons name="school-outline" size={15} color={active ? "#ffffff" : libraryAccent} />
+                  <Ionicons name="school-outline" size={15} color={active ? onPrimary : libraryAccent} />
                 )}
-                <Text ml="$1.5" color={active ? "$white" : "$rtHeading"} fontWeight="$medium" fontSize="$sm">
+                <Text ml="$1.5" color={active ? "$rtOnPrimary" : "$rtHeading"} fontWeight="$medium" fontSize="$sm">
                   {level}
                 </Text>
               </Pressable>

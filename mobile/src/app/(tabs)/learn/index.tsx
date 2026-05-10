@@ -1,5 +1,5 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { Box, Card, HStack, Pressable, ScrollView, Text, useToken, VStack } from "@gluestack-ui/themed";
+import { Box, Card, HStack, Pressable, ScrollView, Text, VStack } from "@gluestack-ui/themed";
 import { useRouter } from "expo-router";
 import { useMemo, useState } from "react";
 import type { TechniqueLevel } from "@rolltrack/shared";
@@ -9,12 +9,14 @@ import ScreenHeader from "@/components/ScreenHeader";
 import TechniqueCard from "@/components/TechniqueCard";
 import { LEVELS, techniqueLevel } from "@/lib/techniqueLevel";
 import { useRollTrackStore } from "@/state/store";
+import { useRolltrackColor } from "@/theme/useRolltrackToken";
 
 const levelFilters: ("All" | TechniqueLevel)[] = ["All", ...LEVELS];
 
 export default function LearnIndexScreen() {
   const router = useRouter();
-  const primaryHex = useToken("colors", "primary500");
+  const onPrimary = useRolltrackColor("rtOnPrimary");
+  const filterIconMuted = useRolltrackColor("rtIconMuted");
   const techniques = useRollTrackStore((state) => state.techniques);
   const [selectedLevel, setSelectedLevel] = useState<"All" | TechniqueLevel>("All");
 
@@ -43,9 +45,9 @@ export default function LearnIndexScreen() {
           appearanceToggle
         />
 
-        <Card variant="outline" size="lg" mt="$4" p="$4" borderColor="$primary300" sx={{ _dark: { borderColor: "$primary700" } }}>
+        <Card variant="outline" size="lg" mt="$4" p="$4" borderColor="$rtBorder" bg="$backgroundLight0" sx={{ _dark: { bg: "$backgroundDark900" } }}>
           <HStack alignItems="center">
-            <Ionicons name="school-outline" size={18} color={primaryHex} />
+            <Ionicons name="school-outline" size={18} color={filterIconMuted} />
             <Text color="$rtSubtle" fontSize="$xs" textTransform="uppercase" ml="$2" letterSpacing={1}>
               Learning path
             </Text>
@@ -84,11 +86,11 @@ export default function LearnIndexScreen() {
                 $pressed={{ opacity: 0.9 }}
               >
                 {level === "All" ? (
-                  <Ionicons name="layers-outline" size={15} color={active ? "#ffffff" : primaryHex} />
+                  <Ionicons name="layers-outline" size={15} color={active ? onPrimary : filterIconMuted} />
                 ) : (
-                  <Ionicons name="school-outline" size={15} color={active ? "#ffffff" : primaryHex} />
+                  <Ionicons name="school-outline" size={15} color={active ? onPrimary : filterIconMuted} />
                 )}
-                <Text ml="$1.5" color={active ? "$white" : "$rtHeading"} fontWeight="$medium" fontSize="$sm">
+                <Text ml="$1.5" color={active ? "$rtOnPrimary" : "$rtHeading"} fontWeight="$medium" fontSize="$sm">
                   {level}
                 </Text>
               </Pressable>

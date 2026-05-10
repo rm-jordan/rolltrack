@@ -45,12 +45,7 @@ export default function ThemeAppearanceControl() {
             <Text
               fontSize="$xs"
               fontWeight="$semibold"
-              color={active ? "$white" : "$rtBody"}
-              sx={{
-                _dark: {
-                  color: active ? "$white" : "$rtBody",
-                },
-              }}
+              color={active ? "$rtOnPrimary" : "$rtBody"}
             >
               {label}
             </Text>

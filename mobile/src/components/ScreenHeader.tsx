@@ -66,7 +66,7 @@ export default function ScreenHeader({
               size="sm"
               action="primary"
               variant="solid"
-              borderRadius="$2xl"
+              borderRadius="$md"
               onPress={rightAction.onPress}
             >
               <ButtonText>{rightAction.label}</ButtonText>

@@ -1,5 +1,5 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { Box, Card, HStack, Pressable, Text, useToken } from "@gluestack-ui/themed";
+import { Box, Card, HStack, Pressable, Text } from "@gluestack-ui/themed";
 import { useRolltrackColor } from "@/theme/useRolltrackToken";
 import type { Technique } from "@rolltrack/shared";
 
@@ -26,7 +26,7 @@ function CardBody({
   explanation: string;
   showChevron: boolean;
 }) {
-  const primaryHex = useToken("colors", "primary500");
+  const categoryIcon = useRolltrackColor("rtHeading");
   const mutedHex = useRolltrackColor("rtIconMuted");
 
   return (
@@ -35,7 +35,7 @@ function CardBody({
         <Ionicons
           name={categoryIconMap[technique.category]}
           size={16}
-          color={primaryHex}
+          color={categoryIcon}
           style={{ marginRight: 6 }}
         />
         <Text color="$rtHeading" fontSize="$lg" fontWeight="$semibold" flex={1}>
@@ -108,7 +108,7 @@ export default function TechniqueCard({ technique, onPress }: TechniqueCardProps
   if (onPress) {
     return (
       <Pressable onPress={onPress} mb="$3" $pressed={{ opacity: 0.96 }}>
-        <Card variant="outline" size="lg" p="$4" borderColor="$rtBorder">
+        <Card variant="outline" size="lg" p="$4" borderColor="$rtBorder" bg="$backgroundLight0" sx={{ _dark: { bg: "$backgroundDark900" } }}>
           {inner}
         </Card>
       </Pressable>
@@ -116,7 +116,7 @@ export default function TechniqueCard({ technique, onPress }: TechniqueCardProps
   }
 
   return (
-    <Card variant="outline" size="lg" p="$4" mb="$3" borderColor="$rtBorder">
+    <Card variant="outline" size="lg" p="$4" mb="$3" borderColor="$rtBorder" bg="$backgroundLight0" sx={{ _dark: { bg: "$backgroundDark900" } }}>
       {inner}
     </Card>
   );

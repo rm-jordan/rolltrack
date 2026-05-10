@@ -21,11 +21,6 @@ import { LEVELS, techniqueLevel } from "@/lib/techniqueLevel";
 import { useRollTrackStore } from "@/state/store";
 import { useRolltrackColor } from "@/theme/useRolltrackToken";
 
-const LEVEL_CHIP_ACTIVE: Record<TechniqueLevel, { bg: string; borderColor: string }> = {
-  Beginner: { bg: "#059669", borderColor: "#10b981" },
-  Intermediate: { bg: "#0891b2", borderColor: "#06b6d4" },
-  Advanced: { bg: "#7c3aed", borderColor: "#8b5cf6" },
-};
 const CATEGORIES: TechniqueCategory[] = [
   "Submission",
   "Pass",
@@ -207,7 +202,7 @@ export default function EditTechniqueScreen() {
                 }}
                 $pressed={{ opacity: 0.9 }}
               >
-                <Text fontSize="$sm" fontWeight="$medium" color={active ? "$white" : "$rtHeading"}>
+                <Text fontSize="$sm" fontWeight="$medium" color={active ? "$rtOnPrimary" : "$rtHeading"}>
                   {c}
                 </Text>
               </Pressable>
@@ -221,7 +216,6 @@ export default function EditTechniqueScreen() {
         <HStack flexWrap="wrap">
           {LEVELS.map((candidate) => {
             const active = level === candidate;
-            const chip = LEVEL_CHIP_ACTIVE[candidate];
             return (
               <Pressable
                 key={candidate}
@@ -232,17 +226,17 @@ export default function EditTechniqueScreen() {
                 mr="$2"
                 mb="$2"
                 borderWidth={1}
-                bg={active ? chip.bg : "$backgroundLightMuted"}
-                borderColor={active ? chip.borderColor : "$rtBorder"}
+                borderColor={active ? "$primary400" : "$rtBorder"}
+                bg={active ? "$primary500" : "$backgroundLightMuted"}
                 sx={{
                   _dark: {
-                    bg: active ? chip.bg : "$backgroundDarkMuted",
-                    borderColor: active ? chip.borderColor : "$rtBorder",
+                    bg: active ? "$primary500" : "$backgroundDarkMuted",
+                    borderColor: active ? "$primary400" : "$rtBorder",
                   },
                 }}
                 $pressed={{ opacity: 0.9 }}
               >
-                <Text fontSize="$sm" fontWeight="$medium" color={active ? "$white" : "$rtHeading"}>
+                <Text fontSize="$sm" fontWeight="$medium" color={active ? "$rtOnPrimary" : "$rtHeading"}>
                   {candidate}
                 </Text>
               </Pressable>
@@ -297,10 +291,10 @@ export default function EditTechniqueScreen() {
 
         <Button
           size="lg"
-          action="positive"
+          action="primary"
           variant="solid"
           mt="$6"
-          borderRadius="$2xl"
+          borderRadius="$md"
           onPress={onSave}
           disabled={saving}
           opacity={saving ? 0.85 : 1}

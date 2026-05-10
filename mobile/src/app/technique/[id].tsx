@@ -155,12 +155,12 @@ export default function TechniqueDetailScreen() {
               size="md"
               action="primary"
               variant="solid"
-              borderRadius="$2xl"
+              borderRadius="$md"
               onPress={() => router.push(`/technique/edit/${technique.id}` as Href)}
             >
               <ButtonText>Edit</ButtonText>
             </Button>
-            <Button flex={1} size="md" action="negative" variant="outline" borderRadius="$2xl" onPress={onDelete}>
+            <Button flex={1} size="md" action="negative" variant="outline" borderRadius="$md" onPress={onDelete}>
               <ButtonText>Delete</ButtonText>
             </Button>
           </HStack>

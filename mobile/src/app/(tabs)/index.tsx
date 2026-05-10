@@ -6,18 +6,18 @@ import ScreenCanvas from "@/components/ScreenCanvas";
 import ThemeAppearanceControl from "@/components/ThemeAppearanceControl";
 import type { TechniqueLevel } from "@rolltrack/shared";
 
-const levels: { level: TechniqueLevel; subtitle: string; bg: "$rtLevelBeginner" | "$rtLevelIntermediate" | "$rtLevelAdvanced" }[] =
-  [
-    { level: "Beginner", subtitle: "Core fundamentals and base movement", bg: "$rtLevelBeginner" },
-    { level: "Intermediate", subtitle: "Combinations, timing, and transitions", bg: "$rtLevelIntermediate" },
-    { level: "Advanced", subtitle: "Refinement, pressure, and chain attacks", bg: "$rtLevelAdvanced" },
-  ];
+const levels: { level: TechniqueLevel; subtitle: string }[] = [
+  { level: "Beginner", subtitle: "Core fundamentals and base movement" },
+  { level: "Intermediate", subtitle: "Combinations, timing, and transitions" },
+  { level: "Advanced", subtitle: "Refinement, pressure, and chain attacks" },
+];
 
 export default function HomeScreen() {
   const router = useRouter();
   const libraryAccent = useRolltrackColor("rtLibraryAccent");
   const logAccent = useRolltrackColor("rtLogAccent");
   const iconMuted = useRolltrackColor("rtIconMuted");
+  const onPrimary = useRolltrackColor("rtOnPrimary");
 
   const openLevelTechniques = (level: TechniqueLevel) => {
     router.push(`/(tabs)/learn/${level}`);
@@ -41,15 +41,22 @@ export default function HomeScreen() {
           justifyContent="center"
           mt="$3"
           alignSelf="center"
+          borderWidth={1}
+          borderColor="$rtBorder"
+          sx={{
+            _dark: {
+              borderColor: "$rtBorder",
+            },
+          }}
         >
-          <Ionicons name="fitness" size={24} color="#ffffff" />
+          <Ionicons name="fitness" size={24} color={onPrimary} />
         </Box>
         <Text color="$rtHeading" fontSize="$xl" fontWeight="$bold" mt="$5" mb="$2">
           Technique levels
         </Text>
 
         <VStack flex={1} space="md" minHeight="$32">
-          {levels.map(({ level, subtitle, bg }) => (
+          {levels.map(({ level, subtitle }) => (
             <Card
               key={level}
               variant="outline"
@@ -57,7 +64,10 @@ export default function HomeScreen() {
               p="$0"
               overflow="hidden"
               borderColor="$rtBorder"
-              bg={bg}
+              bg="$backgroundLight0"
+              sx={{
+                _dark: { bg: "$backgroundDark900" },
+              }}
             >
               <Button
                 variant="link"
@@ -97,7 +107,7 @@ export default function HomeScreen() {
 
         <VStack mt="$3" space="md">
           <HStack space="sm">
-            <Card variant="outline" size="md" flex={1} mr="$1" p="$4" borderColor="$rtBorder">
+            <Card variant="outline" size="md" flex={1} mr="$1" p="$4" borderColor="$rtBorder" bg="$backgroundLight0" sx={{ _dark: { bg: "$backgroundDark900" } }}>
               <Button
                 variant="link"
                 p="$0"
@@ -116,7 +126,7 @@ export default function HomeScreen() {
                 </Box>
               </Button>
             </Card>
-            <Card variant="outline" size="md" flex={1} ml="$1" p="$4" borderColor="$rtBorder">
+            <Card variant="outline" size="md" flex={1} ml="$1" p="$4" borderColor="$rtBorder" bg="$backgroundLight0" sx={{ _dark: { bg: "$backgroundDark900" } }}>
               <Button
                 variant="link"
                 p="$0"
@@ -139,10 +149,10 @@ export default function HomeScreen() {
 
           <Button
             size="md"
-            action="secondary"
+            action="primary"
             variant="outline"
             borderColor="$rtBorder"
-            borderRadius="$2xl"
+            borderRadius="$md"
             onPress={() => router.push("/(tabs)/learn")}
           >
             <ButtonText color="$rtHeading">Browse Learn (all filters)</ButtonText>

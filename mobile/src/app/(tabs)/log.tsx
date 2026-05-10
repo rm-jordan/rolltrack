@@ -167,9 +167,9 @@ export default function LogScreen() {
             />
             <Button
               size="sm"
-              action="positive"
+              action="primary"
               variant="solid"
-              borderRadius="$2xl"
+              borderRadius="$md"
               onPress={setToday}
             >
               <ButtonText>Today</ButtonText>
@@ -205,12 +205,12 @@ export default function LogScreen() {
                     mr="$2"
                     mb="$2"
                     borderWidth={1}
-                    borderColor={selected ? "$success400" : "$rtBorder"}
-                    bg={selected ? "$backgroundLightSuccess" : "$backgroundLightMuted"}
+                    borderColor={selected ? "$primary400" : "$rtBorder"}
+                    bg={selected ? "$primary500" : "$backgroundLightMuted"}
                     sx={{
                       _dark: {
-                        bg: selected ? "$backgroundDarkSuccess" : "$backgroundDarkMuted",
-                        borderColor: selected ? "$success400" : "$rtBorder",
+                        bg: selected ? "$primary500" : "$backgroundDarkMuted",
+                        borderColor: selected ? "$primary400" : "$rtBorder",
                       },
                     }}
                     $pressed={{ opacity: 0.9 }}
@@ -218,12 +218,7 @@ export default function LogScreen() {
                     <Text
                       fontSize="$sm"
                       fontWeight="$medium"
-                      color={selected ? "$success800" : "$rtHeading"}
-                      sx={{
-                        _dark: {
-                          color: selected ? "$success200" : "$rtHeading",
-                        },
-                      }}
+                      color={selected ? "$rtOnPrimary" : "$rtHeading"}
                       numberOfLines={1}
                     >
                       {tech.name}
@@ -280,9 +275,9 @@ export default function LogScreen() {
 
         <Button
           size="lg"
-          action="positive"
+          action="primary"
           variant="solid"
-          borderRadius="$2xl"
+          borderRadius="$md"
           mt="$5"
           onPress={handleSubmit(onSubmit)}
           disabled={saving}

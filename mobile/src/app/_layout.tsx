@@ -8,6 +8,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRollTrackStore } from "@/state/store";
 import { rolltrackConfig } from "@/theme/rolltrackGluestackConfig";
 import { ThemePreferenceProvider, useThemePreference } from "@/theme/ThemePreferenceContext";
+import { useRolltrackColor } from "@/theme/useRolltrackToken";
 import "../../global.css";
 
 function AppProviders({ children }: { children: ReactNode }) {
@@ -28,7 +29,8 @@ function RootLayoutBody() {
   const [showIntro, setShowIntro] = useState(false);
   const [introSeen, setIntroSeen] = useState(false);
   const introOpacity = useRef(new Animated.Value(1)).current;
-  const { resolvedScheme } = useThemePreference();
+  const canvasColor = useRolltrackColor("rtCanvas");
+  const spinnerColor = useRolltrackColor("rtHeading");
 
   const INTRO_KEY = "rolltrack-intro-seen";
 
@@ -124,7 +126,7 @@ function RootLayoutBody() {
   if (!ready) {
     return (
       <VStack flex={1} bg="$rtCanvas" alignItems="center" justifyContent="center" px="$6">
-        <ActivityIndicator color="#7c3aed" size="large" />
+        <ActivityIndicator color={spinnerColor} size="large" />
         <Text color="$rtBody" mt="$3" fontSize="$sm">
           Loading data…
         </Text>
@@ -152,7 +154,7 @@ function RootLayoutBody() {
                   setReady(true);
                 });
             }}
-            borderRadius="$xl"
+            borderRadius="$md"
             borderWidth={1}
             borderColor="$rtBorder"
             bg="$backgroundLight0"
@@ -176,8 +178,6 @@ function RootLayoutBody() {
     );
   }
 
-  const introBg = resolvedScheme === "dark" ? "#0c0a12" : "#f3effc";
-
   return (
     <Box flex={1}>
       <Stack screenOptions={{ headerShown: false }} />
@@ -190,14 +190,14 @@ function RootLayoutBody() {
             right: 0,
             bottom: 0,
             left: 0,
-            backgroundColor: introBg,
+            backgroundColor: canvasColor,
             alignItems: "center",
             justifyContent: "center",
             paddingHorizontal: 32,
           }}
         >
           <Box h={64} w={64} borderRadius="$3xl" bg="$primary500" alignItems="center" justifyContent="center">
-            <Text color="$white" fontSize="$3xl" fontWeight="$bold">
+            <Text color="$rtOnPrimary" fontSize="$3xl" fontWeight="$bold">
               R
             </Text>
           </Box>
@@ -212,7 +212,7 @@ function RootLayoutBody() {
             variant="outline"
             action="secondary"
             mt="$6"
-            borderRadius="$2xl"
+            borderRadius="$md"
             borderColor="$rtBorder"
             onPress={async () => {
               setShowIntro(false);
